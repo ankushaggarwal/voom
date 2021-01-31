@@ -1,0 +1,64 @@
+8
+
+dir
+902
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom/trunk/src/Applications
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom
+
+
+
+2010-09-30T22:40:42.246471Z
+867
+baimo
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+819a83d6-be06-0410-a091-d2d17e0dff94
+
+TetCapsid
+dir
+
+FiniteContraction
+dir
+
+Capsid
+dir
+
+AxiMembrane
+dir
+
+Semiflexible
+dir
+
+Dimple
+dir
+
+ForceEstimation
+dir
+
+Tether
+dir
+
+ActionPotential
+dir
+
+StructPhaseTrans
+dir
+
+MembraneEquilibrium
+dir
+
+TetrahedralQuadCapsid
+dir
+

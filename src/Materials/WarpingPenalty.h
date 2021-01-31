@@ -1,0 +1,112 @@
+// -*- C++ -*-
+//----------------------------------------------------------------------
+//
+//                  Ankush Aggarwal, William S. Klug
+//                University of California Los Angeles
+//                    (C) 2012 All Rights Reserved
+//
+//----------------------------------------------------------------------
+//
+/*! 
+  \file WarpingPenalty.h
+
+  \brief Interface for a Warping Penalty function for image registration using hyperelastic warping.
+
+*/
+
+#ifndef _WarpingPenalty_H_
+#define _WarpingPenalty_H_
+
+#include "Material.h"
+#include "VoomMath.h"
+#include "VoxelData.h"
+#include "ShellGeometry.h"
+namespace voom {
+  
+  class WarpingPenalty : public Material
+  {
+    
+  public:
+    
+    // Constructors/destructors:
+    //! Default constructor
+    //WarpingPenalty() { _init(0.0); }
+    //! Construct material from density, Young's modulus, and Poisson's ratio
+    WarpingPenalty(double lambda, Vector3D X, VoxelData * template_data, VoxelData * target_data) {
+      _init(lambda,X,template_data,target_data);
+    }
+    //! Destructor
+    virtual ~WarpingPenalty() {}
+    //! Copy constructor
+    WarpingPenalty(const WarpingPenalty &);
+    
+    // Operators
+    
+    // General methods:
+
+    //! Set ref position (this material is not dependent on deformation gradient, only position)
+    void setRefPosition(const Vector3D & X){_X=X;_x=X;_TX=_template_data->GetValue(_X);};
+
+    //! Set template voxel value
+    void setTemplateVoxel(double v){_TX=v;};
+
+    //! Set position (this material is not dependent on deformation gradient, only position)
+    void setPosition(const Vector3D & x){_x=x;};
+
+    //! Based on new position, calculates state of material (strain energy density, first Piola-Kirchhoff stress tensor)
+    void updateState(bool f0, bool f1, bool f2);
+
+    //! Return the force resultant (all base class functions return 2nd order tensors
+    const Vector3D & forceResultants() const{return _force;};
+    // Tests:
+    //! Consistency test
+//    void ConsistencyTest();
+
+    void setLambda(double lambda){_lambda=lambda;};
+    //update the Augmented Lagrange multiplier
+    void updateLagrangeMultiplier();
+
+    //copy function is pure virtual
+    Material * copy() {};
+    
+    const ShellGeometry& shellGeometry() const { return _deformedGeometry; }
+    const ShellGeometry& refShellGeometry() const { return _referenceGeometry; }	  
+    //! initialize the geometry in reference coords
+    void setRefGeometry( const ShellGeometry& g ) {_referenceGeometry = g;}
+    void setGeometry( const ShellGeometry& g ) {_deformedGeometry = g;}
+
+  private:
+    
+    // Members:
+
+    //! Current Position
+    Vector3D _x;
+
+    //! Reference Position
+    Vector3D _X;
+
+    //! Resultant force
+    Vector3D _force;
+
+    //! Template image value
+    double _TX;
+
+    //! Moduli
+    double _lambda;
+
+    //! Augmented lagrane multiplier
+    double _gamma,factor; //factor=0 if Augmented Lagrange is on, 1 otherwise
+    
+    //! Initializes material properties, sets function and its derivative = 0
+    void _init(double lambda, Vector3D X, VoxelData * template_data, VoxelData * target_data);
+
+    //! Object that holds the data for voxels
+    VoxelData * _target_data, *_template_data;
+
+    //! Geometry objects, may avoid them, but for now adding them to calculate the area
+    ShellGeometry _deformedGeometry;
+    ShellGeometry _referenceGeometry;
+  };
+  
+}
+#endif // _WarpingPenalty_H_

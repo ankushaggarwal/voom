@@ -1,0 +1,67 @@
+8
+
+dir
+902
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom/trunk/src/Mesh
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom
+
+
+
+2008-09-11T18:46:22.024959Z
+586
+klug
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+819a83d6-be06-0410-a091-d2d17e0dff94
+
+Test
+dir
+
+HalfEdgeMesh.cc
+file
+
+
+
+
+2010-10-22T01:19:36.000000Z
+778eee7aed40c7dd1ad7eec532054d89
+2008-09-11T18:46:22.024959Z
+586
+klug
+
+HalfEdgeMesh.h
+file
+
+
+
+
+2010-10-22T01:19:36.000000Z
+cea70f641974b777d57ae9744dd2acd3
+2008-09-11T18:46:22.024959Z
+586
+klug
+
+Makefile.am
+file
+
+
+
+
+2010-10-22T01:19:36.000000Z
+7e88336e11e675a855a21a1aa0a03be8
+2008-04-18T16:32:40.230015Z
+439
+klug
+

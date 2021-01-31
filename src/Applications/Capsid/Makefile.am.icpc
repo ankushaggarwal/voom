@@ -1,0 +1,61 @@
+bin_PROGRAMS    = relax indent refine#capsid_lbfgsb
+INCLUDES =-I ./                        \
+        -I$(blitz_includes)            \
+        -I$(tvmet_includes)            \
+        -I../                          \
+        -I../../                       \
+        -I../../../                    \
+        -I../../../../                 \
+        -I../../Math/                  \
+        -I../../Node/                  \
+        -I ../../Materials/            \
+        -I ../../Geometry/             \
+        -I ../../Quadrature/           \
+	-I ../../Elements/             \
+	-I ../../Constraints/          \
+	-I ../../Potentials/           \
+	-I ../../Body/                 \
+	-I ../../Model/                \
+	-I ../../Solvers/              \
+        -I ../../Shape/			\
+	-I ../../Mesh/
+#
+LDFLAGS = -L$(blitz_libraries) \
+        -L../                          	\
+        -L../../Materials/             	\
+	-L../../Solvers/               	\
+	-L../../Model/                 	\
+	-L../../Quadrature/		\
+	-L../../Geometry/		\
+        -L../../Shape/			\
+        -L../../Elements/		\
+	-L../../Math/			\
+	-L../../Mesh/			\
+	-L/opt/intel/fc/9.1.036/lib/
+#
+LDADD	= -lblitz              		\
+        -lMaterials                    	\
+	-lModel                        	\
+	-lSolvers                      	\
+	-lQuadrature                   	\
+	-lGeometry			\
+        -lShape				\
+	-lElements			\
+	-lMath				\
+	-lMesh				\
+	-lvtkIO 			\
+	-lvtkGraphics			\
+	-lvtkGenericFiltering 		\
+	-lvtkFiltering 			\
+	-lvtkCommon 			\
+	-llapack			\
+	-lblas				\
+	-lifport -lifcore
+#
+# capsid_lbfgsb_SOURCES    =  capsid-lbfgsb.cc 
+indent_SOURCES    =  indent.cc 
+#
+relax_SOURCES    =  relax.cc 
+#
+refine_SOURCES    =  refine.cc 
+

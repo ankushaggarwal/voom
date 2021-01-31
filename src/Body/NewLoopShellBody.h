@@ -1,0 +1,182 @@
+// -*- C++ -*-
+//----------------------------------------------------------------------
+//
+//                    William S. Klug, Feng Feng
+//                University of California Los Angeles
+//                 (C) 2004-2007 All Rights Reserved
+//
+//----------------------------------------------------------------------
+
+/*! 
+  \file NewLoopShellBody.h
+
+  \brief NewLoopShellBody is a concrete class derived from Body, implementing
+  the concept of a thin shell body.  The body is composed of
+  subdivision shell elements
+
+*/
+
+#if !defined(__NewLoopShellBody_h__)
+#define __NewLoopShellBody_h__
+
+#include<blitz/array.h>
+#include<vector>
+#include <map>
+#include <iostream>
+#include <iomanip>
+#include <iterator>
+#include <algorithm>
+#include <string>
+#include <fstream>
+#include "Body.h"
+#include "LoopShell.h"
+#include "voom.h"
+#include "Node.h"
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include "HalfEdgeMesh.h"
+
+#ifdef WITH_MPI
+#include <mpi.h>
+#endif
+
+namespace voom
+{
+
+
+  /*!  
+	Concrete class for a body composed of subdivision shell elements
+  */
+  template < class Material_t >
+  class NewLoopShellBody : public Body
+  {
+  public:
+    
+    
+
+    // typedefs
+    typedef LoopShell<Material_t> FeElement_t;
+    typedef typename FeElement_t::Node_t FeNode_t;
+    typedef typename std::vector< FeNode_t* > FeNodeContainer;
+    typedef typename FeNodeContainer::iterator FeNodeIterator;
+    typedef typename FeNodeContainer::const_iterator ConstFeNodeIterator;
+
+    typedef std::vector< FeElement_t* > FeElementContainer;
+    typedef typename FeElementContainer::iterator FeElementIterator;
+    typedef typename FeElementContainer::const_iterator ConstFeElementIterator;
+		
+    typedef tvmet::Vector<int,3> ElementConnectivity;
+    typedef std::vector<ElementConnectivity> ConnectivityContainer;
+
+    //! Default Constructor
+    NewLoopShellBody() {;}
+
+    //! Construct from stuff
+    NewLoopShellBody(Material_t material,
+		  ConnectivityContainer & connectivities,
+		  const NodeContainer & nodes,
+		  const unsigned quadOrder = 1) {
+
+      initializeBody(material, connectivities, nodes, quadOrder);
+    }
+
+    //! initialize
+    void initializeBody(Material_t material,
+			ConnectivityContainer connectivities,
+			const NodeContainer &  nodes,
+			const unsigned quadOrder);
+
+    
+    //! virtual destructor
+    virtual ~NewLoopShellBody() {
+      for(FeElementIterator e=_shells.begin(); e!=_shells.end(); e++) {
+	delete (*e);
+      }
+    }
+
+    FeElementContainer & shells() {return _shells;}
+    
+    //! Do mechanics on Body
+    void compute( bool f0, bool f1, bool f2 );
+
+    //! calculate the curvatures at all elements
+    void cal_curv(std::vector<double> &curv);
+    
+    double volume() const{ return _volume; }
+    
+    //! get total area
+    double area() const { return _area; }
+
+    //! Set the zero energy mean curvature to be equal to that at the reference configuration (element-wise)
+    void SetRefMeanCurvature();
+
+    //! Set the bending modulus
+    void SetBendingModulus(const std::vector<double>& scale, double kc){
+      int i=0;
+      for(ConstFeElementIterator e=_shells.begin(); e!=_shells.end(); e++) {
+	(*e)->SetBendingModulus(scale[i++]*kc);
+      }	
+    }
+
+    //! Set the bending modulus
+    void SetBendingModulus(const std::vector<double>& kappa){
+      int i=0;
+      for(ConstFeElementIterator e=_shells.begin(); e!=_shells.end(); e++) {
+	(*e)->SetBendingModulus(kappa[i++]);
+      }	
+    }
+
+    //! loop over elements and add up the stretching energy of each one
+    double strechingEnergy() const {
+      double stretchingEnergy = 0.0;
+      for(ConstFeElementIterator e=_shells.begin(); e!=_shells.end(); e++) {
+	stretchingEnergy += (*e)->strechingEnergy();
+      }	
+      return strechingEnergy;
+    }
+
+    //! loop over elements and add up the strain energy of each one
+    double totalStrainEnergy() const {
+      double totalStrainEnergy = 0.0;
+      for(ConstFeElementIterator e=_shells.begin(); e!=_shells.end(); e++) {
+	totalStrainEnergy += (*e)->strainEnergy();
+      }	
+      return totalStrainEnergy;
+    }
+
+
+    void printParaview(const std::string fileName) const ;
+
+    virtual void pushBack( Element* e ) { 
+      _elements.push_back(e); 
+      _active.push_back(true);}
+
+  private:
+
+    //! Store corner valences in a vector for building irregular elements
+    typedef tvmet::Vector<unsigned int, 3> CornerValences;
+        
+    //! Nodes
+    FeNodeContainer _shellNodes;
+
+    //! Elements
+    FeElementContainer 	_shells;		
+
+    //! vector of boolean flags to activate/deactivate elements
+    std::vector<bool> _active;
+
+    // for volume constraint
+    double _volume;
+
+    // for total area constraint
+    double _area;
+
+    // Compute the diagonal elements of the stiffness matrix by
+    // numerical differentiation
+  };  
+} // namespace voom
+
+#include "NewLoopShellBody.cc"
+
+#endif // __NewLoopShellBody_h__

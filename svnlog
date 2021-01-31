@@ -1,0 +1,3575 @@
+------------------------------------------------------------------------
+r867 | baimo | 2010-09-30 15:40:42 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added vtk directory, some libraries and new polySFGel drivers
+------------------------------------------------------------------------
+r866 | baimo | 2010-09-30 15:39:23 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added macro for checking vtk library
+------------------------------------------------------------------------
+r865 | baimo | 2010-09-30 15:38:58 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added macro for checking vtk library
+------------------------------------------------------------------------
+r864 | baimo | 2010-09-30 15:38:19 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added vtk directory and AffinityMeasure.cc
+------------------------------------------------------------------------
+r863 | baimo | 2010-09-30 15:36:49 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added macro for checking vtk library
+------------------------------------------------------------------------
+r862 | baimo | 2010-09-30 15:35:16 -0700 (Thu, 30 Sep 2010) | 1 line
+
+Added macro for checking vtk library
+------------------------------------------------------------------------
+r861 | baimo | 2010-09-28 15:26:39 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added functions for polydispersity, modified constructors to add polydisperse functionality, and some updates for post-processing functions
+------------------------------------------------------------------------
+r860 | baimo | 2010-09-28 15:26:32 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added functions for polydispersity, modified constructors to add polydisperse functionality, and some updates for post-processing functions
+------------------------------------------------------------------------
+r859 | baimo | 2010-09-28 15:20:44 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added functions to return mean segment length and curvature
+------------------------------------------------------------------------
+r858 | baimo | 2010-09-28 15:15:09 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added function to measure nonaffinity
+------------------------------------------------------------------------
+r857 | baimo | 2010-09-28 15:15:05 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added function to measure nonaffinity
+------------------------------------------------------------------------
+r856 | baimo | 2010-09-28 15:01:12 -0700 (Tue, 28 Sep 2010) | 1 line
+
+A sample input file of a polydisperse network, used by polySFGel.cc
+------------------------------------------------------------------------
+r855 | baimo | 2010-09-28 14:59:24 -0700 (Tue, 28 Sep 2010) | 1 line
+
+shear driver for polydisperse network
+------------------------------------------------------------------------
+r854 | baimo | 2010-09-28 14:56:06 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added functions to output filament stiffness distribution for polydisperse network
+------------------------------------------------------------------------
+r853 | baimo | 2010-09-28 14:56:01 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added functions to output filament stiffness distribution for polydisperse network
+------------------------------------------------------------------------
+r852 | baimo | 2010-09-28 14:52:20 -0700 (Tue, 28 Sep 2010) | 1 line
+
+Added various functions for post-processing polydisperse networks
+------------------------------------------------------------------------
+r851 | klug | 2010-09-21 12:04:39 -0700 (Tue, 21 Sep 2010) | 1 line
+
+
+------------------------------------------------------------------------
+r850 | klug | 2010-09-21 12:02:14 -0700 (Tue, 21 Sep 2010) | 1 line
+
+New class for dihedral angle springs to mimic shell bending.
+------------------------------------------------------------------------
+r849 | klug | 2010-09-08 15:37:55 -0700 (Wed, 08 Sep 2010) | 1 line
+
+Minor tweaks to comments.
+------------------------------------------------------------------------
+r848 | klug | 2010-09-08 10:20:35 -0700 (Wed, 08 Sep 2010) | 1 line
+
+Simple VTK program to extract a surface mesh and decimated it.
+------------------------------------------------------------------------
+r847 | klug | 2010-08-26 11:47:59 -0700 (Thu, 26 Aug 2010) | 1 line
+
+New augmented Lagrange contact elements.
+------------------------------------------------------------------------
+r846 | klug | 2010-08-26 11:47:26 -0700 (Thu, 26 Aug 2010) | 1 line
+
+New augmented Lagrange contact elements.
+------------------------------------------------------------------------
+r845 | klug | 2010-08-26 11:45:52 -0700 (Thu, 26 Aug 2010) | 1 line
+
+Now using augmented Lagrange contact elements.
+------------------------------------------------------------------------
+r844 | klug | 2010-07-09 10:44:52 -0700 (Fri, 09 Jul 2010) | 1 line
+
+Program to test C0MembraneGL element.
+------------------------------------------------------------------------
+r843 | ankush | 2010-07-08 15:08:23 -0700 (Thu, 08 Jul 2010) | 1 line
+
+Fixed frictional contact.
+------------------------------------------------------------------------
+r842 | missel | 2010-02-05 13:30:28 -0800 (Fri, 05 Feb 2010) | 2 lines
+
+Simple class to represent a molecular motor.
+
+------------------------------------------------------------------------
+r841 | missel | 2010-02-05 13:29:54 -0800 (Fri, 05 Feb 2010) | 2 lines
+
+Updated to work with simple motors (pinch forces).
+
+------------------------------------------------------------------------
+r840 | missel | 2010-02-05 13:29:31 -0800 (Fri, 05 Feb 2010) | 2 lines
+
+Updated to work with simple motors (pinch forces).
+
+------------------------------------------------------------------------
+r839 | missel | 2010-02-02 16:48:12 -0800 (Tue, 02 Feb 2010) | 1 line
+
+Added line for AffinityElement.cc
+------------------------------------------------------------------------
+r838 | missel | 2010-02-02 16:47:04 -0800 (Tue, 02 Feb 2010) | 1 line
+
+Eliminated references to Lbfgs solver
+------------------------------------------------------------------------
+r837 | missel | 2010-02-02 16:46:51 -0800 (Tue, 02 Feb 2010) | 1 line
+
+Eliminated references to Lbfgs solver
+------------------------------------------------------------------------
+r836 | missel | 2010-02-02 15:37:25 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Fixed vtk output so that 2D surface is in x-z plane (for consistency with SemiflexibleGel output).
+
+------------------------------------------------------------------------
+r835 | missel | 2010-02-02 15:35:19 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Parallelized (OpenMP) version of lbfgsb-routines.f
+
+------------------------------------------------------------------------
+r834 | missel | 2010-02-02 15:20:20 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Added code to allow for the computation of more correlation functions, etc.
+
+------------------------------------------------------------------------
+r833 | missel | 2010-02-02 15:19:53 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Added code to guess affine deformations and compute their energies.
+
+------------------------------------------------------------------------
+r832 | missel | 2010-02-02 15:18:03 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Added functionality to compute correlation functions and nonaffinity measures.
+
+------------------------------------------------------------------------
+r831 | missel | 2010-02-02 15:17:36 -0800 (Tue, 02 Feb 2010) | 2 lines
+
+Added functionality to compute correlation functions and nonaffinity measures.
+
+------------------------------------------------------------------------
+r830 | missel | 2009-12-14 12:40:31 -0800 (Mon, 14 Dec 2009) | 1 line
+
+Added various functions to compute correlations.
+------------------------------------------------------------------------
+r829 | missel | 2009-12-14 12:39:45 -0800 (Mon, 14 Dec 2009) | 1 line
+
+Added various functions to compute correlations.
+------------------------------------------------------------------------
+r828 | missel | 2009-12-14 12:39:21 -0800 (Mon, 14 Dec 2009) | 1 line
+
+Removed const modifier from getElements() and added area output to VTK mesh print function.
+------------------------------------------------------------------------
+r827 | missel | 2009-12-14 12:38:05 -0800 (Mon, 14 Dec 2009) | 1 line
+
+Removed const modifier from Centroid().
+------------------------------------------------------------------------
+r826 | missel | 2009-12-14 12:37:22 -0800 (Mon, 14 Dec 2009) | 1 line
+
+Added function to return number of boxes in each dimension of grid.
+------------------------------------------------------------------------
+r825 | missel | 2009-11-24 15:48:01 -0800 (Tue, 24 Nov 2009) | 1 line
+
+Fixed minor error with function declarations.
+------------------------------------------------------------------------
+r824 | missel | 2009-11-24 15:19:18 -0800 (Tue, 24 Nov 2009) | 1 line
+
+Added functionality to exclude nodes from long filaments from affinity calculations.
+------------------------------------------------------------------------
+r823 | missel | 2009-11-24 15:18:33 -0800 (Tue, 24 Nov 2009) | 1 line
+
+Changed affine measurement functions to allow for the exclusion of nodes from long filaments.
+------------------------------------------------------------------------
+r822 | missel | 2009-11-10 13:23:34 -0800 (Tue, 10 Nov 2009) | 1 line
+
+Program to do post-processing on stored gels.
+------------------------------------------------------------------------
+r821 | missel | 2009-11-10 13:22:19 -0800 (Tue, 10 Nov 2009) | 1 line
+
+New functions to compute affinity measures.
+------------------------------------------------------------------------
+r820 | missel | 2009-11-10 13:21:49 -0800 (Tue, 10 Nov 2009) | 1 line
+
+Implementation now in header file.
+------------------------------------------------------------------------
+r819 | missel | 2009-11-10 13:21:06 -0800 (Tue, 10 Nov 2009) | 1 line
+
+Added functions to return references to master and slave nodes.
+------------------------------------------------------------------------
+r818 | missel | 2009-11-10 13:20:19 -0800 (Tue, 10 Nov 2009) | 1 line
+
+Added functionality to return neighbors for a particular box.
+------------------------------------------------------------------------
+r817 | missel | 2009-11-10 13:19:50 -0800 (Tue, 10 Nov 2009) | 1 line
+
+nomsg
+------------------------------------------------------------------------
+r816 | baimo | 2009-10-19 01:50:41 -0700 (Mon, 19 Oct 2009) | 1 line
+
+added a few more member functions
+------------------------------------------------------------------------
+r815 | baimo | 2009-10-19 01:49:37 -0700 (Mon, 19 Oct 2009) | 1 line
+
+corrected a bug on the order of element's nodes and added a few more functions
+------------------------------------------------------------------------
+r814 | baimo | 2009-10-19 01:49:10 -0700 (Mon, 19 Oct 2009) | 1 line
+
+corrected a bug on the order of element's nodes and added a few more functions
+------------------------------------------------------------------------
+r813 | baimo | 2009-10-16 10:46:05 -0700 (Fri, 16 Oct 2009) | 1 line
+
+fixed a bug on the calculation of duds and dxds
+------------------------------------------------------------------------
+r812 | baimo | 2009-10-16 10:45:59 -0700 (Fri, 16 Oct 2009) | 1 line
+
+fixed a bug on the calculation of duds and dxds
+------------------------------------------------------------------------
+r811 | baimo | 2009-10-16 10:44:57 -0700 (Fri, 16 Oct 2009) | 1 line
+
+added more functions
+------------------------------------------------------------------------
+r810 | baimo | 2009-10-16 10:44:51 -0700 (Fri, 16 Oct 2009) | 1 line
+
+added more functions
+------------------------------------------------------------------------
+r809 | missel | 2009-10-15 15:27:01 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Modified to allow for an exponential two-body potential and to work with the updated Grid class.
+------------------------------------------------------------------------
+r808 | missel | 2009-10-15 15:21:43 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Modified Filament struct to hold center of mass position (used for gridding).
+------------------------------------------------------------------------
+r807 | missel | 2009-10-15 15:20:52 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Now takes in a pointer to the function to use for gridding elements.
+------------------------------------------------------------------------
+r806 | missel | 2009-10-15 15:05:20 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Added option for an exponentially decaying potential.
+------------------------------------------------------------------------
+r805 | missel | 2009-10-15 15:04:37 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Fixed bugs causing problems in runs with long filaments.
+------------------------------------------------------------------------
+r804 | missel | 2009-10-15 15:04:00 -0700 (Thu, 15 Oct 2009) | 1 line
+
+Added functionality to compute affinity measurement at different length scales using Delaunay triangulation.
+------------------------------------------------------------------------
+r803 | baimo | 2009-10-09 01:25:50 -0700 (Fri, 09 Oct 2009) | 1 line
+
+A test driver for affinity measurement using AffinityMeasure class
+------------------------------------------------------------------------
+r802 | baimo | 2009-10-09 01:19:21 -0700 (Fri, 09 Oct 2009) | 1 line
+
+new triangular element for affinity measurement
+------------------------------------------------------------------------
+r801 | baimo | 2009-10-09 01:19:04 -0700 (Fri, 09 Oct 2009) | 1 line
+
+new triangular element for affinity measurement
+------------------------------------------------------------------------
+r800 | baimo | 2009-10-09 01:18:03 -0700 (Fri, 09 Oct 2009) | 1 line
+
+new triangular element for affinity measurement
+------------------------------------------------------------------------
+r799 | baimo | 2009-10-09 01:17:41 -0700 (Fri, 09 Oct 2009) | 1 line
+
+new triangular element for affinity measurement
+------------------------------------------------------------------------
+r798 | klug | 2009-09-30 15:40:49 -0700 (Wed, 30 Sep 2009) | 1 line
+
+added triangulate program
+------------------------------------------------------------------------
+r797 | klug | 2009-09-30 15:32:49 -0700 (Wed, 30 Sep 2009) | 1 line
+
+Put back Makefile.am
+------------------------------------------------------------------------
+r796 | missel | 2009-09-28 09:59:00 -0700 (Mon, 28 Sep 2009) | 1 line
+
+Made run function update energy before final print out.
+------------------------------------------------------------------------
+r795 | missel | 2009-09-25 16:01:15 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Rod liquid driver.
+------------------------------------------------------------------------
+r794 | missel | 2009-09-25 16:00:25 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Input file for rod liquid sim.
+------------------------------------------------------------------------
+r793 | missel | 2009-09-25 15:55:20 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Class which implements the idea of gridding space into squares for the purpose of efficient neighbor searches.
+------------------------------------------------------------------------
+r792 | missel | 2009-09-25 15:53:52 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Class representing a two-body potential between elements (filaments, for now).
+------------------------------------------------------------------------
+r791 | missel | 2009-09-25 15:52:19 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Modified compute function so that Brownian forces are only added if "f2" flag is set.
+------------------------------------------------------------------------
+r790 | missel | 2009-09-25 15:47:20 -0700 (Fri, 25 Sep 2009) | 1 line
+
+Fixed minor issue with long filaments and added pointer to grid and two body potential (for rod liquid simulations).
+------------------------------------------------------------------------
+r789 | missel | 2009-09-21 15:10:06 -0700 (Mon, 21 Sep 2009) | 1 line
+
+Fixed a minor issue with the cutOffEnds function.
+------------------------------------------------------------------------
+r788 | missel | 2009-09-18 15:41:16 -0700 (Fri, 18 Sep 2009) | 1 line
+
+Master nodes now set their slave nodes' forces and stiffnesses to 0 in predict().
+------------------------------------------------------------------------
+r787 | missel | 2009-09-18 15:39:01 -0700 (Fri, 18 Sep 2009) | 1 line
+
+OpenMP directives tweaked ("nowait" clause added), cutoffEnds function fixed, only master nodes now passed back to container for model.
+------------------------------------------------------------------------
+r786 | missel | 2009-09-09 16:48:38 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Put OpenMP pragmas before constraint "for" loops in compute function.
+------------------------------------------------------------------------
+r785 | missel | 2009-09-09 14:29:47 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Modified input file to use adaptive meshing options.
+------------------------------------------------------------------------
+r784 | missel | 2009-09-09 14:27:17 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Modified nematic driver to work with new adaptive meshing options.
+------------------------------------------------------------------------
+r783 | missel | 2009-09-09 14:24:51 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added functions to output various gel properties (filament length distribution, etc.).
+------------------------------------------------------------------------
+r782 | missel | 2009-09-09 14:22:03 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added option to set crosslink rest length to current length.
+------------------------------------------------------------------------
+r781 | missel | 2009-09-09 14:20:28 -0700 (Wed, 09 Sep 2009) | 1 line
+
+IntersectionFinder does not need to know about periodic BCs anymore.
+------------------------------------------------------------------------
+r780 | missel | 2009-09-09 14:19:13 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added functions to reset and return spring rest length.
+------------------------------------------------------------------------
+r779 | missel | 2009-09-09 14:18:32 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added functions to return current angle and segment extensions.
+------------------------------------------------------------------------
+r778 | missel | 2009-09-09 14:16:45 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added functions that only map points in one dimension.
+------------------------------------------------------------------------
+r777 | missel | 2009-09-09 14:15:25 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Master nodes can now have multiple slaves.
+------------------------------------------------------------------------
+r776 | missel | 2009-09-09 14:12:41 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added adaptive meshing options and functions to compute various gel properties (nematic order parameter, filament length distribution, etc.).
+------------------------------------------------------------------------
+r775 | missel | 2009-09-09 14:09:01 -0700 (Wed, 09 Sep 2009) | 1 line
+
+Added adaptive meshing options and functions to compute various gel properties (nematic order parameter, filament length distribution, etc.).
+------------------------------------------------------------------------
+r774 | klug | 2009-09-02 14:01:06 -0700 (Wed, 02 Sep 2009) | 1 line
+
+C++ version of lbfgsb-routines.f, processed by f2c utility.
+------------------------------------------------------------------------
+r773 | klug | 2009-08-26 16:31:38 -0700 (Wed, 26 Aug 2009) | 1 line
+
+An attempt at interfacing voom with a Trilinos solver.  Don't expect this to run right or even compile.
+------------------------------------------------------------------------
+r772 | klug | 2009-08-11 22:55:46 -0700 (Tue, 11 Aug 2009) | 1 line
+
+More instructions about compiling with GCC or Intel compilers.
+------------------------------------------------------------------------
+r771 | klug | 2009-08-11 22:47:22 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Renamed GCC specific Makefile.am to allow for symbolic linking to either GCC or Intel version.
+------------------------------------------------------------------------
+r770 | klug | 2009-08-11 22:45:41 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Makefile.am written for use with Intel compilers.
+------------------------------------------------------------------------
+r769 | klug | 2009-08-11 22:44:40 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Listed a suggestion for how to configure with Intel compilers.
+------------------------------------------------------------------------
+r768 | klug | 2009-08-11 22:43:29 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Added some print statements to spit out how many OpenMP threads are available.
+------------------------------------------------------------------------
+r767 | klug | 2009-08-11 22:39:46 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Minor whitespace changes.
+------------------------------------------------------------------------
+r766 | klug | 2009-08-11 22:39:15 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Fixed incorrect base class in using declaration.
+------------------------------------------------------------------------
+r765 | missel | 2009-08-11 00:40:52 -0700 (Tue, 11 Aug 2009) | 1 line
+
+Code to compute lookup table for filament angles in nematic case.
+------------------------------------------------------------------------
+r764 | missel | 2009-08-10 16:38:08 -0700 (Mon, 10 Aug 2009) | 1 line
+
+added OpenMP code and fixed calculation of nematic OP when reading in a gel from file
+------------------------------------------------------------------------
+r763 | missel | 2009-07-29 16:14:31 -0700 (Wed, 29 Jul 2009) | 1 line
+
+input files for nematictest and affinetest
+------------------------------------------------------------------------
+r762 | missel | 2009-07-29 16:08:13 -0700 (Wed, 29 Jul 2009) | 1 line
+
+added new functionality: boxes can now be stretched or sheared in either direction
+------------------------------------------------------------------------
+r761 | missel | 2009-07-29 16:05:46 -0700 (Wed, 29 Jul 2009) | 1 line
+
+added updated driver files
+------------------------------------------------------------------------
+r760 | missel | 2009-07-27 21:26:50 -0700 (Mon, 27 Jul 2009) | 1 line
+
+corrected filament attachment error.
+------------------------------------------------------------------------
+r759 | klug | 2009-07-21 22:52:03 -0700 (Tue, 21 Jul 2009) | 1 line
+
+Added ad hoc mass matrix calculation for quadratic elements.
+------------------------------------------------------------------------
+r758 | missel | 2009-07-16 21:41:51 -0700 (Thu, 16 Jul 2009) | 1 line
+
+corrected error with multiple crosslink/filament lenth distribution outpur files
+------------------------------------------------------------------------
+r757 | missel | 2009-07-16 21:15:50 -0700 (Thu, 16 Jul 2009) | 1 line
+
+New shear driver and input file that can handle polydispersity.
+------------------------------------------------------------------------
+r756 | missel | 2009-07-16 21:14:44 -0700 (Thu, 16 Jul 2009) | 1 line
+
+Moderate parameter values that lead to good accuracy without too much sim time.
+------------------------------------------------------------------------
+r755 | missel | 2009-07-16 21:13:51 -0700 (Thu, 16 Jul 2009) | 1 line
+
+Added functions to print out various gel properties to files.
+------------------------------------------------------------------------
+r754 | missel | 2009-07-16 21:12:32 -0700 (Thu, 16 Jul 2009) | 1 line
+
+SemiflexibleGel can now create nematic or polydisperse networks.
+------------------------------------------------------------------------
+r753 | klug | 2009-07-09 23:12:08 -0700 (Thu, 09 Jul 2009) | 1 line
+
+Minor bug in AC_INIT macro call
+------------------------------------------------------------------------
+r752 | missel | 2009-06-26 22:20:26 -0700 (Fri, 26 Jun 2009) | 1 line
+
+modified GelOutput to output gel energies (in future, it will do even more); changed shear.cc to work with new GelOutput functionality
+------------------------------------------------------------------------
+r751 | missel | 2009-06-26 22:17:47 -0700 (Fri, 26 Jun 2009) | 1 line
+
+made crosslink statistics computation mandatory for both gel constructors, changed crosslink statistics function to set average crosslink separation to actual value (not # of nodes)
+------------------------------------------------------------------------
+r750 | missel | 2009-06-26 22:16:22 -0700 (Fri, 26 Jun 2009) | 1 line
+
+moved crosslink distribution print function out
+------------------------------------------------------------------------
+r749 | missel | 2009-06-26 00:16:27 -0700 (Fri, 26 Jun 2009) | 1 line
+
+class that implements the idea of a motor-induced pinching force between two crosslinks
+------------------------------------------------------------------------
+r748 | missel | 2009-06-26 00:15:39 -0700 (Fri, 26 Jun 2009) | 1 line
+
+fixed minor binary file I/O error
+------------------------------------------------------------------------
+r747 | missel | 2009-06-26 00:14:28 -0700 (Fri, 26 Jun 2009) | 1 line
+
+changed naming convention on crosslink pair separation distribution files
+------------------------------------------------------------------------
+r746 | klug | 2009-06-25 13:46:31 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r745 | missel | 2009-06-25 10:53:22 -0700 (Thu, 25 Jun 2009) | 1 line
+
+parameter file now lists directory of gel library
+------------------------------------------------------------------------
+r744 | missel | 2009-06-25 10:53:00 -0700 (Thu, 25 Jun 2009) | 1 line
+
+shear driver now takes in directory of gel library
+------------------------------------------------------------------------
+r743 | klug | 2009-06-25 08:25:17 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r742 | klug | 2009-06-25 08:24:56 -0700 (Thu, 25 Jun 2009) | 1 line
+
+added a Makefile for the Body subdir
+------------------------------------------------------------------------
+r741 | klug | 2009-06-25 08:23:58 -0700 (Thu, 25 Jun 2009) | 1 line
+
+added Body to subdirs
+------------------------------------------------------------------------
+r740 | klug | 2009-06-25 08:23:26 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r739 | klug | 2009-06-25 08:22:07 -0700 (Thu, 25 Jun 2009) | 1 line
+
+make private data protected to allow derivation of subclasses
+------------------------------------------------------------------------
+r738 | klug | 2009-06-25 08:21:06 -0700 (Thu, 25 Jun 2009) | 1 line
+
+complete rewrite
+------------------------------------------------------------------------
+r737 | klug | 2009-06-25 08:19:47 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r736 | klug | 2009-06-25 08:19:07 -0700 (Thu, 25 Jun 2009) | 1 line
+
+removed a bunch of unnecessary stuff Lin added for GL materials
+------------------------------------------------------------------------
+r735 | klug | 2009-06-25 08:15:45 -0700 (Thu, 25 Jun 2009) | 1 line
+
+added virtual copy method
+------------------------------------------------------------------------
+r734 | klug | 2009-06-25 08:14:19 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r733 | klug | 2009-06-25 08:13:42 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r732 | klug | 2009-06-25 08:12:23 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r731 | klug | 2009-06-25 00:35:18 -0700 (Thu, 25 Jun 2009) | 1 line
+
+Added consistency check method to Body; New class GenericBody can contain a container of any type of elements.
+------------------------------------------------------------------------
+r730 | klug | 2009-06-25 00:31:59 -0700 (Thu, 25 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r729 | klug | 2009-06-25 00:31:24 -0700 (Thu, 25 Jun 2009) | 1 line
+
+Translate Abaqus inp files to vtk files.  Assumes either 3- or 6-noded triangles.
+------------------------------------------------------------------------
+r728 | klug | 2009-06-25 00:17:45 -0700 (Thu, 25 Jun 2009) | 1 line
+
+New driver program for crystal growth on a sphere.
+------------------------------------------------------------------------
+r727 | klug | 2009-06-24 23:55:45 -0700 (Wed, 24 Jun 2009) | 1 line
+
+Added mass methods to interface.  HACK.
+------------------------------------------------------------------------
+r726 | klug | 2009-06-24 23:54:17 -0700 (Wed, 24 Jun 2009) | 1 line
+
+Tweaked some methods for const correctness. Other minor edits.
+------------------------------------------------------------------------
+r725 | klug | 2009-06-24 23:50:22 -0700 (Wed, 24 Jun 2009) | 1 line
+
+Reordered nodes for consistency with vtk.
+------------------------------------------------------------------------
+r724 | missel | 2009-06-24 23:38:04 -0700 (Wed, 24 Jun 2009) | 1 line
+
+now handles both types of springs (simple and entropic); new constructor that reads in geometrical data from a file; new function to output geometry to a file
+------------------------------------------------------------------------
+r723 | missel | 2009-06-24 23:37:45 -0700 (Wed, 24 Jun 2009) | 1 line
+
+now handles both types of springs (simple and entropic); new constructor that reads in geometrical data from a file; new function to output geometry to a file
+------------------------------------------------------------------------
+r722 | missel | 2009-06-24 23:33:43 -0700 (Wed, 24 Jun 2009) | 1 line
+
+parameter file to feed into shear program
+------------------------------------------------------------------------
+r721 | missel | 2009-06-24 23:32:18 -0700 (Wed, 24 Jun 2009) | 1 line
+
+removed const qualifier from gel passed into () operator (strange compilation errors solved by this change; temporary fix)
+------------------------------------------------------------------------
+r720 | missel | 2009-06-24 23:32:05 -0700 (Wed, 24 Jun 2009) | 1 line
+
+removed const qualifier from gel passed into () operator (strange compilation errors solved by this change; temporary fix)
+------------------------------------------------------------------------
+r719 | missel | 2009-06-24 23:29:34 -0700 (Wed, 24 Jun 2009) | 1 line
+
+modified to work with new SemiflexibleGel class: reads parameters from a named file and then creates or reads in a gel and shears it
+------------------------------------------------------------------------
+r718 | missel | 2009-06-24 23:22:34 -0700 (Wed, 24 Jun 2009) | 1 line
+
+added virtual setShear function
+------------------------------------------------------------------------
+r717 | missel | 2009-06-22 13:23:49 -0700 (Mon, 22 Jun 2009) | 1 line
+
+changed attachment function
+------------------------------------------------------------------------
+r716 | baimo | 2009-06-17 15:31:22 -0700 (Wed, 17 Jun 2009) | 1 line
+
+Changes for new SemiflexibleGel interface.
+------------------------------------------------------------------------
+r715 | baimo | 2009-06-16 10:42:46 -0700 (Tue, 16 Jun 2009) | 1 line
+
+Made it contains both linear and nonlinear filaments
+------------------------------------------------------------------------
+r714 | baimo | 2009-06-16 10:42:26 -0700 (Tue, 16 Jun 2009) | 1 line
+
+Made it contains both linear and nonlinear filaments
+------------------------------------------------------------------------
+r713 | baimo | 2009-06-15 16:29:37 -0700 (Mon, 15 Jun 2009) | 1 line
+
+Made it derived from Spring.h
+------------------------------------------------------------------------
+r712 | baimo | 2009-06-15 16:28:44 -0700 (Mon, 15 Jun 2009) | 1 line
+
+Changed private variables to protected
+------------------------------------------------------------------------
+r711 | klug | 2009-06-06 16:18:45 -0700 (Sat, 06 Jun 2009) | 1 line
+
+Added size() method to return dimensions of the box.
+------------------------------------------------------------------------
+r710 | klug | 2009-06-06 16:18:05 -0700 (Sat, 06 Jun 2009) | 1 line
+
+Made return values const in methods that access master/slave force vectors.  The compiler should have caught this since the methods themselves were declared const.
+------------------------------------------------------------------------
+r709 | klug | 2009-06-06 16:15:59 -0700 (Sat, 06 Jun 2009) | 1 line
+
+Moved long constructor implementation to .icc file. Changed argument list of constructor to take in a PeriodicBox instead of its dimensions.
+------------------------------------------------------------------------
+r708 | klug | 2009-06-06 16:13:53 -0700 (Sat, 06 Jun 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r707 | missel | 2009-06-06 15:09:34 -0700 (Sat, 06 Jun 2009) | 1 line
+
+class with static function to test for filament/rod crossings or close approaches
+------------------------------------------------------------------------
+r706 | missel | 2009-06-05 14:28:51 -0700 (Fri, 05 Jun 2009) | 1 line
+
+constructor now sets up new gel
+------------------------------------------------------------------------
+r705 | missel | 2009-06-05 14:28:28 -0700 (Fri, 05 Jun 2009) | 1 line
+
+constructor now sets up new gel
+------------------------------------------------------------------------
+r704 | missel | 2009-06-05 14:28:16 -0700 (Fri, 05 Jun 2009) | 1 line
+
+constructor now sets up new gel
+------------------------------------------------------------------------
+r703 | missel | 2009-06-05 14:23:06 -0700 (Fri, 05 Jun 2009) | 1 line
+
+implemented idea of max force: spring can only supply forces up to some maximum value, which is set in constructor.  compute() checks to see whether spring is stretched beyond the length at which it would give this force; if it is, it is set to that maximum length.
+------------------------------------------------------------------------
+r702 | missel | 2009-06-05 14:18:58 -0700 (Fri, 05 Jun 2009) | 1 line
+
+minor modifications: typedef'd Node::Point
+------------------------------------------------------------------------
+r701 | missel | 2009-06-05 14:16:06 -0700 (Fri, 05 Jun 2009) | 1 line
+
+minor modifications: new functions to set position outside of constructor (looking ahead to labile crosslinkers); function to set PeriodicBox pointer
+------------------------------------------------------------------------
+r700 | klug | 2009-05-31 22:04:03 -0700 (Sun, 31 May 2009) | 1 line
+
+Updated to use rewritten Periodic BC classes.
+------------------------------------------------------------------------
+r699 | klug | 2009-05-31 22:02:59 -0700 (Sun, 31 May 2009) | 1 line
+
+Initial Commit
+------------------------------------------------------------------------
+r698 | klug | 2009-05-31 22:02:38 -0700 (Sun, 31 May 2009) | 1 line
+
+Rewritten for efficiency.
+------------------------------------------------------------------------
+r697 | missel | 2009-05-30 12:30:46 -0700 (Sat, 30 May 2009) | 1 line
+
+header for solver class to handle leapfrog motor dynamics
+------------------------------------------------------------------------
+r696 | missel | 2009-05-30 12:30:24 -0700 (Sat, 30 May 2009) | 1 line
+
+implementation of solver class to handle leapfrog motor dynamics
+------------------------------------------------------------------------
+r695 | klug | 2009-05-28 15:55:24 -0700 (Thu, 28 May 2009) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r694 | missel | 2009-05-28 13:34:59 -0700 (Thu, 28 May 2009) | 1 line
+
+functional motor class; however, some variables which should be static are currently not
+------------------------------------------------------------------------
+r693 | klug | 2009-05-28 09:40:46 -0700 (Thu, 28 May 2009) | 1 line
+
+Deleted executable property from .cc files.
+------------------------------------------------------------------------
+r692 | klug | 2009-05-28 09:25:40 -0700 (Thu, 28 May 2009) | 1 line
+
+Parameters for L-BFGS-B minimization solver.
+------------------------------------------------------------------------
+r691 | klug | 2009-05-28 09:24:21 -0700 (Thu, 28 May 2009) | 1 line
+
+New periodic boundary condition implementations.
+------------------------------------------------------------------------
+r690 | klug | 2009-05-28 09:23:05 -0700 (Thu, 28 May 2009) | 1 line
+
+A class for outputting vtk files for a SemiflexibleGel.
+------------------------------------------------------------------------
+r689 | klug | 2009-05-28 07:44:29 -0700 (Thu, 28 May 2009) | 1 line
+
+Added a PeriodicBox pointer; and properly labeled a few const methods as such.
+------------------------------------------------------------------------
+r688 | klug | 2009-05-28 07:42:12 -0700 (Thu, 28 May 2009) | 1 line
+
+Additional methods to add nodes, elements, and constraints
+------------------------------------------------------------------------
+r687 | baimo | 2009-05-21 21:36:50 -0700 (Thu, 21 May 2009) | 1 line
+
+Crosslink with periodic BC
+------------------------------------------------------------------------
+r686 | baimo | 2009-05-21 21:17:20 -0700 (Thu, 21 May 2009) | 1 line
+
+PeriodicBox class
+------------------------------------------------------------------------
+r685 | baimo | 2009-05-21 21:16:10 -0700 (Thu, 21 May 2009) | 1 line
+
+periodic box driver
+------------------------------------------------------------------------
+r684 | klug | 2009-05-15 09:29:26 -0700 (Fri, 15 May 2009) | 1 line
+
+Staggered time-stepping of Brownian and deterministic displacements.
+------------------------------------------------------------------------
+r683 | klug | 2009-05-14 11:25:33 -0700 (Thu, 14 May 2009) | 1 line
+
+Added code for predictor/corrector constraints in the compute method.
+------------------------------------------------------------------------
+r682 | klug | 2009-05-14 11:24:49 -0700 (Thu, 14 May 2009) | 1 line
+
+Added/tweaked methods to return const references to filaments.
+------------------------------------------------------------------------
+r681 | klug | 2009-05-14 11:23:06 -0700 (Thu, 14 May 2009) | 1 line
+
+Removed code that added internal nodes to _baseNodes container.  Internal nodes are not real degrees of freedom.
+------------------------------------------------------------------------
+r680 | klug | 2009-05-14 11:20:18 -0700 (Thu, 14 May 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r679 | baimo | 2009-05-07 08:55:43 -0700 (Thu, 07 May 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r678 | baimo | 2009-05-07 08:52:11 -0700 (Thu, 07 May 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r677 | baimo | 2009-05-07 08:48:28 -0700 (Thu, 07 May 2009) | 1 line
+
+Temporary implementation of a SemiflexibleGel with a nonlinear spring.
+------------------------------------------------------------------------
+r676 | baimo | 2009-05-07 08:36:13 -0700 (Thu, 07 May 2009) | 1 line
+
+Modified print function to ouput crosslink data to VTK file.
+------------------------------------------------------------------------
+r675 | baimo | 2009-05-07 08:35:33 -0700 (Thu, 07 May 2009) | 1 line
+
+Added methods to return const references to filaments and crosslinks.
+------------------------------------------------------------------------
+r674 | baimo | 2009-05-07 08:29:33 -0700 (Thu, 07 May 2009) | 1 line
+
+Added method to return a container of the internal nodes.
+------------------------------------------------------------------------
+r673 | baimo | 2009-05-07 08:28:16 -0700 (Thu, 07 May 2009) | 1 line
+
+Added method to return a container of the internal nodes.
+------------------------------------------------------------------------
+r672 | klug | 2009-05-07 08:25:08 -0700 (Thu, 07 May 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r671 | baimo | 2009-05-07 08:10:20 -0700 (Thu, 07 May 2009) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r670 | missel | 2009-05-03 02:50:02 -0700 (Sun, 03 May 2009) | 1 line
+
+added preliminary version of Motor class
+------------------------------------------------------------------------
+r669 | missel | 2009-05-03 02:48:16 -0700 (Sun, 03 May 2009) | 1 line
+
+added typedefs for BrownianNode iterator, container
+------------------------------------------------------------------------
+r668 | missel | 2009-04-20 13:50:31 -0700 (Mon, 20 Apr 2009) | 1 line
+
+Added section on entropic elasticity.
+------------------------------------------------------------------------
+r667 | klug | 2009-04-19 20:12:24 -0700 (Sun, 19 Apr 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r666 | sarkar | 2009-04-03 14:02:43 -0700 (Fri, 03 Apr 2009) | 1 line
+
+Updated PositionNode to ScalarFieldNode
+------------------------------------------------------------------------
+r665 | sarkar | 2009-04-03 13:49:56 -0700 (Fri, 03 Apr 2009) | 1 line
+
+Updated PositionNode to ScalarFieldNode
+------------------------------------------------------------------------
+r664 | sarkar | 2009-04-03 00:22:45 -0700 (Fri, 03 Apr 2009) | 1 line
+
+updated node type
+------------------------------------------------------------------------
+r663 | sarkar | 2009-04-03 00:09:52 -0700 (Fri, 03 Apr 2009) | 1 line
+
+updated node type
+------------------------------------------------------------------------
+r662 | sarkar | 2009-04-02 22:27:55 -0700 (Thu, 02 Apr 2009) | 1 line
+
+04/02/2009
+------------------------------------------------------------------------
+r661 | klug | 2009-04-02 15:11:05 -0700 (Thu, 02 Apr 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r660 | missel | 2009-04-02 13:28:14 -0700 (Thu, 02 Apr 2009) | 1 line
+
+added energy calculation functionality
+------------------------------------------------------------------------
+r659 | missel | 2009-04-02 13:27:21 -0700 (Thu, 02 Apr 2009) | 1 line
+
+nomsg
+------------------------------------------------------------------------
+r658 | klug | 2009-03-31 17:14:38 -0700 (Tue, 31 Mar 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r657 | klug | 2009-03-31 17:14:29 -0700 (Tue, 31 Mar 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r656 | klug | 2009-03-31 16:52:05 -0700 (Tue, 31 Mar 2009) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r655 | baimo | 2009-03-31 15:58:03 -0700 (Tue, 31 Mar 2009) | 1 line
+
+updated Crosslink and brownian.cc for debugging
+------------------------------------------------------------------------
+r654 | baimo | 2009-03-26 12:55:56 -0700 (Thu, 26 Mar 2009) | 1 line
+
+modified Crosslink.h, brownian.cc
+------------------------------------------------------------------------
+r653 | baimo | 2009-03-13 12:18:48 -0700 (Fri, 13 Mar 2009) | 1 line
+
+Crosslink revised but still with make error
+------------------------------------------------------------------------
+r652 | baimo | 2009-03-13 12:17:50 -0700 (Fri, 13 Mar 2009) | 1 line
+
+SemiflexibleGel with Crosslink
+------------------------------------------------------------------------
+r651 | baimo | 2009-03-13 12:17:07 -0700 (Fri, 13 Mar 2009) | 1 line
+
+brownian
+------------------------------------------------------------------------
+r650 | baimo | 2009-03-06 13:48:02 -0800 (Fri, 06 Mar 2009) | 1 line
+
+new Crosslink class
+------------------------------------------------------------------------
+r649 | klug | 2009-01-26 16:26:37 -0800 (Mon, 26 Jan 2009) | 1 line
+
+Added method to reset the reference length to the current length.
+------------------------------------------------------------------------
+r648 | klug | 2009-01-26 16:25:25 -0800 (Mon, 26 Jan 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r647 | klug | 2009-01-26 16:24:10 -0800 (Mon, 26 Jan 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r646 | klug | 2009-01-26 16:23:24 -0800 (Mon, 26 Jan 2009) | 1 line
+
+Added modifier for fixed tension variable.
+------------------------------------------------------------------------
+r645 | klug | 2009-01-26 16:20:32 -0800 (Mon, 26 Jan 2009) | 1 line
+
+
+------------------------------------------------------------------------
+r624 | baimo | 2008-12-12 16:33:04 -0800 (Fri, 12 Dec 2008) | 1 line
+
+rotation diffusion with multiple nodes
+------------------------------------------------------------------------
+r623 | baimo | 2008-12-12 16:31:44 -0800 (Fri, 12 Dec 2008) | 1 line
+
+Changed the random force's sign
+------------------------------------------------------------------------
+r622 | baimo | 2008-12-09 12:55:01 -0800 (Tue, 09 Dec 2008) | 1 line
+
+rotation diffusion plot m-file
+------------------------------------------------------------------------
+r621 | baimo | 2008-12-09 11:25:54 -0800 (Tue, 09 Dec 2008) | 1 line
+
+Rotation diffusion driver
+------------------------------------------------------------------------
+r620 | baimo | 2008-12-05 01:19:44 -0800 (Fri, 05 Dec 2008) | 1 line
+
+calculate mobility in BrownianDynamics.cc
+------------------------------------------------------------------------
+r619 | baimo | 2008-12-05 01:18:46 -0800 (Fri, 05 Dec 2008) | 1 line
+
+Added drag property for BrownianNode
+------------------------------------------------------------------------
+r618 | baimo | 2008-12-05 01:17:03 -0800 (Fri, 05 Dec 2008) | 1 line
+
+Added drag property for BrownianNode, store drag matrix in BrownianRod.h, calculate mobility in BrownianDynamics.cc
+------------------------------------------------------------------------
+r617 | baimo | 2008-12-05 01:14:57 -0800 (Fri, 05 Dec 2008) | 1 line
+
+Added drag property for BrownianNode, store drag matrix in BrownianRod.h, calculate mobility in BrownianDynamics.cc
+------------------------------------------------------------------------
+r616 | klug | 2008-11-25 10:13:01 -0800 (Tue, 25 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r615 | klug | 2008-11-24 11:29:45 -0800 (Mon, 24 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r614 | klug | 2008-11-21 16:45:48 -0800 (Fri, 21 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r613 | klug | 2008-11-21 16:45:04 -0800 (Fri, 21 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r612 | klug | 2008-11-20 16:56:21 -0800 (Thu, 20 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r611 | klug | 2008-11-20 16:55:34 -0800 (Thu, 20 Nov 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r610 | baimo | 2008-11-20 11:40:40 -0800 (Thu, 20 Nov 2008) | 1 line
+
+New BrownianNode class.
+------------------------------------------------------------------------
+r609 | baimo | 2008-11-19 10:50:05 -0800 (Wed, 19 Nov 2008) | 1 line
+
+Modified BrownianRod element file
+------------------------------------------------------------------------
+r608 | baimo | 2008-11-19 10:48:54 -0800 (Wed, 19 Nov 2008) | 1 line
+
+Modified BrownianRod element and test of random walk of a single rod in brownian.cc
+------------------------------------------------------------------------
+r607 | baimo | 2008-11-07 22:31:01 -0800 (Fri, 07 Nov 2008) | 1 line
+
+New BrownianRod element class
+------------------------------------------------------------------------
+r606 | klug | 2008-10-23 15:40:35 -0700 (Thu, 23 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r605 | klug | 2008-10-23 10:53:50 -0700 (Thu, 23 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r604 | klug | 2008-10-14 14:34:18 -0700 (Tue, 14 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r603 | klug | 2008-10-10 10:09:06 -0700 (Fri, 10 Oct 2008) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r602 | ma | 2008-10-09 18:01:07 -0700 (Thu, 09 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r601 | ma | 2008-10-09 18:00:22 -0700 (Thu, 09 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r600 | ma | 2008-10-09 17:57:35 -0700 (Thu, 09 Oct 2008) | 1 line
+
+spline element
+------------------------------------------------------------------------
+r599 | ma | 2008-10-09 17:57:06 -0700 (Thu, 09 Oct 2008) | 1 line
+
+spline element
+------------------------------------------------------------------------
+r598 | klug | 2008-10-08 14:41:10 -0700 (Wed, 08 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r597 | klug | 2008-10-08 11:21:48 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Changes to screen output.
+------------------------------------------------------------------------
+r596 | klug | 2008-10-08 11:20:08 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Changes to deal with free boundaries.
+------------------------------------------------------------------------
+r595 | klug | 2008-10-08 11:18:42 -0700 (Wed, 08 Oct 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r594 | klug | 2008-10-08 11:08:51 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Updates from Stevan.
+------------------------------------------------------------------------
+r593 | klug | 2008-10-08 11:07:36 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Various tweaks to contact and continuation.
+------------------------------------------------------------------------
+r592 | klug | 2008-10-08 11:05:20 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Updates from Stevan.
+------------------------------------------------------------------------
+r591 | klug | 2008-10-08 11:04:14 -0700 (Wed, 08 Oct 2008) | 1 line
+
+Added force tolerance to Contact classes; force accessors to Constraint classes.
+------------------------------------------------------------------------
+r590 | klug | 2008-09-17 15:04:40 -0700 (Wed, 17 Sep 2008) | 1 line
+
+Added variable friction coefficient.
+------------------------------------------------------------------------
+r589 | klug | 2008-09-15 16:13:10 -0700 (Mon, 15 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r588 | klug | 2008-09-11 12:25:52 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r587 | klug | 2008-09-11 12:00:18 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r586 | klug | 2008-09-11 11:46:22 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r585 | klug | 2008-09-11 11:44:14 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r584 | klug | 2008-09-11 11:37:16 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r583 | klug | 2008-09-11 11:36:32 -0700 (Thu, 11 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r582 | klug | 2008-09-11 11:34:24 -0700 (Thu, 11 Sep 2008) | 1 line
+
+Added methods related to diagonal stiffness (preconditioner).
+------------------------------------------------------------------------
+r581 | klug | 2008-09-11 11:23:40 -0700 (Thu, 11 Sep 2008) | 1 line
+
+Added method to push back a body and added some code to assemble a diagonal stiffness (preconditioner).
+------------------------------------------------------------------------
+r580 | klug | 2008-09-10 14:02:01 -0700 (Wed, 10 Sep 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r579 | klug | 2008-09-10 14:01:16 -0700 (Wed, 10 Sep 2008) | 1 line
+
+Changes to flow of the algorithm. Now it actually works.
+------------------------------------------------------------------------
+r578 | klug | 2008-09-10 13:59:28 -0700 (Wed, 10 Sep 2008) | 1 line
+
+Changed the way Lbfgs prints messages and files; no longer let the fortran subroutine do the output.  Note change in constructor: _printStride no longer exists, _iprint is now the print stride.
+------------------------------------------------------------------------
+r577 | klug | 2008-09-10 13:54:43 -0700 (Wed, 10 Sep 2008) | 1 line
+
+Removed a constructor and default compute method. Added methods to (de)activate elements.
+------------------------------------------------------------------------
+r576 | klug | 2008-09-10 13:47:01 -0700 (Wed, 10 Sep 2008) | 1 line
+
+Added capability of (de)activating individual elements.
+------------------------------------------------------------------------
+r575 | klug | 2008-09-10 13:46:19 -0700 (Wed, 10 Sep 2008) | 1 line
+
+Added capability of (de)activating individual elements.
+------------------------------------------------------------------------
+r574 | melissa | 2008-09-04 15:21:32 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Contact -> Constraint
+------------------------------------------------------------------------
+r573 | melissa | 2008-09-04 15:18:07 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Adding directory contents.
+------------------------------------------------------------------------
+r572 | melissa | 2008-09-04 15:15:29 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Adding Quadratic Application.
+------------------------------------------------------------------------
+r571 | melissa | 2008-09-04 15:09:02 -0700 (Thu, 04 Sep 2008) | 1 line
+
+README created.
+------------------------------------------------------------------------
+r570 | melissa | 2008-09-04 15:08:40 -0700 (Thu, 04 Sep 2008) | 1 line
+
+New version.
+------------------------------------------------------------------------
+r569 | melissa | 2008-09-04 15:08:30 -0700 (Thu, 04 Sep 2008) | 1 line
+
+New version, more variables.
+------------------------------------------------------------------------
+r568 | melissa | 2008-09-04 14:19:53 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Updated driver directory.
+------------------------------------------------------------------------
+r567 | melissa | 2008-09-04 14:19:23 -0700 (Thu, 04 Sep 2008) | 1 line
+
+adding
+------------------------------------------------------------------------
+r566 | melissa | 2008-09-04 14:19:14 -0700 (Thu, 04 Sep 2008) | 1 line
+
+adding
+------------------------------------------------------------------------
+r565 | melissa | 2008-09-04 14:18:42 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Updated
+------------------------------------------------------------------------
+r564 | melissa | 2008-09-04 10:27:42 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r563 | melissa | 2008-09-04 10:27:04 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r562 | melissa | 2008-09-04 10:26:58 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r561 | melissa | 2008-09-04 10:26:49 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r560 | melissa | 2008-09-04 10:24:11 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r559 | melissa | 2008-09-04 10:13:49 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r558 | melissa | 2008-09-04 10:12:32 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Documented class.
+------------------------------------------------------------------------
+r557 | melissa | 2008-09-04 10:08:32 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Cleaned up file, documented.
+------------------------------------------------------------------------
+r556 | melissa | 2008-09-04 10:06:00 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Fixed printing methods.
+------------------------------------------------------------------------
+r555 | melissa | 2008-09-04 10:03:47 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Fixed printing methods for quadratic elements.
+------------------------------------------------------------------------
+r554 | melissa | 2008-09-04 10:00:54 -0700 (Thu, 04 Sep 2008) | 1 line
+
+Removed Melissa's Quad methods.
+------------------------------------------------------------------------
+r553 | klug | 2008-07-18 13:39:05 -0700 (Fri, 18 Jul 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r552 | ma | 2008-07-17 14:23:53 -0700 (Thu, 17 Jul 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r551 | ma | 2008-07-17 14:05:24 -0700 (Thu, 17 Jul 2008) | 1 line
+
+spring element to constrain the vector direction
+------------------------------------------------------------------------
+r550 | ma | 2008-07-14 17:03:12 -0700 (Mon, 14 Jul 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r549 | ma | 2008-06-26 18:08:28 -0700 (Thu, 26 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r548 | ma | 2008-06-26 18:07:59 -0700 (Thu, 26 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r547 | ma | 2008-06-26 18:07:21 -0700 (Thu, 26 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r546 | klug | 2008-06-19 10:12:35 -0700 (Thu, 19 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r545 | klug | 2008-06-19 10:10:15 -0700 (Thu, 19 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r544 | klug | 2008-06-19 10:06:23 -0700 (Thu, 19 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r543 | ma | 2008-06-17 17:16:02 -0700 (Tue, 17 Jun 2008) | 1 line
+
+Change the constructor
+------------------------------------------------------------------------
+r542 | ma | 2008-06-17 17:15:17 -0700 (Tue, 17 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r541 | ma | 2008-06-17 12:33:29 -0700 (Tue, 17 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r540 | ma | 2008-06-16 18:08:19 -0700 (Mon, 16 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r539 | ma | 2008-06-16 17:16:12 -0700 (Mon, 16 Jun 2008) | 1 line
+
+change contact to contraint
+------------------------------------------------------------------------
+r538 | klug | 2008-06-13 12:06:48 -0700 (Fri, 13 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r537 | ma | 2008-06-13 11:04:57 -0700 (Fri, 13 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r536 | melissa | 2008-06-06 09:32:30 -0700 (Fri, 06 Jun 2008) | 1 line
+
+Made all previous uses of Matrix3D into Tensor3D.
+------------------------------------------------------------------------
+r535 | melissa | 2008-06-06 09:31:29 -0700 (Fri, 06 Jun 2008) | 1 line
+
+Removed Vector3D and Matrix3D definitions (now redundant), and made return value of CalcCauchyStress() a Tensor3D.
+------------------------------------------------------------------------
+r534 | melissa | 2008-06-06 08:59:57 -0700 (Fri, 06 Jun 2008) | 1 line
+
+Fixed _printStride error - now also tests if _printStride > 0 (b/c no remainder even when dividing by -1).
+------------------------------------------------------------------------
+r533 | ma | 2008-06-05 11:40:38 -0700 (Thu, 05 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r532 | ma | 2008-06-05 11:39:59 -0700 (Thu, 05 Jun 2008) | 1 line
+
+driver to simulate dimple formation
+------------------------------------------------------------------------
+r531 | ma | 2008-06-05 11:38:59 -0700 (Thu, 05 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r530 | ma | 2008-06-05 11:38:51 -0700 (Thu, 05 Jun 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r529 | ma | 2008-06-04 17:36:25 -0700 (Wed, 04 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r528 | ma | 2008-06-04 17:36:20 -0700 (Wed, 04 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r527 | ma | 2008-06-04 11:42:20 -0700 (Wed, 04 Jun 2008) | 1 line
+
+Deleted some junks, LoopShellBody is now more like C1AxiShellBody
+------------------------------------------------------------------------
+r526 | ma | 2008-06-04 11:37:22 -0700 (Wed, 04 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r525 | ma | 2008-06-04 11:32:07 -0700 (Wed, 04 Jun 2008) | 1 line
+
+Deleted some junks, LoopShellBody is now more like C1AxiShellBody
+------------------------------------------------------------------------
+r524 | ma | 2008-06-04 11:31:14 -0700 (Wed, 04 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r523 | ma | 2008-06-03 18:43:58 -0700 (Tue, 03 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r522 | ma | 2008-06-03 18:43:51 -0700 (Tue, 03 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r521 | ma | 2008-06-03 18:43:10 -0700 (Tue, 03 Jun 2008) | 1 line
+
+add in interaction element for adhesion calculation
+------------------------------------------------------------------------
+r520 | ma | 2008-06-03 18:39:38 -0700 (Tue, 03 Jun 2008) | 1 line
+
+ 
+------------------------------------------------------------------------
+r519 | ma | 2008-05-30 11:26:19 -0700 (Fri, 30 May 2008) | 1 line
+
+add LineElement in repository
+------------------------------------------------------------------------
+r518 | ma | 2008-05-23 13:06:41 -0700 (Fri, 23 May 2008) | 1 line
+
+check if the vertices are on the boudary
+------------------------------------------------------------------------
+r517 | melissa | 2008-05-21 11:40:29 -0700 (Wed, 21 May 2008) | 1 line
+
+Newer version.
+------------------------------------------------------------------------
+r516 | melissa | 2008-05-21 11:38:57 -0700 (Wed, 21 May 2008) | 1 line
+
+New, improved, should compile, driver.
+------------------------------------------------------------------------
+r515 | melissa | 2008-05-21 11:38:36 -0700 (Wed, 21 May 2008) | 1 line
+
+Fixed blitz/tvmet issues.
+------------------------------------------------------------------------
+r514 | melissa | 2008-05-21 11:37:32 -0700 (Wed, 21 May 2008) | 1 line
+
+Makefile.am for 3D nonlinear elastic driver.
+------------------------------------------------------------------------
+r513 | melissa | 2008-05-21 11:36:59 -0700 (Wed, 21 May 2008) | 1 line
+
+Executable.  Not supposed to add executables?  I dunno.
+------------------------------------------------------------------------
+r512 | melissa | 2008-05-21 11:35:47 -0700 (Wed, 21 May 2008) | 1 line
+
+Source code for post-processing an output .vtk file that only has initial coordinates and displacements.  Will calculate stresses and forces.  Depending on what material you use, which may have to be altered in .cc file.
+------------------------------------------------------------------------
+r511 | melissa | 2008-05-21 09:40:04 -0700 (Wed, 21 May 2008) | 1 line
+
+Add element volume calculation.
+------------------------------------------------------------------------
+r510 | ma | 2008-05-20 17:25:44 -0700 (Tue, 20 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r509 | melissa | 2008-05-20 15:14:13 -0700 (Tue, 20 May 2008) | 1 line
+
+Source file for body that contains atoms for atomistic calculations.
+------------------------------------------------------------------------
+r508 | melissa | 2008-05-20 15:14:01 -0700 (Tue, 20 May 2008) | 1 line
+
+Header file for body that contains atoms for atomistic calculations.
+------------------------------------------------------------------------
+r507 | melissa | 2008-05-20 15:13:04 -0700 (Tue, 20 May 2008) | 1 line
+
+Source file for element that contains atoms, for atomistic calculations.
+------------------------------------------------------------------------
+r506 | melissa | 2008-05-20 15:12:51 -0700 (Tue, 20 May 2008) | 1 line
+
+Header file for element that contains atoms, for atomistic calculations.
+------------------------------------------------------------------------
+r505 | melissa | 2008-05-20 15:07:41 -0700 (Tue, 20 May 2008) | 1 line
+
+Added Atom and Macromolecule to subdirs.
+------------------------------------------------------------------------
+r504 | melissa | 2008-05-20 15:06:25 -0700 (Tue, 20 May 2008) | 1 line
+
+Atom class used in coupled FEM-atomistic calculations.
+------------------------------------------------------------------------
+r503 | melissa | 2008-05-20 15:05:59 -0700 (Tue, 20 May 2008) | 1 line
+
+Pared down macromolecule class for coupled FEM-atomistic calculations.
+------------------------------------------------------------------------
+r502 | melissa | 2008-05-20 15:05:13 -0700 (Tue, 20 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r501 | klug | 2008-05-20 14:17:45 -0700 (Tue, 20 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r500 | ma | 2008-05-19 17:13:41 -0700 (Mon, 19 May 2008) | 1 line
+
+add in the tension part, fix a few bugs
+------------------------------------------------------------------------
+r499 | ma | 2008-05-19 17:10:24 -0700 (Mon, 19 May 2008) | 1 line
+
+add in the tensionNode in the constructor
+------------------------------------------------------------------------
+r498 | klug | 2008-05-16 14:20:51 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r497 | klug | 2008-05-16 14:11:28 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r496 | klug | 2008-05-16 14:01:49 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r495 | klug | 2008-05-16 13:59:27 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r494 | klug | 2008-05-16 13:58:26 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r493 | klug | 2008-05-16 13:57:01 -0700 (Fri, 16 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r492 | ma | 2008-05-15 18:17:24 -0700 (Thu, 15 May 2008) | 1 line
+
+change the Gibbs free energy format
+------------------------------------------------------------------------
+r491 | ma | 2008-05-15 18:10:13 -0700 (Thu, 15 May 2008) | 1 line
+
+change the Gibbs free energy format
+------------------------------------------------------------------------
+r490 | ma | 2008-05-15 12:24:36 -0700 (Thu, 15 May 2008) | 1 line
+
+more careful consideration on finding the opposite halfEdge
+------------------------------------------------------------------------
+r489 | melissa | 2008-05-14 14:03:07 -0700 (Wed, 14 May 2008) | 1 line
+
+Changed print functions, print only gives displacements, PostProcess function added to print forces and stresses.
+------------------------------------------------------------------------
+r488 | ma | 2008-05-14 14:02:36 -0700 (Wed, 14 May 2008) | 1 line
+
+add in printStride.
+------------------------------------------------------------------------
+r487 | melissa | 2008-05-14 13:25:39 -0700 (Wed, 14 May 2008) | 1 line
+
+Added several functions:  compute total volume of body, and post-process a .vtk file that only has displacements - that is, calculate forces and stresses.
+------------------------------------------------------------------------
+r486 | melissa | 2008-05-14 13:10:47 -0700 (Wed, 14 May 2008) | 1 line
+
+Just an empty line difference.
+------------------------------------------------------------------------
+r485 | melissa | 2008-05-14 13:08:53 -0700 (Wed, 14 May 2008) | 1 line
+
+Previously, HexQuadrature.cc was written as a triangle??  Checked in correct quadrature rules for Hex.
+------------------------------------------------------------------------
+r484 | melissa | 2008-05-14 13:05:01 -0700 (Wed, 14 May 2008) | 1 line
+
+One weight was wrong in four point quad.
+------------------------------------------------------------------------
+r483 | melissa | 2008-05-14 12:02:19 -0700 (Wed, 14 May 2008) | 1 line
+
+Changed ordering of nodes for _positions and _derivatives.
+------------------------------------------------------------------------
+r482 | melissa | 2008-05-14 12:02:14 -0700 (Wed, 14 May 2008) | 1 line
+
+Changed ordering of nodes for _positions and _derivatives.
+------------------------------------------------------------------------
+r481 | melissa | 2008-05-14 11:42:23 -0700 (Wed, 14 May 2008) | 1 line
+
+Added stress calculation functions, as they are no longer stored.
+------------------------------------------------------------------------
+r480 | melissa | 2008-05-14 11:21:14 -0700 (Wed, 14 May 2008) | 1 line
+
+Changed ways by which stresses are calculated, rather than stored at element level.
+------------------------------------------------------------------------
+r479 | melissa | 2008-05-14 10:02:33 -0700 (Wed, 14 May 2008) | 1 line
+
+Commented out J<0 message.
+------------------------------------------------------------------------
+r478 | melissa | 2008-05-13 17:57:08 -0700 (Tue, 13 May 2008) | 1 line
+
+Added CompNeoHookean.cc to library sources.
+------------------------------------------------------------------------
+r477 | melissa | 2008-05-13 17:49:30 -0700 (Tue, 13 May 2008) | 1 line
+
+Changed Math.h to VoomMath.h
+------------------------------------------------------------------------
+r476 | melissa | 2008-05-13 17:49:26 -0700 (Tue, 13 May 2008) | 1 line
+
+Changed Math.h to VoomMath.h
+------------------------------------------------------------------------
+r475 | melissa | 2008-05-13 17:37:55 -0700 (Tue, 13 May 2008) | 1 line
+
+Compressible neo-Hookean material added.
+------------------------------------------------------------------------
+r474 | melissa | 2008-05-13 17:37:48 -0700 (Tue, 13 May 2008) | 1 line
+
+Compressible neo-Hookean material added.
+------------------------------------------------------------------------
+r473 | ma | 2008-05-13 15:35:24 -0700 (Tue, 13 May 2008) | 1 line
+
+Initial commit of Dimple Application.
+------------------------------------------------------------------------
+r472 | ma | 2008-05-13 15:12:33 -0700 (Tue, 13 May 2008) | 1 line
+
+Tweaked print statements.
+------------------------------------------------------------------------
+r471 | ma | 2008-05-13 14:55:24 -0700 (Tue, 13 May 2008) | 1 line
+
+Added iteration counter to Lbfgsb.
+------------------------------------------------------------------------
+r470 | ma | 2008-05-13 14:51:27 -0700 (Tue, 13 May 2008) | 1 line
+
+Misc. bug-fixes.
+------------------------------------------------------------------------
+r469 | klug | 2008-05-13 13:36:34 -0700 (Tue, 13 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r468 | klug | 2008-05-13 13:36:01 -0700 (Tue, 13 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r467 | klug | 2008-05-13 13:35:14 -0700 (Tue, 13 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r466 | klug | 2008-05-13 13:34:50 -0700 (Tue, 13 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r465 | sarkar | 2008-05-13 11:04:20 -0700 (Tue, 13 May 2008) | 1 line
+
+Contraction material test file
+------------------------------------------------------------------------
+r464 | klug | 2008-05-13 11:03:19 -0700 (Tue, 13 May 2008) | 1 line
+
+Moved code from FiniteContraction2.icc to FiniteContraction.icc
+------------------------------------------------------------------------
+r463 | klug | 2008-05-13 11:03:11 -0700 (Tue, 13 May 2008) | 1 line
+
+Moved code from FiniteContraction2.icc to FiniteContraction.icc
+------------------------------------------------------------------------
+r462 | sarkar | 2008-05-13 10:58:51 -0700 (Tue, 13 May 2008) | 1 line
+
+FiniteContraction Element files
+------------------------------------------------------------------------
+r461 | sarkar | 2008-05-13 10:54:47 -0700 (Tue, 13 May 2008) | 1 line
+
+FiniteContraction Element files
+------------------------------------------------------------------------
+r460 | sarkar | 2008-05-12 18:32:44 -0700 (Mon, 12 May 2008) | 1 line
+
+Contraction Element Test File
+------------------------------------------------------------------------
+r459 | sarkar | 2008-05-12 14:12:45 -0700 (Mon, 12 May 2008) | 1 line
+
+Contraction Application
+------------------------------------------------------------------------
+r458 | sarkar | 2008-05-12 14:03:19 -0700 (Mon, 12 May 2008) | 1 line
+
+Contraction Body
+------------------------------------------------------------------------
+r457 | sarkar | 2008-05-12 13:24:12 -0700 (Mon, 12 May 2008) | 1 line
+
+Contraction Element
+------------------------------------------------------------------------
+r456 | sarkar | 2008-05-12 13:18:02 -0700 (Mon, 12 May 2008) | 1 line
+
+Wrapper file for contraction material
+------------------------------------------------------------------------
+r455 | klug | 2008-05-07 19:42:26 -0700 (Wed, 07 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r454 | klug | 2008-05-07 16:37:05 -0700 (Wed, 07 May 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r453 | klug | 2008-04-23 09:55:16 -0700 (Wed, 23 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r452 | klug | 2008-04-23 09:34:01 -0700 (Wed, 23 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r451 | klug | 2008-04-23 09:32:31 -0700 (Wed, 23 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r450 | klug | 2008-04-22 15:38:46 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r449 | klug | 2008-04-22 15:12:49 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r448 | klug | 2008-04-22 15:35:02 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r447 | klug | 2008-04-22 15:34:25 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r446 | klug | 2008-04-22 15:32:22 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r445 | klug | 2008-04-22 14:05:11 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r444 | klug | 2008-04-22 08:21:37 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r443 | klug | 2008-04-22 08:19:37 -0700 (Tue, 22 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r442 | klug | 2008-04-21 13:36:10 -0700 (Mon, 21 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r441 | klug | 2008-04-21 12:57:43 -0700 (Mon, 21 Apr 2008) | 1 line
+
+Bug fixes and addition of bendingEnergy and stretchingEnergy methods to shell materials.
+------------------------------------------------------------------------
+r440 | klug | 2008-04-18 09:38:52 -0700 (Fri, 18 Apr 2008) | 1 line
+
+Fixed a warning by replacing AC_CONFIG_HEADERS with AM_CONFIG_HEADER
+------------------------------------------------------------------------
+r439 | klug | 2008-04-18 09:32:40 -0700 (Fri, 18 Apr 2008) | 1 line
+
+Changes to get voom to compile on Mac OS X.
+------------------------------------------------------------------------
+r438 | klug | 2008-04-17 13:24:46 -0700 (Thu, 17 Apr 2008) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r437 | klug | 2008-04-17 13:24:13 -0700 (Thu, 17 Apr 2008) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r436 | klug | 2008-04-17 12:48:55 -0700 (Thu, 17 Apr 2008) | 1 line
+
+No longer using Ads library.
+------------------------------------------------------------------------
+r435 | klug | 2008-04-15 16:47:43 -0700 (Tue, 15 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r434 | klug | 2008-04-14 12:19:36 -0700 (Mon, 14 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r433 | klug | 2008-04-14 11:52:47 -0700 (Mon, 14 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r432 | klug | 2008-04-14 12:11:19 -0700 (Mon, 14 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r431 | klug | 2008-04-14 12:08:28 -0700 (Mon, 14 Apr 2008) | 1 line
+
+We don't need to check in object files.
+------------------------------------------------------------------------
+r430 | klug | 2008-04-14 11:35:25 -0700 (Mon, 14 Apr 2008) | 1 line
+
+New class for 1-D Hermitian interpolation.
+------------------------------------------------------------------------
+r429 | klug | 2008-04-13 15:12:34 -0700 (Sun, 13 Apr 2008) | 1 line
+
+Changed Math to VoomMath to avoid name conflict on Mac OS X.
+------------------------------------------------------------------------
+r428 | klug | 2008-04-13 15:11:35 -0700 (Sun, 13 Apr 2008) | 1 line
+
+Changed Math to VoomMath to avoid name conflict on Mac OS X.
+------------------------------------------------------------------------
+r427 | klug | 2008-04-13 15:10:49 -0700 (Sun, 13 Apr 2008) | 1 line
+
+Changed Math to VoomMath to avoid name conflict on Mac OS X.
+------------------------------------------------------------------------
+r426 | klug | 2008-04-13 15:10:30 -0700 (Sun, 13 Apr 2008) | 1 line
+
+Changed Math to VoomMath to avoid name conflict on Mac OS X.
+------------------------------------------------------------------------
+r425 | klug | 2008-04-13 15:10:11 -0700 (Sun, 13 Apr 2008) | 1 line
+
+Changed Math to VoomMath to avoid name conflict on Mac OS X.
+------------------------------------------------------------------------
+r424 | klug | 2008-04-13 15:08:05 -0700 (Sun, 13 Apr 2008) | 1 line
+
+
+------------------------------------------------------------------------
+r423 | klug | 2007-11-21 11:24:50 -0800 (Wed, 21 Nov 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r422 | klug | 2007-11-21 11:17:43 -0800 (Wed, 21 Nov 2007) | 1 line
+
+Now we check for boundary edges.
+------------------------------------------------------------------------
+r421 | klug | 2007-09-12 22:55:38 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r420 | klug | 2007-09-12 22:53:32 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r419 | klug | 2007-09-12 22:52:03 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r418 | klug | 2007-09-12 22:43:05 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r417 | klug | 2007-09-12 22:30:31 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r416 | klug | 2007-09-12 22:29:32 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r415 | klug | 2007-09-12 22:27:50 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r414 | klug | 2007-09-12 22:26:28 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r413 | klug | 2007-09-12 22:19:25 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r412 | klug | 2007-09-12 22:18:20 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r411 | klug | 2007-09-12 22:17:19 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r410 | klug | 2007-09-12 22:12:37 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r409 | klug | 2007-09-12 22:11:52 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r408 | klug | 2007-09-12 22:00:30 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r407 | klug | 2007-09-12 21:49:02 -0700 (Wed, 12 Sep 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r406 | melissa | 2007-08-16 09:21:22 -0700 (Thu, 16 Aug 2007) | 1 line
+
+Frictional contacts are now implemented correctly.
+------------------------------------------------------------------------
+r405 | melissa | 2007-08-15 15:43:04 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Quadratic TetQuadCapsid driver/application.
+------------------------------------------------------------------------
+r404 | melissa | 2007-08-15 15:41:44 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Linear TetCapsid driver/application.
+------------------------------------------------------------------------
+r403 | melissa | 2007-08-15 14:02:20 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Added the Capsid3dBody class.
+------------------------------------------------------------------------
+r402 | melissa | 2007-08-15 14:01:01 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Changes in material.h to include cauchy stress and von mises stress variables.  StVenant class uses these variables.
+------------------------------------------------------------------------
+r401 | melissa | 2007-08-15 13:58:43 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Added a printQuad() function for quadratic elements.
+------------------------------------------------------------------------
+r400 | melissa | 2007-08-15 13:55:22 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Added the NonlinerElastic element class.
+------------------------------------------------------------------------
+r399 | melissa | 2007-08-15 13:51:50 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Includes ShapeTet10 now as well.
+------------------------------------------------------------------------
+r398 | melissa | 2007-08-15 13:42:13 -0700 (Wed, 15 Aug 2007) | 1 line
+
+Includes ShapeTet10 now as well.
+------------------------------------------------------------------------
+r397 | ma | 2007-06-13 18:09:00 -0700 (Wed, 13 Jun 2007) | 1 line
+
+Hemisphere contact for structural phase transformation indentation
+------------------------------------------------------------------------
+r396 | ma | 2007-06-13 18:07:22 -0700 (Wed, 13 Jun 2007) | 1 line
+
+driver for indentation
+------------------------------------------------------------------------
+r395 | ma | 2007-06-11 16:38:43 -0700 (Mon, 11 Jun 2007) | 1 line
+
+ 
+------------------------------------------------------------------------
+r394 | ma | 2007-06-11 16:38:25 -0700 (Mon, 11 Jun 2007) | 1 line
+
+ 
+------------------------------------------------------------------------
+r393 | ma | 2007-06-11 16:38:17 -0700 (Mon, 11 Jun 2007) | 1 line
+
+ 
+------------------------------------------------------------------------
+r392 | ma | 2007-06-11 16:38:02 -0700 (Mon, 11 Jun 2007) | 1 line
+
+ 
+------------------------------------------------------------------------
+r391 | ma | 2007-06-11 16:37:37 -0700 (Mon, 11 Jun 2007) | 1 line
+
+To get the relaxed shape
+------------------------------------------------------------------------
+r390 | ma | 2007-06-11 16:32:58 -0700 (Mon, 11 Jun 2007) | 1 line
+
+parameters
+------------------------------------------------------------------------
+r389 | ma | 2007-06-11 16:32:31 -0700 (Mon, 11 Jun 2007) | 1 line
+
+input mesh
+------------------------------------------------------------------------
+r388 | ma | 2007-06-11 15:43:47 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Structural phase transformation
+------------------------------------------------------------------------
+r387 | ma | 2007-06-11 15:32:02 -0700 (Mon, 11 Jun 2007) | 1 line
+
+add two functions in XCNode class
+------------------------------------------------------------------------
+r386 | ma | 2007-06-11 15:29:05 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLBody
+------------------------------------------------------------------------
+r385 | ma | 2007-06-11 15:28:59 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLBody
+------------------------------------------------------------------------
+r384 | ma | 2007-06-11 15:27:14 -0700 (Mon, 11 Jun 2007) | 1 line
+
+change the resetReference function, only update the node information
+------------------------------------------------------------------------
+r383 | ma | 2007-06-11 14:52:17 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLElement
+------------------------------------------------------------------------
+r382 | ma | 2007-06-11 14:52:12 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLElement
+------------------------------------------------------------------------
+r381 | ma | 2007-06-11 14:50:24 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLMaterial
+------------------------------------------------------------------------
+r380 | ma | 2007-06-11 14:50:19 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLMaterial
+------------------------------------------------------------------------
+r379 | ma | 2007-06-11 14:44:27 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add GLElement
+------------------------------------------------------------------------
+r378 | ma | 2007-06-11 14:41:22 -0700 (Mon, 11 Jun 2007) | 1 line
+
+Add things related to the reaction coordinate
+------------------------------------------------------------------------
+r377 | ma | 2007-04-03 12:29:00 -0700 (Tue, 03 Apr 2007) | 1 line
+
+resolve the conflict
+------------------------------------------------------------------------
+r376 | ma | 2007-04-03 12:28:53 -0700 (Tue, 03 Apr 2007) | 1 line
+
+resolve the conflict
+------------------------------------------------------------------------
+r375 | ma | 2007-04-02 17:46:38 -0700 (Mon, 02 Apr 2007) | 1 line
+
+Work for SC and BC models
+------------------------------------------------------------------------
+r374 | ma | 2007-04-02 17:44:54 -0700 (Mon, 02 Apr 2007) | 1 line
+
+some changes for force estimation of tether (AL method, force calculation of cut area...)
+------------------------------------------------------------------------
+r373 | ma | 2007-04-02 17:44:46 -0700 (Mon, 02 Apr 2007) | 1 line
+
+some changes for force estimation of tether (AL method, force calculation of cut area...)
+------------------------------------------------------------------------
+r372 | ma | 2007-04-02 17:30:54 -0700 (Mon, 02 Apr 2007) | 1 line
+
+ 
+------------------------------------------------------------------------
+r371 | ma | 2007-04-02 17:13:33 -0700 (Mon, 02 Apr 2007) | 1 line
+
+add total curvature part
+------------------------------------------------------------------------
+r370 | ma | 2007-04-02 17:13:23 -0700 (Mon, 02 Apr 2007) | 1 line
+
+add total curvature part
+------------------------------------------------------------------------
+r369 | ma | 2007-04-02 17:11:04 -0700 (Mon, 02 Apr 2007) | 1 line
+
+add spring energy and total curvature parts
+------------------------------------------------------------------------
+r368 | ma | 2007-04-02 17:10:55 -0700 (Mon, 02 Apr 2007) | 1 line
+
+add spring energy and total curvature parts
+------------------------------------------------------------------------
+r367 | klug | 2007-03-29 14:58:11 -0700 (Thu, 29 Mar 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r366 | klug | 2007-03-29 14:53:17 -0700 (Thu, 29 Mar 2007) | 1 line
+
+Got rid of HDS code in favor of new HalfEdgeMesh.
+------------------------------------------------------------------------
+r365 | klug | 2007-03-29 14:48:34 -0700 (Thu, 29 Mar 2007) | 1 line
+
+Initial commit.
+------------------------------------------------------------------------
+r364 | klug | 2007-03-29 14:29:48 -0700 (Thu, 29 Mar 2007) | 1 line
+
+Old HDS code is obselete.
+------------------------------------------------------------------------
+r363 | klug | 2007-03-26 17:17:45 -0700 (Mon, 26 Mar 2007) | 1 line
+
+obselete
+------------------------------------------------------------------------
+r362 | klug | 2007-03-26 16:30:06 -0700 (Mon, 26 Mar 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r361 | klug | 2007-03-25 20:22:29 -0700 (Sun, 25 Mar 2007) | 1 line
+
+
+------------------------------------------------------------------------
+r360 | klug | 2007-03-21 22:05:56 -0700 (Wed, 21 Mar 2007) | 1 line
+
+Minor tweaks to convergence criteria.
+------------------------------------------------------------------------
+r359 | klug | 2007-03-21 22:03:31 -0700 (Wed, 21 Mar 2007) | 1 line
+
+Minor changes to print statements.
+------------------------------------------------------------------------
+r358 | klug | 2007-03-21 21:57:11 -0700 (Wed, 21 Mar 2007) | 1 line
+
+Added calculation/storage of bending energy.
+------------------------------------------------------------------------
+r357 | klug | 2007-03-21 21:56:15 -0700 (Wed, 21 Mar 2007) | 1 line
+
+Added calculation/storage of in-plane energy to FVK class.
+------------------------------------------------------------------------
+r356 | klug | 2007-03-20 15:09:55 -0700 (Tue, 20 Mar 2007) | 1 line
+
+Fixed default arguments of constructor, modified destructor to delete elements, and rearranged code computing area and volume.
+------------------------------------------------------------------------
+r355 | ma | 2006-12-21 16:04:41 -0800 (Thu, 21 Dec 2006) | 1 line
+
+Add driver for MonteCarlo simulation of two phase problem
+------------------------------------------------------------------------
+r354 | ma | 2006-12-21 16:03:32 -0800 (Thu, 21 Dec 2006) | 1 line
+
+Driver for tether
+------------------------------------------------------------------------
+r353 | ma | 2006-12-21 16:02:49 -0800 (Thu, 21 Dec 2006) | 1 line
+
+include tether MonteCarloTwoPhase, fix compile roblem related to fortran
+------------------------------------------------------------------------
+r352 | ma | 2006-12-21 16:00:03 -0800 (Thu, 21 Dec 2006) | 1 line
+
+output concentration in vtk file to each node, insead of each cell
+------------------------------------------------------------------------
+r351 | ma | 2006-12-21 15:59:11 -0800 (Thu, 21 Dec 2006) | 1 line
+
+add the function setCytoSpring
+------------------------------------------------------------------------
+r350 | ma | 2006-12-21 15:56:27 -0800 (Thu, 21 Dec 2006) | 1 line
+
+Add things to compute spring energy, for 2 cases
+------------------------------------------------------------------------
+r349 | ma | 2006-12-21 15:54:47 -0800 (Thu, 21 Dec 2006) | 1 line
+
+Add setCytoSpring function, add stuff related to kSpring
+------------------------------------------------------------------------
+r348 | ma | 2006-12-21 15:49:23 -0800 (Thu, 21 Dec 2006) | 1 line
+
+add spring constant kSpring in constructor
+------------------------------------------------------------------------
+r347 | ma | 2006-12-21 15:43:29 -0800 (Thu, 21 Dec 2006) | 1 line
+
+add spring constant kSpring
+------------------------------------------------------------------------
+r346 | ma | 2006-10-25 16:18:56 -0700 (Wed, 25 Oct 2006) | 1 line
+
+Add XCNode part
+------------------------------------------------------------------------
+r345 | ma | 2006-10-25 16:15:46 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New material class
+------------------------------------------------------------------------
+r344 | ma | 2006-10-25 16:15:38 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New material class
+------------------------------------------------------------------------
+r343 | ma | 2006-10-25 16:14:13 -0700 (Wed, 25 Oct 2006) | 1 line
+
+add TwoPhaseElastic
+------------------------------------------------------------------------
+r342 | ma | 2006-10-25 16:13:01 -0700 (Wed, 25 Oct 2006) | 1 line
+
+Add some members in order to do the two phase problem
+------------------------------------------------------------------------
+r341 | ma | 2006-10-25 16:11:51 -0700 (Wed, 25 Oct 2006) | 1 line
+
+Change the data precisions, 1->1.0, 2->2.0
+------------------------------------------------------------------------
+r340 | ma | 2006-10-25 16:09:15 -0700 (Wed, 25 Oct 2006) | 1 line
+
+Made some changes in order derive the inherited class TwoPhaseElastic
+------------------------------------------------------------------------
+r339 | ma | 2006-10-25 16:04:47 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New Element for two phase problem
+------------------------------------------------------------------------
+r338 | ma | 2006-10-25 16:04:37 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New Element for two phase problem
+------------------------------------------------------------------------
+r337 | ma | 2006-10-25 16:01:38 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New body for two phase problem
+------------------------------------------------------------------------
+r336 | ma | 2006-10-25 16:01:31 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New body for two phase problem
+------------------------------------------------------------------------
+r335 | ma | 2006-10-25 16:01:23 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New body for two phase problem
+------------------------------------------------------------------------
+r334 | ma | 2006-10-25 15:56:50 -0700 (Wed, 25 Oct 2006) | 1 line
+
+New class in order to use XCNode
+------------------------------------------------------------------------
+r333 | hvan | 2006-10-25 10:24:09 -0700 (Wed, 25 Oct 2006) | 1 line
+
+fixed some errors
+------------------------------------------------------------------------
+r332 | hvan | 2006-10-19 12:29:46 -0700 (Thu, 19 Oct 2006) | 1 line
+
+Minor changes
+------------------------------------------------------------------------
+r331 | hvan | 2006-10-17 14:12:15 -0700 (Tue, 17 Oct 2006) | 1 line
+
+Reconfigured APP. See header text
+------------------------------------------------------------------------
+r330 | hvan | 2006-10-17 14:10:55 -0700 (Tue, 17 Oct 2006) | 1 line
+
+Reconfigured APP. See header text
+------------------------------------------------------------------------
+r329 | ma | 2006-10-13 15:24:36 -0700 (Fri, 13 Oct 2006) | 1 line
+
+Add things about how to use Lbfgsb solver, and lots of comments on how to handle constants like mu
+------------------------------------------------------------------------
+r328 | melissa | 2006-10-12 16:54:30 -0700 (Thu, 12 Oct 2006) | 1 line
+
+Bad typedef.
+------------------------------------------------------------------------
+r327 | melissa | 2006-10-12 16:41:32 -0700 (Thu, 12 Oct 2006) | 1 line
+
+Fixed terminology in comments.
+------------------------------------------------------------------------
+r326 | hvan | 2006-10-12 13:52:38 -0700 (Thu, 12 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r325 | ma | 2006-10-11 15:52:41 -0700 (Wed, 11 Oct 2006) | 1 line
+
+Diver for Calculatation of the Oblate shape
+------------------------------------------------------------------------
+r324 | hvan | 2006-10-11 11:29:08 -0700 (Wed, 11 Oct 2006) | 1 line
+
+APP
+------------------------------------------------------------------------
+r323 | hvan | 2006-10-11 08:00:02 -0700 (Wed, 11 Oct 2006) | 1 line
+
+Revised CP and AP
+------------------------------------------------------------------------
+r322 | hvan | 2006-10-06 09:58:10 -0700 (Fri, 06 Oct 2006) | 1 line
+
+AP-metis in testing phase
+------------------------------------------------------------------------
+r321 | hvan | 2006-10-05 14:49:42 -0700 (Thu, 05 Oct 2006) | 1 line
+
+AP - metisMPI stuff... unstable
+------------------------------------------------------------------------
+r320 | hvan | 2006-10-03 13:57:03 -0700 (Tue, 03 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r319 | hvan | 2006-10-03 07:35:31 -0700 (Tue, 03 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r318 | hvan | 2006-10-02 14:14:37 -0700 (Mon, 02 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r317 | hvan | 2006-10-02 13:48:56 -0700 (Mon, 02 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r316 | hvan | 2006-10-02 13:38:39 -0700 (Mon, 02 Oct 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r315 | klug | 2006-10-02 10:45:29 -0700 (Mon, 02 Oct 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r314 | klug | 2006-10-02 10:41:54 -0700 (Mon, 02 Oct 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r313 | klug | 2006-10-02 10:32:14 -0700 (Mon, 02 Oct 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r312 | klug | 2006-09-30 13:23:12 -0700 (Sat, 30 Sep 2006) | 1 line
+
+Energy of global constraints is now computed by body rather than piecewise by elements.
+------------------------------------------------------------------------
+r311 | hvan | 2006-09-29 09:25:11 -0700 (Fri, 29 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r310 | hvan | 2006-09-27 10:35:00 -0700 (Wed, 27 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r309 | hvan | 2006-09-27 09:15:54 -0700 (Wed, 27 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r308 | hvan | 2006-09-27 09:09:05 -0700 (Wed, 27 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r307 | hvan | 2006-09-27 09:07:32 -0700 (Wed, 27 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r306 | hvan | 2006-09-27 09:07:10 -0700 (Wed, 27 Sep 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r305 | klug | 2006-09-26 19:40:04 -0700 (Tue, 26 Sep 2006) | 1 line
+
+Adding Lbfgsb solver.
+------------------------------------------------------------------------
+r304 | klug | 2006-09-14 11:51:41 -0700 (Thu, 14 Sep 2006) | 1 line
+
+Initial checkin of indent.cc and relax.cc.
+------------------------------------------------------------------------
+r303 | hvan | 2006-09-14 10:54:51 -0700 (Thu, 14 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r302 | melissa | 2006-09-11 12:50:46 -0700 (Mon, 11 Sep 2006) | 1 line
+
+Initial commit of ShapeTet4 files.
+------------------------------------------------------------------------
+r301 | melissa | 2006-09-11 12:48:46 -0700 (Mon, 11 Sep 2006) | 1 line
+
+Initial commit of TetQuadrature files.
+------------------------------------------------------------------------
+r300 | hvan | 2006-09-11 10:00:37 -0700 (Mon, 11 Sep 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r299 | klug | 2006-09-10 04:17:55 -0700 (Sun, 10 Sep 2006) | 1 line
+
+Input mesh is now a command-line argument in app.cc; added template code to switch between element-types easily; switched to nodal stimulation rather than quad point stimulation
+------------------------------------------------------------------------
+r298 | klug | 2006-09-10 04:14:42 -0700 (Sun, 10 Sep 2006) | 1 line
+
+Separated capacitance calculation into a new method in CardiacPotntial
+------------------------------------------------------------------------
+r297 | klug | 2006-09-09 17:39:15 -0700 (Sat, 09 Sep 2006) | 1 line
+
+Made CardiacPotential.icc consistent with .cc and fixed template compilation issues.
+------------------------------------------------------------------------
+r294 | hvan | 2006-09-07 13:34:14 -0700 (Thu, 07 Sep 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r293 | hvan | 2006-09-06 20:22:31 -0700 (Wed, 06 Sep 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r292 | hvan | 2006-09-01 07:43:57 -0700 (Fri, 01 Sep 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r291 | hvan | 2006-08-31 08:27:23 -0700 (Thu, 31 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r290 | hvan | 2006-08-28 15:51:41 -0700 (Mon, 28 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r289 | hvan | 2006-08-28 15:49:29 -0700 (Mon, 28 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r288 | hvan | 2006-08-27 21:22:37 -0700 (Sun, 27 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r287 | hvan | 2006-08-27 00:17:56 -0700 (Sun, 27 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r286 | hvan | 2006-08-27 00:15:48 -0700 (Sun, 27 Aug 2006) | 1 line
+
+A
+------------------------------------------------------------------------
+r285 | hvan | 2006-08-26 23:14:51 -0700 (Sat, 26 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r284 | klug | 2006-08-24 21:25:50 -0700 (Thu, 24 Aug 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r283 | klug | 2006-08-24 21:22:05 -0700 (Thu, 24 Aug 2006) | 1 line
+
+New contact predictor-corrector class used in capsid program.
+------------------------------------------------------------------------
+r282 | klug | 2006-08-24 21:11:30 -0700 (Thu, 24 Aug 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r281 | klug | 2006-08-24 21:09:12 -0700 (Thu, 24 Aug 2006) | 1 line
+
+Added OpenMP stuff and some contact classes.
+------------------------------------------------------------------------
+r280 | klug | 2006-08-24 21:03:09 -0700 (Thu, 24 Aug 2006) | 1 line
+
+Bug in ShapeQ4
+------------------------------------------------------------------------
+r279 | klug | 2006-08-24 21:02:25 -0700 (Thu, 24 Aug 2006) | 1 line
+
+Templated CardiacPotential on quadrature and shape.
+------------------------------------------------------------------------
+r278 | klug | 2006-08-11 12:09:11 -0700 (Fri, 11 Aug 2006) | 1 line
+
+Some minor changes relating to internal nodes in CardiacPotential.
+------------------------------------------------------------------------
+r277 | klug | 2006-08-11 11:53:06 -0700 (Fri, 11 Aug 2006) | 1 line
+
+Some minor changes relating to internal nodes in CardiacPotential.
+------------------------------------------------------------------------
+r276 | hvan | 2006-08-11 11:28:57 -0700 (Fri, 11 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r275 | hvan | 2006-08-11 11:28:40 -0700 (Fri, 11 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r274 | hvan | 2006-08-11 11:28:35 -0700 (Fri, 11 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r273 | hvan | 2006-08-09 22:07:49 -0700 (Wed, 09 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r272 | hvan | 2006-08-09 22:07:45 -0700 (Wed, 09 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r270 | hvan | 2006-08-08 00:07:52 -0700 (Tue, 08 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r269 | hvan | 2006-08-07 22:31:25 -0700 (Mon, 07 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r268 | hvan | 2006-08-07 22:24:53 -0700 (Mon, 07 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r267 | hvan | 2006-08-07 22:24:50 -0700 (Mon, 07 Aug 2006) | 1 line
+
+CP
+------------------------------------------------------------------------
+r266 | klug | 2006-08-05 21:44:36 -0700 (Sat, 05 Aug 2006) | 1 line
+
+Adding to repository
+------------------------------------------------------------------------
+r265 | klug | 2006-08-05 21:43:24 -0700 (Sat, 05 Aug 2006) | 1 line
+
+Adding to repository
+------------------------------------------------------------------------
+r264 | hvan | 2006-08-04 13:31:02 -0700 (Fri, 04 Aug 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r263 | hvan | 2006-07-31 15:14:09 -0700 (Mon, 31 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r262 | hvan | 2006-07-28 15:10:36 -0700 (Fri, 28 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r261 | hvan | 2006-07-28 08:57:00 -0700 (Fri, 28 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r260 | hvan | 2006-07-28 08:52:18 -0700 (Fri, 28 Jul 2006) | 1 line
+
+ ActionPotential
+------------------------------------------------------------------------
+r259 | hvan | 2006-07-27 13:32:02 -0700 (Thu, 27 Jul 2006) | 1 line
+
+Ele
+------------------------------------------------------------------------
+r258 | hvan | 2006-07-27 13:31:58 -0700 (Thu, 27 Jul 2006) | 1 line
+
+Ele
+------------------------------------------------------------------------
+r257 | hvan | 2006-07-27 13:31:15 -0700 (Thu, 27 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r256 | hvan | 2006-07-26 22:43:12 -0700 (Wed, 26 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r255 | hvan | 2006-07-26 22:42:48 -0700 (Wed, 26 Jul 2006) | 1 line
+
+AP
+------------------------------------------------------------------------
+r254 | hvan | 2006-07-25 14:51:53 -0700 (Tue, 25 Jul 2006) | 1 line
+
+revised
+------------------------------------------------------------------------
+r253 | hvan | 2006-07-25 14:51:50 -0700 (Tue, 25 Jul 2006) | 1 line
+
+revised
+------------------------------------------------------------------------
+r252 | hvan | 2006-07-25 14:51:25 -0700 (Tue, 25 Jul 2006) | 1 line
+
+revised
+------------------------------------------------------------------------
+r251 | hvan | 2006-07-25 10:58:30 -0700 (Tue, 25 Jul 2006) | 1 line
+
+app
+------------------------------------------------------------------------
+r250 | klug | 2006-07-25 07:43:04 -0700 (Tue, 25 Jul 2006) | 1 line
+
+Added program test2 to others.
+------------------------------------------------------------------------
+r249 | hvan | 2006-07-25 00:10:51 -0700 (Tue, 25 Jul 2006) | 1 line
+
+make
+------------------------------------------------------------------------
+r248 | hvan | 2006-07-24 17:06:03 -0700 (Mon, 24 Jul 2006) | 1 line
+
+NE
+------------------------------------------------------------------------
+r247 | hvan | 2006-07-24 17:05:35 -0700 (Mon, 24 Jul 2006) | 1 line
+
+NE
+------------------------------------------------------------------------
+r246 | hvan | 2006-07-24 17:01:55 -0700 (Mon, 24 Jul 2006) | 1 line
+
+test
+------------------------------------------------------------------------
+r245 | hvan | 2006-07-24 16:35:30 -0700 (Mon, 24 Jul 2006) | 1 line
+
+NE
+------------------------------------------------------------------------
+r244 | hvan | 2006-07-24 16:35:26 -0700 (Mon, 24 Jul 2006) | 1 line
+
+NE
+------------------------------------------------------------------------
+r243 | hvan | 2006-07-24 10:08:21 -0700 (Mon, 24 Jul 2006) | 1 line
+
+added NobleModel.cc
+------------------------------------------------------------------------
+r242 | hvan | 2006-07-24 09:56:54 -0700 (Mon, 24 Jul 2006) | 1 line
+
+added NobleElem
+------------------------------------------------------------------------
+r241 | hvan | 2006-07-24 09:56:52 -0700 (Mon, 24 Jul 2006) | 1 line
+
+added NobleElem
+------------------------------------------------------------------------
+r240 | klug | 2006-07-23 16:58:45 -0700 (Sun, 23 Jul 2006) | 1 line
+
+Some small changes and the addition of VectorNode class for use with CardiacPotential element.
+------------------------------------------------------------------------
+r239 | klug | 2006-07-23 16:57:50 -0700 (Sun, 23 Jul 2006) | 1 line
+
+Initial commit of CardiacPotential class.
+------------------------------------------------------------------------
+r232 | klug | 2006-07-13 13:53:01 -0700 (Thu, 13 Jul 2006) | 1 line
+
+Added libQuadrature.a to link list.
+------------------------------------------------------------------------
+r231 | klug | 2006-07-13 10:02:27 -0700 (Thu, 13 Jul 2006) | 1 line
+
+Missing semicolon on line 53 fixed.
+------------------------------------------------------------------------
+r230 | hvan | 2006-07-13 08:49:49 -0700 (Thu, 13 Jul 2006) | 1 line
+
+changed QuadQuadrature.cc
+------------------------------------------------------------------------
+r229 | klug | 2006-07-13 06:48:03 -0700 (Thu, 13 Jul 2006) | 1 line
+
+Added QuadQuadrature.cc to the source list.
+------------------------------------------------------------------------
+r228 | klug | 2006-07-12 18:50:19 -0700 (Wed, 12 Jul 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r227 | hvan | 2006-07-10 11:21:09 -0700 (Mon, 10 Jul 2006) | 1 line
+
+Added QuadQuadrature.
+------------------------------------------------------------------------
+r226 | hvan | 2006-07-07 22:15:57 -0700 (Fri, 07 Jul 2006) | 1 line
+
+Added ShapeQ4
+------------------------------------------------------------------------
+r225 | hvan | 2006-07-07 22:13:32 -0700 (Fri, 07 Jul 2006) | 1 line
+
+Added ShapeQ4
+------------------------------------------------------------------------
+r224 | klug | 2006-07-05 16:08:58 -0700 (Wed, 05 Jul 2006) | 1 line
+
+Changed Shape class so that only parametric derivatives are calculated.  Jacobians and all reference to the embedding physical space are removed.
+------------------------------------------------------------------------
+r221 | ericp | 2006-01-28 09:37:14 -0800 (Sat, 28 Jan 2006) | 2 lines
+
+Changed DefinedTypes.h to voom.h
+
+------------------------------------------------------------------------
+r220 | klug | 2006-01-26 17:50:41 -0800 (Thu, 26 Jan 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r219 | klug | 2006-01-26 15:40:17 -0800 (Thu, 26 Jan 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r218 | klug | 2006-01-20 18:08:08 -0800 (Fri, 20 Jan 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r217 | klug | 2006-01-20 18:06:12 -0800 (Fri, 20 Jan 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r216 | klug | 2006-01-20 18:05:35 -0800 (Fri, 20 Jan 2006) | 1 line
+
+Added MPI among other things.
+------------------------------------------------------------------------
+r215 | klug | 2006-01-20 17:58:34 -0800 (Fri, 20 Jan 2006) | 1 line
+
+
+------------------------------------------------------------------------
+r214 | klug | 2006-01-20 11:33:28 -0800 (Fri, 20 Jan 2006) | 1 line
+
+Added MPI code for parallel computing.
+------------------------------------------------------------------------
+r213 | klug | 2006-01-20 11:30:52 -0800 (Fri, 20 Jan 2006) | 1 line
+
+Added MPI code for parallel computing.
+------------------------------------------------------------------------
+r212 | klug | 2006-01-20 10:49:31 -0800 (Fri, 20 Jan 2006) | 1 line
+
+Added non-const quadrature point accessor (HACK).
+------------------------------------------------------------------------
+r211 | klug | 2006-01-20 10:46:48 -0800 (Fri, 20 Jan 2006) | 1 line
+
+Added setSpontaneousCurvature method and computation of constraint energy in compute method.
+------------------------------------------------------------------------
+r210 | klug | 2005-12-21 19:56:17 -0800 (Wed, 21 Dec 2005) | 1 line
+
+
+------------------------------------------------------------------------
+r209 | klug | 2005-12-21 19:56:03 -0800 (Wed, 21 Dec 2005) | 1 line
+
+
+------------------------------------------------------------------------
+r208 | klug | 2005-12-21 19:55:43 -0800 (Wed, 21 Dec 2005) | 1 line
+
+
+------------------------------------------------------------------------
+r207 | klug | 2005-12-02 16:17:50 -0800 (Fri, 02 Dec 2005) | 1 line
+
+Added method to output .obj files.
+------------------------------------------------------------------------
+r206 | klug | 2005-12-02 11:36:44 -0800 (Fri, 02 Dec 2005) | 1 line
+
+_compute -> _computeAll + a little more clean-up.
+------------------------------------------------------------------------
+r205 | klug | 2005-12-02 11:20:25 -0800 (Fri, 02 Dec 2005) | 1 line
+
+Added _compute and _directionalD methods to eliminate duplicate energy and force compute calls.
+------------------------------------------------------------------------
+r204 | klug | 2005-12-02 09:32:16 -0800 (Fri, 02 Dec 2005) | 1 line
+
+Added ViscousRelaxation class.
+------------------------------------------------------------------------
+r203 | klug | 2005-12-02 09:28:49 -0800 (Fri, 02 Dec 2005) | 1 line
+
+
+------------------------------------------------------------------------
+r202 | ma | 2005-11-29 17:59:19 -0800 (Tue, 29 Nov 2005) | 3 lines
+
+add the function setViscosity;
+the function work() include the work caused by the change of the total area
+
+------------------------------------------------------------------------
+r201 | klug | 2005-11-28 20:53:46 -0800 (Mon, 28 Nov 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r200 | klug | 2005-11-07 19:48:19 -0800 (Mon, 07 Nov 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r199 | klug | 2005-11-07 15:36:49 -0800 (Mon, 07 Nov 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r198 | ma | 2005-11-04 13:15:07 -0800 (Fri, 04 Nov 2005) | 2 lines
+
+reset the force according to the Loopsubdivision theory
+
+------------------------------------------------------------------------
+r197 | klug | 2005-11-02 22:35:17 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r196 | ma | 2005-11-02 20:01:53 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+clean some comments
+
+------------------------------------------------------------------------
+r195 | ma | 2005-11-02 19:24:51 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+input file
+
+------------------------------------------------------------------------
+r194 | ma | 2005-11-02 19:23:35 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+configure file
+
+------------------------------------------------------------------------
+r193 | ma | 2005-11-02 19:21:11 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+makefile
+
+------------------------------------------------------------------------
+r192 | ma | 2005-11-02 19:17:07 -0800 (Wed, 02 Nov 2005) | 2 lines
+
+calculate equilibrium shape of vesicles
+
+------------------------------------------------------------------------
+r191 | klug | 2005-10-22 12:18:04 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+Fixed undefined variable problem.  Don't know how this slipped past before.
+
+------------------------------------------------------------------------
+r190 | klug | 2005-10-22 12:16:46 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+Separated Node and NodeBase.
+
+------------------------------------------------------------------------
+r189 | klug | 2005-10-22 12:16:14 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+GCC 4 compatibility fix.
+
+------------------------------------------------------------------------
+r188 | klug | 2005-10-22 12:15:40 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+Separated Node and NodeBase.  GCC 4 compatibility fixes.
+
+------------------------------------------------------------------------
+r187 | klug | 2005-10-22 12:12:17 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+GCC 4 compatibility fixes.
+
+------------------------------------------------------------------------
+r186 | klug | 2005-10-22 12:11:23 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+Separated Element and StandardElement
+
+------------------------------------------------------------------------
+r185 | klug | 2005-10-22 11:58:33 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r184 | klug | 2005-10-22 10:49:38 -0700 (Sat, 22 Oct 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r183 | klug | 2005-10-20 20:08:33 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r182 | klug | 2005-10-20 20:04:59 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Initial checkin
+
+------------------------------------------------------------------------
+r181 | klug | 2005-10-20 18:36:19 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r180 | klug | 2005-10-20 18:35:11 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Added pushBack method.
+
+------------------------------------------------------------------------
+r179 | klug | 2005-10-20 18:27:51 -0700 (Thu, 20 Oct 2005) | 3 lines
+
+Added and modified a few accessors.  Removed penalty parameter from
+element construction.
+
+------------------------------------------------------------------------
+r178 | klug | 2005-10-20 18:11:43 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Added FVK.  Now have to link to element lib.
+
+------------------------------------------------------------------------
+r177 | klug | 2005-10-20 18:07:21 -0700 (Thu, 20 Oct 2005) | 4 lines
+
+Cleaned and removed old stuff related to storing forces and stiffness
+in elements.  Note: stiffness part needs to be fixed in checkConsistency()
+and checkRank() is totally broken.
+
+------------------------------------------------------------------------
+r176 | klug | 2005-10-20 18:05:34 -0700 (Thu, 20 Oct 2005) | 3 lines
+
+Cleaned and removed old stuff related to storing forces & stiffness in
+elements.  Also got rid of a few obselete LoopShell methods.
+
+------------------------------------------------------------------------
+r175 | klug | 2005-10-20 17:33:37 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Added FVK.cc to src list.
+
+------------------------------------------------------------------------
+r174 | klug | 2005-10-20 17:32:54 -0700 (Thu, 20 Oct 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r173 | klug | 2005-10-20 17:28:12 -0700 (Thu, 20 Oct 2005) | 3 lines
+
+Removed some old commented-out stuff.  Made updateState virtual to allow
+derived classes.
+
+------------------------------------------------------------------------
+r172 | ma | 2005-10-19 11:33:45 -0700 (Wed, 19 Oct 2005) | 2 lines
+
+add constraintEnergyDensity(), rewrite setRefGeometry function
+
+------------------------------------------------------------------------
+r171 | ma | 2005-10-11 17:47:29 -0700 (Tue, 11 Oct 2005) | 2 lines
+
+fix two minor typos: workEnergy()->work(); _refArea->_constraintArea
+
+------------------------------------------------------------------------
+r170 | ma | 2005-10-11 16:09:12 -0700 (Tue, 11 Oct 2005) | 2 lines
+
+change _refVolume & _refArea to _constraintVolume & _constraintArea
+
+------------------------------------------------------------------------
+r169 | ma | 2005-10-11 13:55:50 -0700 (Tue, 11 Oct 2005) | 3 lines
+
+add updateRefConfiguration() function; change _refVolume & _refArea to
+_constraintVolume & _constraintArea
+
+------------------------------------------------------------------------
+r168 | klug | 2005-10-09 17:58:54 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r167 | klug | 2005-10-09 17:57:11 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+1st checkin.
+
+------------------------------------------------------------------------
+r166 | klug | 2005-10-09 17:55:22 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+Cleaned up comments.
+
+------------------------------------------------------------------------
+r165 | klug | 2005-10-09 17:52:06 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r164 | klug | 2005-10-09 17:45:45 -0700 (Sun, 09 Oct 2005) | 4 lines
+
+Exchanged local area constraint for global one.
+Added viscous regularization term to energy.
+Added forces to VTK output.
+
+------------------------------------------------------------------------
+r163 | klug | 2005-10-09 17:26:27 -0700 (Sun, 09 Oct 2005) | 3 lines
+
+Exchanged local area constraint for global one.
+Removed unnecessary member functions such as consistency and rank checks.
+
+------------------------------------------------------------------------
+r162 | klug | 2005-10-09 17:24:18 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+LoopShell.h
+
+------------------------------------------------------------------------
+r161 | klug | 2005-10-09 16:48:32 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+Elements subdirectory needs a Makefile now.
+
+------------------------------------------------------------------------
+r160 | klug | 2005-10-09 16:47:15 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+Elements subdirectory needs to be compiled now.
+
+------------------------------------------------------------------------
+r159 | klug | 2005-10-09 16:35:25 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+TriangleQuadratureRule obselete.  Use TriangleQuadrature instead.
+
+------------------------------------------------------------------------
+r158 | klug | 2005-10-09 16:32:08 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+Added PositionNode constructor from point and position.
+
+------------------------------------------------------------------------
+r157 | klug | 2005-10-09 16:29:52 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+LoopShellNode obselete.  Deformation node is now used for LoopShell elements.
+
+------------------------------------------------------------------------
+r156 | klug | 2005-10-09 15:49:20 -0700 (Sun, 09 Oct 2005) | 2 lines
+
+Cleaned up print statements.
+
+------------------------------------------------------------------------
+r155 | ma | 2005-09-29 15:52:11 -0700 (Thu, 29 Sep 2005) | 5 lines
+
+add constraintEnergy() totalStrainEnergy() workEnergy() to claculate
+energy of cytoskeleton, skeleton&bilayer, penaltyVolume part respectively;
+add resetRefConfiguration() to update reference configuration;
+change referenceVolume&referenceArea to constraintVolume&constraintArea;
+
+------------------------------------------------------------------------
+r154 | ma | 2005-09-28 18:46:21 -0700 (Wed, 28 Sep 2005) | 2 lines
+
+add resetPosition()
+
+------------------------------------------------------------------------
+r153 | ma | 2005-09-27 20:50:48 -0700 (Tue, 27 Sep 2005) | 3 lines
+
+Adding cytoskeleton part to SCElasttic, using Evans model
+to claculate cytoskeleton energy
+
+------------------------------------------------------------------------
+r152 | ma | 2005-09-27 20:37:21 -0700 (Tue, 27 Sep 2005) | 2 lines
+
+add EvansElastic
+
+------------------------------------------------------------------------
+r151 | klug | 2005-08-23 15:53:06 -0700 (Tue, 23 Aug 2005) | 2 lines
+
+Rewrote moment resultant calculation avoiding explicit formation of outer product.
+
+------------------------------------------------------------------------
+r150 | klug | 2005-08-22 15:30:52 -0700 (Mon, 22 Aug 2005) | 3 lines
+
+Assembly shifted from elements to nodes.  Bodies now compute energy.
+Model::setField renamed less ambiguously to putField.
+
+------------------------------------------------------------------------
+r149 | klug | 2005-08-22 15:28:28 -0700 (Mon, 22 Aug 2005) | 2 lines
+
+Model::setField renamed putField
+
+------------------------------------------------------------------------
+r148 | klug | 2005-08-22 15:23:26 -0700 (Mon, 22 Aug 2005) | 2 lines
+
+Assembly shifted from elements to nodes.
+
+------------------------------------------------------------------------
+r147 | klug | 2005-08-22 15:22:18 -0700 (Mon, 22 Aug 2005) | 3 lines
+
+Assembly shifted from elements to nodes.  Bodies now compute energy.
+Model::setField renamed less ambiguously to putField.
+
+------------------------------------------------------------------------
+r146 | klug | 2005-08-22 15:18:31 -0700 (Mon, 22 Aug 2005) | 5 lines
+
+Assembly shifted from elements to nodes.  Element class renamed
+StandardElement, ElementBase class renamed Element, and verification
+tests moved to Element class and their definitions moved from Element.icc
+to Element.cc which is now compiled into libElement.a.
+
+------------------------------------------------------------------------
+r145 | klug | 2005-08-22 15:08:41 -0700 (Mon, 22 Aug 2005) | 2 lines
+
+Assembly shifted from elements to nodes.  Bodies now assemble energy.
+
+------------------------------------------------------------------------
+r144 | klug | 2005-08-19 18:28:32 -0700 (Fri, 19 Aug 2005) | 2 lines
+
+acinclude.m4
+
+------------------------------------------------------------------------
+r143 | klug | 2005-06-26 21:05:11 -0700 (Sun, 26 Jun 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r142 | klug | 2005-06-26 20:52:53 -0700 (Sun, 26 Jun 2005) | 2 lines
+
+Issues with const.
+
+------------------------------------------------------------------------
+r141 | klug | 2005-06-26 20:49:06 -0700 (Sun, 26 Jun 2005) | 2 lines
+
+Added const to some methods that needed it.
+
+------------------------------------------------------------------------
+r140 | klug | 2005-06-26 20:46:14 -0700 (Sun, 26 Jun 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r139 | klug | 2005-06-26 20:43:51 -0700 (Sun, 26 Jun 2005) | 2 lines
+
+Removed some inappropriate instances of const.
+
+------------------------------------------------------------------------
+r138 | klug | 2005-06-18 10:05:02 -0700 (Sat, 18 Jun 2005) | 2 lines
+
+Added Gaussian curvature term to energy.
+
+------------------------------------------------------------------------
+r137 | klug | 2005-05-24 19:52:38 -0700 (Tue, 24 May 2005) | 2 lines
+
+Typo in blitz/array.h include.
+
+------------------------------------------------------------------------
+r136 | klug | 2005-05-24 19:15:29 -0700 (Tue, 24 May 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r135 | klug | 2005-05-24 19:14:37 -0700 (Tue, 24 May 2005) | 2 lines
+
+Removed Constraint.h Potential.h includes.
+
+------------------------------------------------------------------------
+r134 | klug | 2005-05-24 19:12:02 -0700 (Tue, 24 May 2005) | 2 lines
+
+Typo on include of tvmet/Vector.h
+
+------------------------------------------------------------------------
+r133 | klug | 2005-05-24 19:09:36 -0700 (Tue, 24 May 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r132 | klug | 2005-05-23 11:40:05 -0700 (Mon, 23 May 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r131 | klug | 2005-05-23 11:36:00 -0700 (Mon, 23 May 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r130 | klug | 2005-05-23 11:24:06 -0700 (Mon, 23 May 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r129 | klug | 2005-05-23 11:18:28 -0700 (Mon, 23 May 2005) | 2 lines
+
+Removed and replaced by Quadrature class.
+
+------------------------------------------------------------------------
+r128 | klug | 2005-05-23 11:17:55 -0700 (Mon, 23 May 2005) | 2 lines
+
+Removed and replaced by struct in Element.
+
+------------------------------------------------------------------------
+r127 | klug | 2005-05-23 11:14:04 -0700 (Mon, 23 May 2005) | 2 lines
+
+Replaced LoopShellNode with DeformationNode<3>.
+
+------------------------------------------------------------------------
+r126 | klug | 2005-05-23 11:13:19 -0700 (Mon, 23 May 2005) | 2 lines
+
+Pointers to connectivity unsafe; copy instead.
+
+------------------------------------------------------------------------
+r125 | klug | 2005-05-23 11:11:33 -0700 (Mon, 23 May 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r124 | klug | 2005-05-23 11:07:36 -0700 (Mon, 23 May 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r123 | klug | 2005-05-23 11:03:17 -0700 (Mon, 23 May 2005) | 2 lines
+
+Enforced consistency with new Solver interface.  Minor tweaks.
+
+------------------------------------------------------------------------
+r122 | klug | 2005-05-23 10:57:52 -0700 (Mon, 23 May 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r121 | klug | 2005-05-23 10:54:15 -0700 (Mon, 23 May 2005) | 2 lines
+
+New interface with data storage pushed to solver.
+
+------------------------------------------------------------------------
+r120 | klug | 2005-05-23 10:43:20 -0700 (Mon, 23 May 2005) | 2 lines
+
+Added cvs logging.
+
+------------------------------------------------------------------------
+r119 | klug | 2005-05-23 10:30:15 -0700 (Mon, 23 May 2005) | 2 lines
+
+Cleaned for new version 0.2 of voom.
+
+------------------------------------------------------------------------
+r118 | klug | 2005-05-23 10:27:53 -0700 (Mon, 23 May 2005) | 2 lines
+
+Added index map; renamed strainEnergy as energy.
+
+------------------------------------------------------------------------
+r117 | klug | 2005-05-23 10:22:55 -0700 (Mon, 23 May 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r116 | klug | 2005-05-23 08:33:30 -0700 (Mon, 23 May 2005) | 2 lines
+
+Half-edge data structure methods moved from LoopShellBody.cc to LoopShellBody-HDS.cc
+
+------------------------------------------------------------------------
+r115 | klug | 2005-05-23 08:31:18 -0700 (Mon, 23 May 2005) | 2 lines
+
+Major overhall of Body classes.  Also, half-edge data structure methods moved from LoopShellBody.cc to LoopShellBody-HDS.cc
+
+------------------------------------------------------------------------
+r114 | klug | 2005-05-23 08:28:03 -0700 (Mon, 23 May 2005) | 2 lines
+
+Major overhall of Body classes.  Body no longer handles arrays of data; now it's just a container for elements and nodes.
+
+------------------------------------------------------------------------
+r113 | klug | 2005-05-23 08:23:57 -0700 (Mon, 23 May 2005) | 2 lines
+
+Minor modifications to constructors and MultiplierNode's accessors/mutators.
+
+------------------------------------------------------------------------
+r112 | klug | 2005-04-20 18:56:54 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+Modified for consistency with DeformationNode, and new quadrature and shape classes.
+
+------------------------------------------------------------------------
+r111 | klug | 2005-04-20 18:54:16 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+Added setPoint() method to DeformationNode.
+
+------------------------------------------------------------------------
+r110 | klug | 2005-04-20 18:50:35 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r109 | klug | 2005-04-20 18:49:12 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+Changed and simplified interface.
+
+------------------------------------------------------------------------
+r108 | klug | 2005-04-20 18:47:42 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+Added cvs loggin.
+
+------------------------------------------------------------------------
+r107 | klug | 2005-04-20 18:45:22 -0700 (Wed, 20 Apr 2005) | 2 lines
+
+Modified shape base class.  Now templated on parametric and spatial dimensions.
+
+------------------------------------------------------------------------
+r106 | klug | 2005-04-11 09:27:13 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+Renamed LinearizedElement.cc to LinearizedElement.icc
+
+------------------------------------------------------------------------
+r105 | klug | 2005-04-11 09:24:12 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+New Element base classes with forces and stiffness stored locally.
+
+------------------------------------------------------------------------
+r104 | klug | 2005-04-11 09:20:20 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r103 | klug | 2005-04-11 09:19:15 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+Added test program for 3- and 6-noded planar elements.
+
+------------------------------------------------------------------------
+r102 | klug | 2005-04-11 09:08:44 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+New node classes with force storage moved to element classes.
+
+------------------------------------------------------------------------
+r101 | klug | 2005-04-11 08:57:22 -0700 (Mon, 11 Apr 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r100 | klug | 2005-04-10 22:04:43 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+Initial checkin.
+
+------------------------------------------------------------------------
+r99 | klug | 2005-04-10 21:58:17 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+Now log info is added directly to source file.
+
+------------------------------------------------------------------------
+r98 | klug | 2005-04-10 21:53:45 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r97 | klug | 2005-04-10 21:22:08 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r96 | klug | 2005-04-10 21:15:09 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r95 | klug | 2005-04-10 20:50:07 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r94 | klug | 2005-04-10 17:16:45 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r93 | klug | 2005-04-10 16:55:03 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r92 | klug | 2005-04-10 13:01:48 -0700 (Sun, 10 Apr 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r91 | klug | 2005-01-24 07:51:37 -0800 (Mon, 24 Jan 2005) | 2 lines
+
+Removing LinearizedMaterial.cc
+
+------------------------------------------------------------------------
+r90 | klug | 2005-01-24 07:50:24 -0800 (Mon, 24 Jan 2005) | 2 lines
+
+Renamed LinearizedMaterial.cc
+
+------------------------------------------------------------------------
+r89 | klug | 2005-01-19 15:50:05 -0800 (Wed, 19 Jan 2005) | 2 lines
+
+Hookean.cc
+
+------------------------------------------------------------------------
+r88 | klug | 2005-01-18 17:15:42 -0800 (Tue, 18 Jan 2005) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r87 | feng | 2004-12-20 12:50:21 -0800 (Mon, 20 Dec 2004) | 2 lines
+
+All are right.
+
+------------------------------------------------------------------------
+r86 | feng | 2004-12-07 17:50:27 -0800 (Tue, 07 Dec 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r85 | feng | 2004-12-07 10:47:24 -0800 (Tue, 07 Dec 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r84 | feng | 2004-12-06 14:49:08 -0800 (Mon, 06 Dec 2004) | 2 lines
+
+global area constrait
+
+------------------------------------------------------------------------
+r83 | feng | 2004-10-05 16:46:21 -0700 (Tue, 05 Oct 2004) | 2 lines
+
+external forces
+
+------------------------------------------------------------------------
+r82 | feng | 2004-10-04 17:14:03 -0700 (Mon, 04 Oct 2004) | 2 lines
+
+all
+
+------------------------------------------------------------------------
+r81 | feng | 2004-10-01 16:25:55 -0700 (Fri, 01 Oct 2004) | 2 lines
+
+all
+
+------------------------------------------------------------------------
+r80 | feng | 2004-09-30 14:39:08 -0700 (Thu, 30 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r79 | feng | 2004-09-30 11:05:26 -0700 (Thu, 30 Sep 2004) | 2 lines
+
+add copy constructor in Quadrature Rule
+
+------------------------------------------------------------------------
+r78 | feng | 2004-09-29 18:54:23 -0700 (Wed, 29 Sep 2004) | 2 lines
+
+bug fixed in QuadratureRule
+
+------------------------------------------------------------------------
+r77 | feng | 2004-09-28 16:28:07 -0700 (Tue, 28 Sep 2004) | 2 lines
+
+numerically check shape functions
+
+------------------------------------------------------------------------
+r76 | feng | 2004-09-28 14:06:25 -0700 (Tue, 28 Sep 2004) | 2 lines
+
+compute new positions in Element/Test
+
+------------------------------------------------------------------------
+r75 | klug | 2004-09-26 15:23:45 -0700 (Sun, 26 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r74 | feng | 2004-09-23 09:38:23 -0700 (Thu, 23 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r73 | feng | 2004-09-23 09:38:14 -0700 (Thu, 23 Sep 2004) | 2 lines
+
+eigenvalues check in element
+
+------------------------------------------------------------------------
+r72 | feng | 2004-09-14 18:05:19 -0700 (Tue, 14 Sep 2004) | 2 lines
+
+all
+
+------------------------------------------------------------------------
+r71 | feng | 2004-09-14 18:05:07 -0700 (Tue, 14 Sep 2004) | 2 lines
+
+test
+
+------------------------------------------------------------------------
+r70 | klug | 2004-09-14 10:03:09 -0700 (Tue, 14 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r69 | feng | 2004-09-03 14:28:48 -0700 (Fri, 03 Sep 2004) | 2 lines
+
+dimensionless area and volume constraints
+
+------------------------------------------------------------------------
+r68 | klug | 2004-09-03 09:27:20 -0700 (Fri, 03 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r67 | klug | 2004-09-03 09:21:19 -0700 (Fri, 03 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r66 | klug | 2004-09-03 09:07:33 -0700 (Fri, 03 Sep 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r65 | feng | 2004-09-01 11:53:12 -0700 (Wed, 01 Sep 2004) | 2 lines
+
+modify the path name of output file
+
+------------------------------------------------------------------------
+r64 | feng | 2004-08-31 17:33:24 -0700 (Tue, 31 Aug 2004) | 2 lines
+
+color in paraview added
+
+------------------------------------------------------------------------
+r63 | feng | 2004-08-30 17:32:14 -0700 (Mon, 30 Aug 2004) | 2 lines
+
+volume constraint
+
+------------------------------------------------------------------------
+r62 | feng | 2004-08-27 16:36:24 -0700 (Fri, 27 Aug 2004) | 2 lines
+
+area constraint has problem
+
+------------------------------------------------------------------------
+r61 | feng | 2004-08-26 16:20:43 -0700 (Thu, 26 Aug 2004) | 2 lines
+
+homework
+
+------------------------------------------------------------------------
+r60 | feng | 2004-08-25 18:22:40 -0700 (Wed, 25 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r59 | feng | 2004-08-25 14:34:25 -0700 (Wed, 25 Aug 2004) | 2 lines
+
+check Consistency in Model
+
+------------------------------------------------------------------------
+r58 | feng | 2004-08-25 13:56:27 -0700 (Wed, 25 Aug 2004) | 2 lines
+
+checkConsistency in Body
+
+------------------------------------------------------------------------
+r57 | feng | 2004-08-25 10:33:23 -0700 (Wed, 25 Aug 2004) | 2 lines
+
+pressure fixed
+
+------------------------------------------------------------------------
+r56 | klug | 2004-08-25 10:25:34 -0700 (Wed, 25 Aug 2004) | 2 lines
+
+Fixed secant line search.
+
+------------------------------------------------------------------------
+r55 | feng | 2004-08-24 17:59:40 -0700 (Tue, 24 Aug 2004) | 2 lines
+
+constraint force is OK
+
+------------------------------------------------------------------------
+r54 | feng | 2004-08-23 18:12:27 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r53 | klug | 2004-08-23 15:31:21 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r52 | feng | 2004-08-23 13:29:29 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+solver ???
+
+------------------------------------------------------------------------
+r51 | feng | 2004-08-23 12:43:30 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+there still is a problem in Solver
+
+------------------------------------------------------------------------
+r50 | klug | 2004-08-23 11:09:55 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r49 | feng | 2004-08-23 10:06:57 -0700 (Mon, 23 Aug 2004) | 2 lines
+
+initialize pressure in the body class
+
+------------------------------------------------------------------------
+r48 | feng | 2004-08-22 17:14:30 -0700 (Sun, 22 Aug 2004) | 2 lines
+
+typo
+
+------------------------------------------------------------------------
+r47 | feng | 2004-08-22 17:10:33 -0700 (Sun, 22 Aug 2004) | 2 lines
+
+Concentrated force applied, and consistency check passed
+
+------------------------------------------------------------------------
+r46 | feng | 2004-08-22 15:03:09 -0700 (Sun, 22 Aug 2004) | 2 lines
+
+"BCS"
+
+------------------------------------------------------------------------
+r45 | feng | 2004-08-20 16:28:48 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+icosahedron.dat with 0, 1, 2, 3 and 4 times subidvision
+
+------------------------------------------------------------------------
+r44 | feng | 2004-08-20 16:13:22 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+add test files
+
+------------------------------------------------------------------------
+r43 | klug | 2004-08-20 15:27:04 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r42 | feng | 2004-08-20 14:36:18 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+pressure check passed
+
+------------------------------------------------------------------------
+r41 | feng | 2004-08-20 13:55:54 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+pressure need to be updated
+
+------------------------------------------------------------------------
+r40 | klug | 2004-08-20 13:09:09 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+Node compute function now sums forces to assemble residual.
+
+------------------------------------------------------------------------
+r39 | klug | 2004-08-20 12:15:26 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+Commented out velocity and acceleration stuff from Model and Body classes.
+
+------------------------------------------------------------------------
+r38 | klug | 2004-08-20 11:26:26 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r37 | klug | 2004-08-20 11:13:40 -0700 (Fri, 20 Aug 2004) | 2 lines
+
+Implemented  void LoopShellBody<Material_t>::getResidual()
+
+------------------------------------------------------------------------
+r36 | klug | 2004-08-19 17:41:00 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r35 | klug | 2004-08-19 17:41:00 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r34 | klug | 2004-08-19 17:34:14 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r33 | klug | 2004-08-19 15:13:40 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+LoopShell passes consistency check\! Yay\!
+
+------------------------------------------------------------------------
+r32 | klug | 2004-08-19 12:38:14 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+Moved triangular integration jacobian to LoopShell element.
+
+------------------------------------------------------------------------
+r31 | klug | 2004-08-19 12:37:06 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+Added consistency check for internal forces in LoopShell.
+
+------------------------------------------------------------------------
+r30 | klug | 2004-08-19 08:31:13 -0700 (Thu, 19 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r29 | feng | 2004-08-18 22:59:53 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+need think carefully
+
+------------------------------------------------------------------------
+r28 | feng | 2004-08-18 20:55:58 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+Boundary conditions
+
+------------------------------------------------------------------------
+r27 | feng | 2004-08-18 16:49:39 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+Forces OK
+
+------------------------------------------------------------------------
+r26 | klug | 2004-08-18 15:10:21 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r25 | klug | 2004-08-18 14:29:02 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+Modifications for new Node classes in Body classes.
+
+------------------------------------------------------------------------
+r24 | klug | 2004-08-18 10:47:40 -0700 (Wed, 18 Aug 2004) | 2 lines
+
+Makefile.am
+
+------------------------------------------------------------------------
+r23 | klug | 2004-08-17 23:44:42 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r22 | klug | 2004-08-17 23:16:55 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r21 | klug | 2004-08-17 23:16:26 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Added Model and Solver classes.
+
+------------------------------------------------------------------------
+r20 | klug | 2004-08-17 19:13:03 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r19 | klug | 2004-08-17 18:14:53 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r18 | klug | 2004-08-17 17:59:57 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Added a couple of assertions to verify that the shape functions (derivatives) add up to 1 (0)
+
+------------------------------------------------------------------------
+r17 | feng | 2004-08-17 16:48:43 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r16 | klug | 2004-08-17 15:07:31 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Renamed Node as OldNode.  Created new node templates Node, PositionNode, MotionNode, and class MultiplierNode.
+
+------------------------------------------------------------------------
+r15 | klug | 2004-08-17 11:16:54 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r14 | klug | 2004-08-17 10:38:23 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Added typedefs for NodeContainer and NodeIterator
+
+------------------------------------------------------------------------
+r13 | klug | 2004-08-17 01:47:02 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Body/Body.h
+
+------------------------------------------------------------------------
+r12 | klug | 2004-08-17 01:46:30 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r11 | klug | 2004-08-17 01:45:32 -0700 (Tue, 17 Aug 2004) | 2 lines
+
+Put everything in the voom namespace.
+
+------------------------------------------------------------------------
+r10 | feng | 2004-08-16 17:41:17 -0700 (Mon, 16 Aug 2004) | 2 lines
+
+all
+
+------------------------------------------------------------------------
+r9 | feng | 2004-08-16 17:39:30 -0700 (Mon, 16 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r8 | feng | 2004-08-16 17:17:22 -0700 (Mon, 16 Aug 2004) | 2 lines
+
+add HDS related files
+
+------------------------------------------------------------------------
+r7 | feng | 2004-08-16 17:16:26 -0700 (Mon, 16 Aug 2004) | 2 lines
+
+add test files for Body class
+
+------------------------------------------------------------------------
+r6 | feng | 2004-08-16 17:15:41 -0700 (Mon, 16 Aug 2004) | 2 lines
+
+add Body class
+
+------------------------------------------------------------------------
+r5 | klug | 2004-08-10 10:54:29 -0700 (Tue, 10 Aug 2004) | 2 lines
+
+*** empty log message ***
+
+------------------------------------------------------------------------
+r4 | feng | 2004-08-10 10:00:18 -0700 (Tue, 10 Aug 2004) | 2 lines
+
+VOOM -> voom
+
+------------------------------------------------------------------------
+r3 | feng | 2004-08-09 19:38:37 -0700 (Mon, 09 Aug 2004) | 2 lines
+
+corret configure.in
+
+------------------------------------------------------------------------
+r2 | feng | 2004-08-09 19:28:25 -0700 (Mon, 09 Aug 2004) | 2 lines
+
+Initial revision
+
+------------------------------------------------------------------------
+r1 | (no author) | 2004-08-09 19:28:25 -0700 (Mon, 09 Aug 2004) | 1 line
+
+New repository initialized by cvs2svn.
+------------------------------------------------------------------------

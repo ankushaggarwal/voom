@@ -1,0 +1,12 @@
+?      src/Applications/TwoPhaseShell
+?      src/Applications/Meshfree
+?      src/Applications/Indent3D
+?      src/Body/SkewHexonBody.h
+?      src/Body/MFBodyDoubleWell.h
+?      src/Body/SkewHexonBody.icc
+?      src/Body/MFBodyDoubleWell.icc
+M      src/Body/C0MembraneBody.icc
+M      src/Body/C0MembraneBody.h
+M      src/Model/Model.cc
+M      src/Model/Model.h
+?      src/Elements/ContactSNNI.h

@@ -1,0 +1,1007 @@
+
+//-----------------------------------------------------------	//-----------------------------------------------------------
+//								//
+//                    William S. Klug, Feng Feng		//                    William S. Klug, Feng Feng
+//                University of California Los Angeles		//                University of California Los Angeles
+//                 (C) 2004-2007 All Rights Reserved		//                 (C) 2004-2007 All Rights Reserved
+//								//
+//-----------------------------------------------------------	//-----------------------------------------------------------
+
+/*! 								/*! 
+  \file LoopShellBody.cc					  \file LoopShellBody.cc
+
+  \brief Implementation of the LoopShellBody class, correspon	  \brief Implementation of the LoopShellBody class, correspon
+  the concept of a thin shell body.  The body is composed of	  the concept of a thin shell body.  The body is composed of
+  subdivision shell elements					  subdivision shell elements
+
+*/								*/
+
+#include <string>						#include <string>
+#include <fstream>						#include <fstream>
+#include <ctime>						#include <ctime>
+#include <blitz/array-impl.h>					#include <blitz/array-impl.h>
+#include "HalfEdgeMesh.h"					#include "HalfEdgeMesh.h"
+#include "LoopGhostBC.h"					#include "LoopGhostBC.h"
+
+#if defined(_OPENMP)						#if defined(_OPENMP)
+#include <omp.h>						#include <omp.h>
+#endif								#endif
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+#include <mpe.h>						#include <mpe.h>
+#endif								#endif
+
+namespace voom							namespace voom
+{								{
+  using std::endl;						  using std::endl;
+  using std::cout;						  using std::cout;
+
+  template<class Material_t>					  template<class Material_t>
+  void LoopShellBody<Material_t>::initializeBody		  void LoopShellBody<Material_t>::initializeBody
+  (Material_t material,						  (Material_t material,
+   ConnectivityContainer connectivities,			   ConnectivityContainer connectivities,
+   const NodeContainer & nodes,					   const NodeContainer & nodes,
+   const unsigned quadOrder,					   const unsigned quadOrder,
+   const double pressure,					   const double pressure,
+   const double tension,					   const double tension,
+   const double totalCurvatureForce,				   const double totalCurvatureForce,
+   const double penaltyVolume,					   const double penaltyVolume,
+   const double penaltyArea,					   const double penaltyArea,
+   const double penaltyTotalCurvature,				   const double penaltyTotalCurvature,
+   GlobalConstraint volumeConstraint,				   GlobalConstraint volumeConstraint,
+   GlobalConstraint areaConstraint,				   GlobalConstraint areaConstraint,
+   GlobalConstraint totalCurvatureConstraint   ) {		   GlobalConstraint totalCurvatureConstraint   ) {
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+  MPI_Comm_size( MPI_COMM_WORLD, &_nProcessors );		  MPI_Comm_size( MPI_COMM_WORLD, &_nProcessors );
+  MPI_Comm_rank( MPI_COMM_WORLD, &_processorRank );		  MPI_Comm_rank( MPI_COMM_WORLD, &_processorRank );
+#endif								#endif
+
+    _penaltyArea = penaltyArea;					    _penaltyArea = penaltyArea;
+    _penaltyVolume = penaltyVolume;				    _penaltyVolume = penaltyVolume;
+    _penaltyTotalCurvature = penaltyTotalCurvature; 		    _penaltyTotalCurvature = penaltyTotalCurvature; 
+    _areaConstraint = areaConstraint;				    _areaConstraint = areaConstraint;
+    _volumeConstraint = volumeConstraint;			    _volumeConstraint = volumeConstraint;
+    _totalCurvatureConstraint = totalCurvatureConstraint;	    _totalCurvatureConstraint = totalCurvatureConstraint;
+    _volume = 0.0;						    _volume = 0.0;
+    _area = 0.0;						    _area = 0.0;
+    _totalCurvature = 0.0;					    _totalCurvature = 0.0;
+	  								  
+    // initialize _nDOF and find shell (position) nodes		    // initialize _nDOF and find shell (position) nodes
+
+    _dof = 0;							    _dof = 0;
+    _nodes = nodes;						    _nodes = nodes;
+    for(ConstNodeIterator n=_nodes.begin(); n!=_nodes.end(); 	    for(ConstNodeIterator n=_nodes.begin(); n!=_nodes.end(); 
+      _dof+=(*n)->dof();					      _dof+=(*n)->dof();
+      FeNode_t * sn = dynamic_cast<FeNode_t*>(*n);		      FeNode_t * sn = dynamic_cast<FeNode_t*>(*n);
+      if( sn ) _shellNodes.push_back(sn); 			      if( sn ) _shellNodes.push_back(sn); 
+    }								    }
+        							        
+    NodeBase::DofIndexMap idx(1);				    NodeBase::DofIndexMap idx(1);
+    idx[0]=-1;							    idx[0]=-1;
+    _pressureNode = new MultiplierNode(_nodes.size(), idx, pr	    _pressureNode = new MultiplierNode(_nodes.size(), idx, pr
+    _fixedPressure = pressure;					    _fixedPressure = pressure;
+
+    _tensionNode = new MultiplierNode(_nodes.size(), idx, ten	    _tensionNode = new MultiplierNode(_nodes.size(), idx, ten
+    _fixedTension  = tension;					    _fixedTension  = tension;
+
+    _totalCurvatureNode = new MultiplierNode(_nodes.size(), i	    _totalCurvatureNode = new MultiplierNode(_nodes.size(), i
+    _fixedTotalCurvatureForce = totalCurvatureForce;		    _fixedTotalCurvatureForce = totalCurvatureForce;
+
+    std::cout << "LoopShellBody::initializeBody(): dof = "<< 	    std::cout << "LoopShellBody::initializeBody(): dof = "<< 
+	      << std::endl;						      << std::endl;
+
+    //-------------------------------------------------------	    //-------------------------------------------------------
+    // build elements using simple data structure		    // build elements using simple data structure
+    std::cout << "Building elements..." << std::endl;		    std::cout << "Building elements..." << std::endl;
+    clock_t t1=clock();						    clock_t t1=clock();
+
+    HalfEdgeMesh * mesh = new HalfEdgeMesh(connectivities, _s	    HalfEdgeMesh * mesh = new HalfEdgeMesh(connectivities, _s
+    								    
+    // add a boundary layer of ghost faces and vertices	      |	    // add a boundary layer of ghost faces and vertices for e
+
+    // step 1: assuming a single boundary, walk around it sta |	    std::cout << "Adding ghost vertices and faces along " 
+    // from one edge					      |		      << mesh->boundaryLoops.size() << " boundary loo
+							      |		      << std::endl;
+    // find a boundary edge to start			      |	    int numberGhostVertices=0;
+    HalfEdge * Hstart=0;				      |	    int numberGhostFaces=0;
+    for(int h=0; h<mesh->halfEdges.size(); h++) {	      |	    for( int L=0; L<mesh->boundaryLoops.size(); L++ ) {
+      HalfEdge * H = mesh->halfEdges[h];		      |	//       std::cout << "Loop " << L << " of " << mesh->boundar
+      if( H->opposite == 0 ) {				      |	// 		<< std::endl;
+	Hstart = H; 					      <
+	break;						      <
+      }							      <
+    }							      <
+
+    // found one, now walk around boundary, storing boundary  |	      std::vector<HalfEdge*> & boundaryEdges = mesh->boundary
+    // order						      <
+    std::vector< HalfEdge * > boundaryEdges;		      <
+    if( Hstart !=0 ) {					      <
+      HalfEdge * H = Hstart; 				      <
+      do {						      <
+	boundaryEdges.push_back( H );			      <
+	// find next boundary edge (CCW around the boundary)  <
+	// walking around H's vertex CW			      <
+	H = H->next;					      <
+	while ( H->opposite != 0 ) {			      <
+	  H = H->opposite->next;			      <
+	}						      <
+      } while ( H != Hstart );				      <
+    }							      <
+
+    std::cout << "Identified " << boundaryEdges.size() << " b |	      // step 1: add a ghost node and face for each boundary 
+	      << std::endl;				      <
+    							      <
+    if( boundaryEdges.size() > 0 ) {			      <
+      // step 2: add a ghost node and face for each boundary  <
+      // also create ghostBC for each boundary edge		      // also create ghostBC for each boundary edge
+      for(int h=0; h<boundaryEdges.size(); h++) {		      for(int h=0; h<boundaryEdges.size(); h++) {
+							      >
+	HalfEdge * H = boundaryEdges[h];				HalfEdge * H = boundaryEdges[h];
+									
+							      >	// 	std::cout << "\tH=" << H->id ;
+							      >
+	// add new ghost node						// add new ghost node
+	int V = _shellNodes.size();					int V = _shellNodes.size();
+	NodeBase::DofIndexMap idx(3,-1);				NodeBase::DofIndexMap idx(3,-1);
+	Vector3D X(0.0);						Vector3D X(0.0);
+	FeNode_t * N = new FeNode_t(V, idx, X, X);			FeNode_t * N = new FeNode_t(V, idx, X, X);
+	_shellNodes.push_back(N);					_shellNodes.push_back(N);
+							      >		numberGhostVertices++;
+									
+	// Create ghost triangle V0 V2 V and ghostBC for adja		// Create ghost triangle V0 V2 V and ghostBC for adja
+	//      							//      
+	//          V							//          V
+	//         / \							//         / \
+	//       /     \						//       /     \
+	//     V0-------V2						//     V0-------V2
+	//       \  H  /						//       \  H  /
+	// H->next \ /  H->prev						// H->next \ /  H->prev
+	//          V1							//          V1
+	//								//
+	int V0 = H->vertex->id;						int V0 = H->vertex->id;
+	int V1 = H->next->vertex->id;					int V1 = H->next->vertex->id;
+	int V2 = H->prev->vertex->id;					int V2 = H->prev->vertex->id;
+
+	FeNode_t * N0 = _shellNodes[ V0 ];				FeNode_t * N0 = _shellNodes[ V0 ];
+	FeNode_t * N1 = _shellNodes[ V1 ];				FeNode_t * N1 = _shellNodes[ V1 ];
+	FeNode_t * N2 = _shellNodes[ V2 ];				FeNode_t * N2 = _shellNodes[ V2 ];
+
+	ElementConnectivity c;						ElementConnectivity c;
+	c = V0, V2, V;							c = V0, V2, V;
+	connectivities.push_back(c);					connectivities.push_back(c);
+							      >		numberGhostFaces++;
+							      >		
+							      >	// 	std::cout << "\tF=" << connectivities.size()-1 
+							      >	// 		  << "\t(" << V0 
+							      >	// 		  << ", "  << V2
+							      >	// 		  << ", "  << V
+							      >	// 		  << ")" << std::endl;
+							      >
+
+	LoopGhostBC * bc = new LoopGhostBC(N0,N1,N2,N);			LoopGhostBC * bc = new LoopGhostBC(N0,N1,N2,N);
+	_constraints.push_back( bc );					_constraints.push_back( bc );
+      								      
+      }								      }
+
+      // step 3: add ghost faces			      |	      // step 2: add ghost faces
+      // connecting neighboring ghost vertices			      // connecting neighboring ghost vertices
+      for(int h=0; h<boundaryEdges.size(); h++) {		      for(int h=0; h<boundaryEdges.size(); h++) {
+	//            							//            
+	//      VHH-------VH						//      VHH-------VH
+	//       / \ Add / \  						//       / \ Add / \  
+	//     /     \ /     \						//     /     \ /     \
+	//    *-------V-------*						//    *-------V-------*
+	//        HH      H						//        HH      H
+	//								//
+	HalfEdge * H = boundaryEdges[h];				HalfEdge * H = boundaryEdges[h];
+	HalfEdge * HH = boundaryEdges[(h+1) % boundaryEdges.s		HalfEdge * HH = boundaryEdges[(h+1) % boundaryEdges.s
+
+	int V = H->vertex->id;						int V = H->vertex->id;
+	int VH = mesh->vertices.size() + h;		      |		int VH = _shellNodes.size() - boundaryEdges.size() + 
+	int VHH = mesh->vertices.size() + (h+1) % boundaryEdg |		int VHH = _shellNodes.size() - boundaryEdges.size() +
+							      >	// 	int VH = mesh->vertices.size() + h;
+							      >	// 	int VHH = mesh->vertices.size() + (h+1) % boundaryEdg
+
+	ElementConnectivity c;						ElementConnectivity c;
+	c = V, VH, VHH;							c = V, VH, VHH;
+	connectivities.push_back(c);					connectivities.push_back(c);
+							      >		numberGhostFaces++;
+							      >	// 	std::cout << "\t\tF=" << connectivities.size()-1 
+							      >	// 		  << "\t(" << V 
+							      >	// 		  << ", "  << VH
+							      >	// 		  << ", "  << VHH
+							      >	// 		  << ")" << std::endl;
+      }								      }
+							      <
+      // rebuild halfedge mesh				      <
+      delete mesh;					      <
+      mesh = new HalfEdgeMesh(connectivities, _shellNodes.siz <
+    }								    }
+							      >
+							      >	    std::cout << "Added " << numberGhostVertices << " ghost v
+							      >		      << numberGhostFaces << " ghost faces." << std::
+							      >
+							      >	    std::cout << "Rebuilding halfedge mesh"<<std::endl;
+							      >	    std::cout.flush();
+							      >
+							      >	    // rebuild halfedge mesh
+							      >	    delete mesh;
+							      >	    mesh = new HalfEdgeMesh(connectivities, _shellNodes.size(
+							      >	    
+							      >	    std::cout << "." << std::endl;
+							      >
+							      >	//     // step 1: assuming a single boundary, walk around it 
+							      >	//     // from one edge
+							      >
+							      >	//     // find a boundary edge to start
+							      >	//     HalfEdge * Hstart=0;
+							      >	//     for(int h=0; h<mesh->halfEdges.size(); h++) {
+							      >	//       HalfEdge * H = mesh->halfEdges[h];
+							      >	//       if( H->opposite == 0 ) {
+							      >	// 	Hstart = H; 
+							      >	// 	break;
+							      >	//       }
+							      >	//     }
+							      >
+							      >	//     // found one, now walk around boundary, storing bounda
+							      >	//     // order
+							      >	//     std::vector< HalfEdge * > boundaryEdges;
+							      >	//     if( Hstart !=0 ) {
+							      >	//       HalfEdge * H = Hstart; 
+							      >	//       do {
+							      >	// 	boundaryEdges.push_back( H );
+							      >	// 	// find next boundary edge (CCW around the boundary) 
+							      >	// 	// walking around H's vertex CW
+							      >	// 	H = H->next;
+							      >	// 	while ( H->opposite != 0 ) {
+							      >	// 	  H = H->opposite->next;
+							      >	// 	}
+							      >	//       } while ( H != Hstart );
+							      >	//     }
+							      >
+							      >	//     std::cout << "Identified " << boundaryEdges.size() << 
+							      >	// 	      << std::endl;
+							      >	    
+							      >	//     if( boundaryEdges.size() > 0 ) {
+							      >	//       // step 2: add a ghost node and face for each bounda
+							      >	//       // also create ghostBC for each boundary edge
+							      >	//       for(int h=0; h<boundaryEdges.size(); h++) {
+							      >	// 	HalfEdge * H = boundaryEdges[h];
+							      >		
+							      >	// 	// add new ghost node
+							      >	// 	int V = _shellNodes.size();
+							      >	// 	NodeBase::DofIndexMap idx(3,-1);
+							      >	// 	Vector3D X(0.0);
+							      >	// 	FeNode_t * N = new FeNode_t(V, idx, X, X);
+							      >	// 	_shellNodes.push_back(N);
+							      >		
+							      >	// 	// Create ghost triangle V0 V2 V and ghostBC for adja
+							      >	// 	//      
+							      >	// 	//          V
+							      >	// 	//         / \
+							      >	// 	//       /     \
+							      >	// 	//     V0-------V2
+							      >	// 	//       \  H  /
+							      >	// 	// H->next \ /  H->prev
+							      >	// 	//          V1
+							      >	// 	//
+							      >	// 	int V0 = H->vertex->id;
+							      >	// 	int V1 = H->next->vertex->id;
+							      >	// 	int V2 = H->prev->vertex->id;
+							      >
+							      >	// 	FeNode_t * N0 = _shellNodes[ V0 ];
+							      >	// 	FeNode_t * N1 = _shellNodes[ V1 ];
+							      >	// 	FeNode_t * N2 = _shellNodes[ V2 ];
+							      >
+							      >	// 	ElementConnectivity c;
+							      >	// 	c = V0, V2, V;
+							      >	// 	connectivities.push_back(c);
+							      >
+							      >	// 	LoopGhostBC * bc = new LoopGhostBC(N0,N1,N2,N);
+							      >	// 	_constraints.push_back( bc );
+							      >	      
+							      >	//       }
+							      >
+							      >	//       // step 3: add ghost faces
+							      >	//       // connecting neighboring ghost vertices
+							      >	//       for(int h=0; h<boundaryEdges.size(); h++) {
+							      >	// 	//            
+							      >	// 	//      VHH-------VH
+							      >	// 	//       / \ Add / \  
+							      >	// 	//     /     \ /     \
+							      >	// 	//    *-------V-------*
+							      >	// 	//        HH      H
+							      >	// 	//
+							      >	// 	HalfEdge * H = boundaryEdges[h];
+							      >	// 	HalfEdge * HH = boundaryEdges[(h+1) % boundaryEdges.s
+							      >
+							      >	// 	int V = H->vertex->id;
+							      >	// 	int VH = mesh->vertices.size() + h;
+							      >	// 	int VHH = mesh->vertices.size() + (h+1) % boundaryEdg
+							      >
+							      >	// 	ElementConnectivity c;
+							      >	// 	c = V, VH, VHH;
+							      >	// 	connectivities.push_back(c);
+							      >	//       }
+							      >
+							      >	//       // rebuild halfedge mesh
+							      >	//       delete mesh;
+							      >	//       mesh = new HalfEdgeMesh(connectivities, _shellNodes.
+							      >	//     }
+       								       
+    for(int f=0; f<mesh->faces.size(); f++) {			    for(int f=0; f<mesh->faces.size(); f++) {
+      Face * F = mesh->faces[f];				      Face * F = mesh->faces[f];
+      // get valences of corners and find one-ring of		      // get valences of corners and find one-ring of
+      // next-nearest-neighbor vertices				      // next-nearest-neighbor vertices
+      typename LoopShell<Material_t>::NodeContainer nds;	      typename LoopShell<Material_t>::NodeContainer nds;
+      CornerValences v;						      CornerValences v;
+      //don't create element for this face if any of the vert	      //don't create element for this face if any of the vert
+      if( F->halfEdges[0]->vertex->boundary ) continue;		      if( F->halfEdges[0]->vertex->boundary ) continue;
+      if( F->halfEdges[1]->vertex->boundary ) continue;		      if( F->halfEdges[1]->vertex->boundary ) continue;
+      if( F->halfEdges[2]->vertex->boundary ) continue;		      if( F->halfEdges[2]->vertex->boundary ) continue;
+
+      for(int a=0; a<3; a++) {					      for(int a=0; a<3; a++) {
+	// add corner vertices						// add corner vertices
+	HalfEdge * H = F->halfEdges[a];					HalfEdge * H = F->halfEdges[a];
+	nds.push_back( _shellNodes[H->vertex->id] );			nds.push_back( _shellNodes[H->vertex->id] );
+	// valence is the number of incident halfedges			// valence is the number of incident halfedges
+	v(a) = H->vertex->halfEdges.size();				v(a) = H->vertex->halfEdges.size();
+      }								      }
+      // walk around the one-ring adding vertices		      // walk around the one-ring adding vertices
+      //							      //
+      // Start by walking CCW through the vertices incident t	      // Start by walking CCW through the vertices incident t
+      // second corner vertex.  Stop at first vertex incident	      // second corner vertex.  Stop at first vertex incident
+      // third corner vertex.					      // third corner vertex.
+      int v1=3;							      int v1=3;
+      for(HalfEdge * H = F->halfEdges[1]->opposite->next; 	      for(HalfEdge * H = F->halfEdges[1]->opposite->next; 
+	  H->vertex->id != F->halfEdges[2]->opposite->next->v		  H->vertex->id != F->halfEdges[2]->opposite->next->v
+	  H = H->next->opposite->next  ) {				  H = H->next->opposite->next  ) {
+	nds.push_back( _shellNodes[H->vertex->id] );			nds.push_back( _shellNodes[H->vertex->id] );
+	v1++;								v1++;
+      }								      }
+      // Now continue CCW through the vertices incident to th	      // Now continue CCW through the vertices incident to th
+      // corner vertex. Stop at first vertex incident to the 	      // corner vertex. Stop at first vertex incident to the 
+      // corner vertex.						      // corner vertex.
+      int v2=3;							      int v2=3;
+      for(HalfEdge * H = F->halfEdges[2]->opposite->next; 	      for(HalfEdge * H = F->halfEdges[2]->opposite->next; 
+	  H->vertex->id != F->halfEdges[0]->opposite->next->v		  H->vertex->id != F->halfEdges[0]->opposite->next->v
+	  H = H->next->opposite->next  ) {				  H = H->next->opposite->next  ) {
+	nds.push_back( _shellNodes[H->vertex->id] );			nds.push_back( _shellNodes[H->vertex->id] );
+	v2++;								v2++;
+      }								      }
+      // Now continue CCW through the vertices incident to th	      // Now continue CCW through the vertices incident to th
+      // corner vertex. Stop at first vertex incident to the 	      // corner vertex. Stop at first vertex incident to the 
+      // corner vertex.						      // corner vertex.
+      int v0=3;							      int v0=3;
+      for(HalfEdge * H = F->halfEdges[0]->opposite->next; 	      for(HalfEdge * H = F->halfEdges[0]->opposite->next; 
+	  H->vertex->id != F->halfEdges[1]->opposite->next->v		  H->vertex->id != F->halfEdges[1]->opposite->next->v
+	  H = H->next->opposite->next  ) {				  H = H->next->opposite->next  ) {
+	nds.push_back( _shellNodes[H->vertex->id] );			nds.push_back( _shellNodes[H->vertex->id] );
+	v0++;								v0++;
+      }								      }
+      assert(v0==v(0));						      assert(v0==v(0));
+      assert(v1==v(1));						      assert(v1==v(1));
+      assert(v2==v(2));						      assert(v2==v(2));
+      const unsigned npn = v(0) + v(1) + v(2) - 6;		      const unsigned npn = v(0) + v(1) + v(2) - 6;
+      								      
+      FeElement_t * elem 					      FeElement_t * elem 
+	= new FeElement_t( TriangleQuadrature(quadOrder), 		= new FeElement_t( TriangleQuadrature(quadOrder), 
+			   material,							   material,
+			   nds,								   nds,
+			   v,								   v,
+			   _pressureNode,						   _pressureNode,
+			   _tensionNode,						   _tensionNode,
+			   _totalCurvatureNode,						   _totalCurvatureNode,
+			   _volumeConstraint,						   _volumeConstraint,
+			   _areaConstraint,						   _areaConstraint,
+			   _totalCurvatureConstraint					   _totalCurvatureConstraint
+			   );								   );
+      _shells.push_back(elem);					      _shells.push_back(elem);
+
+      _active.push_back(true);					      _active.push_back(true);
+      								      
+    }								    }
+
+    delete mesh;						    delete mesh;
+
+    _elements.reserve(_shells.size());				    _elements.reserve(_shells.size());
+    for(ConstFeElementIterator e=_shells.begin(); e!=_shells.	    for(ConstFeElementIterator e=_shells.begin(); e!=_shells.
+      _elements.push_back(*e);					      _elements.push_back(*e);
+    }								    }
+
+    clock_t t2=clock();						    clock_t t2=clock();
+    std::cout << "Done building elements.  Elapsed time: "	    std::cout << "Done building elements.  Elapsed time: "
+	      << (double)(t2-t1)/CLOCKS_PER_SEC				      << (double)(t2-t1)/CLOCKS_PER_SEC
+	      << std::endl;						      << std::endl;
+    std::cout<< "Number of shells "<<_shells.size()<<"\nNumbe	    std::cout<< "Number of shells "<<_shells.size()<<"\nNumbe
+    // compute mechanics					    // compute mechanics
+    compute(false, false, false);				    compute(false, false, false);
+    _prescribedVolume = _volume;				    _prescribedVolume = _volume;
+    _prescribedArea = _area;					    _prescribedArea = _area;
+
+    _prescribedTotalCurvature = _totalCurvature;		    _prescribedTotalCurvature = _totalCurvature;
+    //std::cout << "Set prescribed total curvature: " << _pre	    //std::cout << "Set prescribed total curvature: " << _pre
+
+
+  }								  }
+
+  //! set the reference configuration to an equilateral trian	  //! set the reference configuration to an equilateral trian
+  template< class Material_t >					  template< class Material_t >
+  void LoopShellBody<Material_t>::SetRefConfiguration(double 	  void LoopShellBody<Material_t>::SetRefConfiguration(double 
+  {								  {
+    int sBegin=0, sEnd=_shells.size();				    int sBegin=0, sEnd=_shells.size();
+    for(int si=sBegin; si<sEnd; si++) {				    for(int si=sBegin; si<sEnd; si++) {
+      if( !_active[si] ) continue;				      if( !_active[si] ) continue;
+      FeElement_t* s=_shells[si];				      FeElement_t* s=_shells[si];
+      s->SetRefConfiguration(edge);				      s->SetRefConfiguration(edge);
+     }								     }
+  }								  }
+
+							      >	  //! set the spontaneous curvature as the reference configur
+							      >	  template< class Material_t >
+							      >	  void LoopShellBody<Material_t>::SetRefMeanCurvature()
+							      >	  {
+							      >	    int sBegin=0, sEnd=_shells.size();
+							      >	    for(int si=sBegin; si<sEnd; si++) {
+							      >	      if( !_active[si] ) continue;
+							      >	      FeElement_t* s=_shells[si];
+							      >	      s->SetRefMeanCurvature();
+							      >	     }
+							      >	  }
+							      >
+  //! compute							  //! compute
+  template< class Material_t >					  template< class Material_t >
+  void LoopShellBody<Material_t>::compute( bool f0, bool f1, 	  void LoopShellBody<Material_t>::compute( bool f0, bool f1, 
+  { 								  { 
+    								    
+//     if(f2) _computeStiffness();				//     if(f2) _computeStiffness();
+
+    int eBegin=0, eEnd=_elements.size();			    int eBegin=0, eEnd=_elements.size();
+    int sBegin=0, sEnd=_shells.size();				    int sBegin=0, sEnd=_shells.size();
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    MPE_Decomp1d( _elements.size(), _nProcessors, _processorR	    MPE_Decomp1d( _elements.size(), _nProcessors, _processorR
+		  &eBegin, &eEnd );						  &eBegin, &eEnd );
+    eBegin--;							    eBegin--;
+    MPE_Decomp1d( _shells.size(), _nProcessors, _processorRan	    MPE_Decomp1d( _shells.size(), _nProcessors, _processorRan
+		  &sBegin, &sEnd );						  &sBegin, &sEnd );
+    sBegin--;							    sBegin--;
+//     std::cout << _processorRank << ": [" << eBegin << "," 	//     std::cout << _processorRank << ": [" << eBegin << "," 
+// 	      << " of " << _elements.size() << " elements." <	// 	      << " of " << _elements.size() << " elements." <
+//     MPI_Finalize();						//     MPI_Finalize();
+//     exit(0);							//     exit(0);
+#endif								#endif
+
+    // Predictor/corrector approach for constraint		    // Predictor/corrector approach for constraint
+    for(ConstraintIterator c=_constraints.begin(); c!=_constr	    for(ConstraintIterator c=_constraints.begin(); c!=_constr
+      (*c)->predict();						      (*c)->predict();
+    }								    }
+
+
+    //								    //
+    // compute element areas and volumes			    // compute element areas and volumes
+
+#ifdef _OPENMP							#ifdef _OPENMP	
+#pragma omp parallel for 			\		#pragma omp parallel for 			\
+  schedule(static) default(shared)				  schedule(static) default(shared)		
+#endif	      							#endif	      
+     for(int si=sBegin; si<sEnd; si++) {			     for(int si=sBegin; si<sEnd; si++) {
+       if( !_active[si] ) continue;				       if( !_active[si] ) continue;
+       FeElement_t* s=_shells[si];				       FeElement_t* s=_shells[si];
+       s->compute( false,false,false );				       s->compute( false,false,false );
+     }								     }
+
+      double volume = 0.0;					      double volume = 0.0;
+      double area = 0.0;					      double area = 0.0;
+      double totalCurvature = 0.0;				      double totalCurvature = 0.0;
+// For some reason, icc-9.1 doesn't like the reduction clause	// For some reason, icc-9.1 doesn't like the reduction clause
+// I think it is a bug in icc. -WSK				// I think it is a bug in icc. -WSK
+
+// #ifdef _OPENMP						// #ifdef _OPENMP	
+// #pragma omp parallel for 			\		// #pragma omp parallel for 			\
+//   schedule(static) default(shared)		\		//   schedule(static) default(shared)		\
+//   reduction(+:V) reduction(+:A) 				//   reduction(+:V) reduction(+:A) 
+// #endif	      						// #endif	      
+      for(int si=sBegin; si<sEnd; si++) {			      for(int si=sBegin; si<sEnd; si++) {
+	if( !_active[si] ) continue;					if( !_active[si] ) continue;
+	FeElement_t* s=_shells[si];					FeElement_t* s=_shells[si];
+	volume += s->volume();     					volume += s->volume();     
+	area += s->area();						area += s->area();
+	totalCurvature += s->totalCurvature();				totalCurvature += s->totalCurvature();
+      }								      }
+
+      _volume=volume;						      _volume=volume;
+      _area=area;						      _area=area;
+      _totalCurvature=totalCurvature;				      _totalCurvature=totalCurvature;
+
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+      double myVolume=_volume;					      double myVolume=_volume;
+      MPI_Allreduce(&myVolume, &_volume, 1, MPI_DOUBLE, 	      MPI_Allreduce(&myVolume, &_volume, 1, MPI_DOUBLE, 
+		    MPI_SUM, MPI_COMM_WORLD);					    MPI_SUM, MPI_COMM_WORLD);
+      double myArea=_area;					      double myArea=_area;
+      MPI_Allreduce(&myArea, &_area, 1, MPI_DOUBLE, 		      MPI_Allreduce(&myArea, &_area, 1, MPI_DOUBLE, 
+		    MPI_SUM, MPI_COMM_WORLD);					    MPI_SUM, MPI_COMM_WORLD);
+#endif 								#endif 
+      //std::cout << "Body volume = " << _volume << std::endl	      //std::cout << "Body volume = " << _volume << std::endl
+
+      // if total volume is less than 0, the element faces ma	      // if total volume is less than 0, the element faces ma
+      // incorrectly oriented.					      // incorrectly oriented.
+//       if (_volume <= 0.0){ 					//       if (_volume <= 0.0){ 
+// 	std::cout << "The current volume is less than Zero an	// 	std::cout << "The current volume is less than Zero an
+// 		  << _volume					// 		  << _volume
+// 		  << std::endl					// 		  << std::endl
+// 		  << "Element faces may be incorrectly orient	// 		  << "Element faces may be incorrectly orient
+// 		  << std::endl;					// 		  << std::endl;
+// 	print("NonPositiveVolume");				// 	print("NonPositiveVolume");
+
+	//exit(0);							//exit(0);
+//       }							//       }
+
+    double dV = _volume - _prescribedVolume;			    double dV = _volume - _prescribedVolume;	
+    double dA = _area - _prescribedArea;			    double dA = _area - _prescribedArea;
+    double dtc = _totalCurvature - _prescribedTotalCurvature;	    double dtc = _totalCurvature - _prescribedTotalCurvature;
+    								    
+    if(f0) {							    if(f0) {
+      _energy = 0.0;						      _energy = 0.0;
+      								      
+      if( _volumeConstraint == penalty || _volumeConstraint =	      if( _volumeConstraint == penalty || _volumeConstraint =
+	_energy += 0.5 * _penaltyVolume * sqr(dV/_prescribedV		_energy += 0.5 * _penaltyVolume * sqr(dV/_prescribedV
+      }								      }
+      if( _volumeConstraint == multiplier || _volumeConstrain	      if( _volumeConstraint == multiplier || _volumeConstrain
+	_energy += - _fixedPressure * dV;				_energy += - _fixedPressure * dV;
+      }								      }
+      								      
+
+      if( _areaConstraint == penalty || _areaConstraint == au	      if( _areaConstraint == penalty || _areaConstraint == au
+	_energy += 0.5 * _penaltyArea * sqr(dA/_prescribedAre		_energy += 0.5 * _penaltyArea * sqr(dA/_prescribedAre
+      }								      }
+      if( _areaConstraint == multiplier || _areaConstraint ==	      if( _areaConstraint == multiplier || _areaConstraint ==
+	_energy += _fixedTension * dA;					_energy += _fixedTension * dA;
+      }								      }
+      								      
+
+      if( _totalCurvatureConstraint == penalty || _totalCurva	      if( _totalCurvatureConstraint == penalty || _totalCurva
+	_energy += 0.5 * _penaltyTotalCurvature * sqr(dtc/_pr		_energy += 0.5 * _penaltyTotalCurvature * sqr(dtc/_pr
+      }								      }
+      if( _totalCurvatureConstraint == multiplier || _totalCu	      if( _totalCurvatureConstraint == multiplier || _totalCu
+	_energy += _fixedTotalCurvatureForce * dtc;			_energy += _fixedTotalCurvatureForce * dtc;
+      }								      }
+
+    }								    }
+    								    
+    double pressure = 0.0;					    double pressure = 0.0;
+    double tension = 0.0;					    double tension = 0.0;
+    double tcForce = 0.0;					    double tcForce = 0.0;
+    if( _volumeConstraint == multiplier || _volumeConstraint 	    if( _volumeConstraint == multiplier || _volumeConstraint 
+      pressure = _fixedPressure;				      pressure = _fixedPressure;
+    }								    }
+
+    if( _volumeConstraint == penalty ||_volumeConstraint == a	    if( _volumeConstraint == penalty ||_volumeConstraint == a
+      pressure += 						      pressure += 
+	-_penaltyVolume * (_volume/_prescribedVolume-1.0)/_pr		-_penaltyVolume * (_volume/_prescribedVolume-1.0)/_pr
+    }								    }
+    _pressureNode->setPoint(pressure);				    _pressureNode->setPoint(pressure);
+
+    if( _areaConstraint == multiplier || _areaConstraint == a	    if( _areaConstraint == multiplier || _areaConstraint == a
+      tension = _fixedTension;					      tension = _fixedTension;
+    }								    }
+    if( _areaConstraint == penalty || _areaConstraint == augm	    if( _areaConstraint == penalty || _areaConstraint == augm
+      tension += 						      tension += 
+	_penaltyArea * (_area/_prescribedArea-1.0)/_prescribe		_penaltyArea * (_area/_prescribedArea-1.0)/_prescribe
+    }								    }
+    _tensionNode->setPoint(tension);				    _tensionNode->setPoint(tension);
+
+    if( _totalCurvatureConstraint == multiplier | _totalCurva	    if( _totalCurvatureConstraint == multiplier | _totalCurva
+      tcForce = _fixedTension;					      tcForce = _fixedTension;
+    }								    }
+    if( _totalCurvatureConstraint == penalty || _totalCurvatu	    if( _totalCurvatureConstraint == penalty || _totalCurvatu
+       tcForce += 						       tcForce += 
+	_penaltyTotalCurvature *(_totalCurvature/_prescribedT		_penaltyTotalCurvature *(_totalCurvature/_prescribedT
+    }								    }
+    _totalCurvatureNode->setPoint(tcForce);			    _totalCurvatureNode->setPoint(tcForce);
+
+									
+    // Model now initializes forces and stiffness		    // Model now initializes forces and stiffness
+//     if(f1) {							//     if(f1) {
+//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); 	//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); 
+// 	for(int i=0; i<(*n)->dof(); i++)			// 	for(int i=0; i<(*n)->dof(); i++)
+// 	  (*n)->setForce(i,0.0);				// 	  (*n)->setForce(i,0.0);
+//     }							//     }
+    //								    //
+    // Need to zero out stiffness too!!!!!!!!!!			    // Need to zero out stiffness too!!!!!!!!!!
+    //								    //
+    								    
+    //								    //
+    // compute energy, forces and stiffness matrix in each el	    // compute energy, forces and stiffness matrix in each el
+    // loop through all elements				    // loop through all elements
+
+#ifdef _OPENMP							#ifdef _OPENMP	
+#pragma omp parallel for 		\			#pragma omp parallel for 		\
+  schedule(static) default(shared) 				  schedule(static) default(shared) 
+#endif								#endif	
+    for(int ei=eBegin; ei<eEnd; ei++) {				    for(int ei=eBegin; ei<eEnd; ei++) {
+	if( !_active[ei] ) continue;					if( !_active[ei] ) continue;
+//       Element* e=_elements[ei];				//       Element* e=_elements[ei];
+	  _elements[ei]->compute( f0, f1, f2 );				  _elements[ei]->compute( f0, f1, f2 );
+    }								    }
+
+    if(f0) { 							    if(f0) { 
+// #ifdef _OPENMP						// #ifdef _OPENMP	
+// #pragma omp parallel for					// #pragma omp parallel for
+// #endif							// #endif	
+      for(int ei=eBegin; ei<eEnd; ei++) {			      for(int ei=eBegin; ei<eEnd; ei++) {
+	if( !_active[ei] ) continue;					if( !_active[ei] ) continue;
+	Element* e=_elements[ei];					Element* e=_elements[ei];
+	_energy += e->energy();						_energy += e->energy();	
+      }								      }
+      								      
+
+// #ifdef WITH_MPI						// #ifdef WITH_MPI
+//       double myEnergy=_energy;				//       double myEnergy=_energy;
+//       MPI_Allreduce(&myEnergy, &_energy, 1, MPI_DOUBLE, 	//       MPI_Allreduce(&myEnergy, &_energy, 1, MPI_DOUBLE, 
+// 		    MPI_SUM, MPI_COMM_WORLD);			// 		    MPI_SUM, MPI_COMM_WORLD);
+// #endif 							// #endif 
+    }								    }
+
+
+// #ifdef WITH_MPI						// #ifdef WITH_MPI
+//     if(f1) {							//     if(f1) {
+//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); 	//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); 
+// 	for(int i=0; i<(*n)->dof(); i++) {			// 	for(int i=0; i<(*n)->dof(); i++) {
+// 	  double force = 0.0;					// 	  double force = 0.0;
+// 	  double myForce = (*n)->getForce(i); 			// 	  double myForce = (*n)->getForce(i); 
+// 	  MPI_Allreduce(&myForce, &force, 1, MPI_DOUBLE, 	// 	  MPI_Allreduce(&myForce, &force, 1, MPI_DOUBLE, 
+// 			MPI_SUM, MPI_COMM_WORLD);		// 			MPI_SUM, MPI_COMM_WORLD);
+// 	  (*n)->setForce(i,force);				// 	  (*n)->setForce(i,force);
+// 	}							// 	}
+//     }							//     }
+// #endifx							// #endifx
+
+    // Predictor/corrector approach for constraint		    // Predictor/corrector approach for constraint
+    for(ConstraintIterator c=_constraints.begin(); c!=_constr	    for(ConstraintIterator c=_constraints.begin(); c!=_constr
+      (*c)->correct();						      (*c)->correct();
+    }								    }
+
+    return;							    return;
+  }								  }
+
+  template< class Material_t >                               	  template< class Material_t >                               
+  void LoopShellBody<Material_t>::cal_curv(std::vector<double	  void LoopShellBody<Material_t>::cal_curv(std::vector<double
+  {                                                          	  {                                                          
+    int sBegin=0, sEnd=_shells.size();				    int sBegin=0, sEnd=_shells.size();
+    for(int si=sBegin; si<sEnd; si++) {				    for(int si=sBegin; si<sEnd; si++) {
+       if( !_active[si] ) continue;				       if( !_active[si] ) continue;
+       FeElement_t* s=_shells[si];				       FeElement_t* s=_shells[si];
+       curv[si]=s->meancurvature();				       curv[si]=s->meancurvature();
+     }								     }
+    return;                                                  	    return;                                                  
+  }           							  }           
+
+
+  //! compute stiffness						  //! compute stiffness
+  template< class Material_t >					  template< class Material_t >
+  void LoopShellBody<Material_t>::_computeStiffness()		  void LoopShellBody<Material_t>::_computeStiffness()
+  { 								  { 
+    // build table of elements connected to each node 		    // build table of elements connected to each node 
+    std::vector< std::vector< FeElement_t* > > elementMap;	    std::vector< std::vector< FeElement_t* > > elementMap;
+    elementMap.resize(_shellNodes.size());			    elementMap.resize(_shellNodes.size());
+    for(int si=0; si<_shells.size(); si++) {			    for(int si=0; si<_shells.size(); si++) {
+	if( !_active[si] ) continue;					if( !_active[si] ) continue;
+	FeElement_t* s=_shells[si];					FeElement_t* s=_shells[si];
+	for(int ni=0; ni<s->nodes().size(); ni++) {			for(int ni=0; ni<s->nodes().size(); ni++) {
+	  FeNode_t * n = s->nodes()[ni];				  FeNode_t * n = s->nodes()[ni];
+	  elementMap[ n->id() ].push_back( s );				  elementMap[ n->id() ].push_back( s );
+	}								}
+    }								    }
+    								    
+    //  perturb nodes to compute stiffness			    //  perturb nodes to compute stiffness
+    for(int a=0; a<_shellNodes.size(); a++) {			    for(int a=0; a<_shellNodes.size(); a++) {
+	FeNode_t * n = _shellNodes[a];					FeNode_t * n = _shellNodes[a];
+	for(int i=0; i<3; i++) n->setStiffness(i,0.0);			for(int i=0; i<3; i++) n->setStiffness(i,0.0);
+
+	const double h = 1.0e-6;					const double h = 1.0e-6;
+
+	for(int i=0; i<3; i++) {					for(int i=0; i<3; i++) {
+	  compute(false,false,false); // for global geometry 		  compute(false,false,false); // for global geometry 
+	  n->setForce(i,0.0);						  n->setForce(i,0.0);
+
+	  // push point forward						  // push point forward
+	  n->addPoint(i, h); 						  n->addPoint(i, h); 
+	  // compute and assemble element forces			  // compute and assemble element forces
+	  for(int e=0; e<elementMap[ n->id() ].size(); e++) {		  for(int e=0; e<elementMap[ n->id() ].size(); e++) {
+	    elementMap[ n->id() ][ e ]->compute(false,true,fa		    elementMap[ n->id() ][ e ]->compute(false,true,fa
+	  }								  }
+	  double fia=n->getForce(i);					  double fia=n->getForce(i);
+	  								  
+	  n->setForce(i,0.0);						  n->setForce(i,0.0);
+
+	  // push point backward					  // push point backward
+	  n->addPoint(i, -h-h); 					  n->addPoint(i, -h-h); 
+	  // compute and assemble element forces			  // compute and assemble element forces
+	  for(int e=0; e<elementMap[ n->id() ].size(); e++) {		  for(int e=0; e<elementMap[ n->id() ].size(); e++) {
+	    elementMap[ n->id() ][ e ]->compute(false,true,fa		    elementMap[ n->id() ][ e ]->compute(false,true,fa
+	  }								  }
+	  fia-=n->getForce(i);						  fia-=n->getForce(i);
+
+	  fia /= 2.0*h;							  fia /= 2.0*h;
+	  n->setStiffness(i,fia);					  n->setStiffness(i,fia);
+	  								  
+	  // return point						  // return point
+	  n->addPoint(i, -h-h); 					  n->addPoint(i, -h-h); 
+	  n->setForce(i,0.0);						  n->setForce(i,0.0);
+	}								}
+      }    							      }    
+  }								  }
+
+  //! create input file used by Paraview, a 3D viewer		  //! create input file used by Paraview, a 3D viewer
+  template < class Material_t >					  template < class Material_t >
+  void LoopShellBody< Material_t >::printParaview(const std::	  void LoopShellBody< Material_t >::printParaview(const std::
+  {								  {
+
+    int numShells = _shells.size();				    int numShells = _shells.size();
+    								    
+    blitz::Array<double,1> energy(blitz::shape(numShells));	    blitz::Array<double,1> energy(blitz::shape(numShells));
+    blitz::Array<double,1> bendingEnergy(blitz::shape(numShel	    blitz::Array<double,1> bendingEnergy(blitz::shape(numShel
+    blitz::Array<double,1> inplaneEnergy(blitz::shape(numShel	    blitz::Array<double,1> inplaneEnergy(blitz::shape(numShel
+    blitz::Array<double,1> curvature(blitz::shape(numShells))	    blitz::Array<double,1> curvature(blitz::shape(numShells))
+
+    energy = 0.0;						    energy = 0.0;
+    curvature = 0.0;						    curvature = 0.0;
+    bendingEnergy = 0.0;					    bendingEnergy = 0.0;
+    inplaneEnergy = 0.0;					    inplaneEnergy = 0.0;
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    int eBegin=0, eEnd=0;					    int eBegin=0, eEnd=0;
+    MPE_Decomp1d( _shells.size(), _nProcessors, _processorRan	    MPE_Decomp1d( _shells.size(), _nProcessors, _processorRan
+		  &eBegin, &eEnd );						  &eBegin, &eEnd );
+    eBegin--;							    eBegin--;
+#endif								#endif
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    for(int e=eBegin; e<eEnd && e<_shells.size(); e++) {	    for(int e=eBegin; e<eEnd && e<_shells.size(); e++) {
+	const FeElement_t*const*const pe=&(_shells[e]);			const FeElement_t*const*const pe=&(_shells[e]);
+#else								#else
+    ConstFeElementIterator pe = _shells.begin();		    ConstFeElementIterator pe = _shells.begin();
+    for ( int e = 0; pe != _shells.end(); pe++, e++) {		    for ( int e = 0; pe != _shells.end(); pe++, e++) {
+#endif								#endif
+      int npts=0;						      int npts=0;
+      typename FeElement_t::ConstQuadPointIterator 		      typename FeElement_t::ConstQuadPointIterator 
+	p = (*pe)->quadraturePoints().begin();				p = (*pe)->quadraturePoints().begin();
+      for( ; p != (*pe)->quadraturePoints().end(); p++){	      for( ; p != (*pe)->quadraturePoints().end(); p++){
+	energy(e) += p->material.energyDensity();			energy(e) += p->material.energyDensity();
+	bendingEnergy(e) += p->material.bendingEnergy();		bendingEnergy(e) += p->material.bendingEnergy();
+	inplaneEnergy(e) += p->material.stretchingEnergy();		inplaneEnergy(e) += p->material.stretchingEnergy();
+	curvature(e) += p->material.meanCurvature();			curvature(e) += p->material.meanCurvature();
+	npts++;								npts++;
+      }								      }
+      energy(e) /= (double)( npts );				      energy(e) /= (double)( npts );
+      bendingEnergy(e) /= (double)( npts );			      bendingEnergy(e) /= (double)( npts );
+      inplaneEnergy(e) /= (double)( npts );			      inplaneEnergy(e) /= (double)( npts );
+      curvature(e) /= (double)( npts );				      curvature(e) /= (double)( npts );
+    }								    }
+//     char pid[30]; 						//     char pid[30]; 
+//     sprintf(pid, "%d", _processorRank);			//     sprintf(pid, "%d", _processorRank);
+//     std::string dataName = name + ".printData." + pid;	//     std::string dataName = name + ".printData." + pid;
+//     std::ofstream dataStream(dataName.c_str());		//     std::ofstream dataStream(dataName.c_str());
+//     dataStream << energy << std::endl			//     dataStream << energy << std::endl
+// 	       << curvature << std::endl;			// 	       << curvature << std::endl;
+//     dataStream.close();					//     dataStream.close();
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    blitz::Array<double,1> globalsum(blitz::shape(numShells))	    blitz::Array<double,1> globalsum(blitz::shape(numShells))
+    globalsum = 0.0;						    globalsum = 0.0;
+    MPI_Reduce(energy.data(), globalsum.data(), energy.size()	    MPI_Reduce(energy.data(), globalsum.data(), energy.size()
+	       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);			       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    blitz::cycleArrays(energy,globalsum);			    blitz::cycleArrays(energy,globalsum);
+    MPI_Reduce(bendingEnergy.data(), globalsum.data(), bendin	    MPI_Reduce(bendingEnergy.data(), globalsum.data(), bendin
+	       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);			       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    blitz::cycleArrays(bendingEnergy,globalsum);		    blitz::cycleArrays(bendingEnergy,globalsum);
+    MPI_Reduce(inplaneEnergy.data(), globalsum.data(), inplan	    MPI_Reduce(inplaneEnergy.data(), globalsum.data(), inplan
+	       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);			       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    blitz::cycleArrays(inplaneEnergy,globalsum);		    blitz::cycleArrays(inplaneEnergy,globalsum);
+    MPI_Reduce(curvature.data(), globalsum.data(), curvature.	    MPI_Reduce(curvature.data(), globalsum.data(), curvature.
+	       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);			       MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    blitz::cycleArrays(curvature,globalsum);			    blitz::cycleArrays(curvature,globalsum);
+#endif								#endif
+
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    if(_processorRank!=0) {					    if(_processorRank!=0) {
+      return;							      return;
+    }								    }
+#endif								#endif
+
+//     dataName = name + ".printData.sum";			//     dataName = name + ".printData.sum";
+//     dataStream.open(dataName.c_str());			//     dataStream.open(dataName.c_str());
+//     dataStream << energy << std::endl			//     dataStream << energy << std::endl
+// 	       << curvature << std::endl;			// 	       << curvature << std::endl;
+//     dataStream.close();					//     dataStream.close();
+
+    std::string fileName = name + ".vtk";			    std::string fileName = name + ".vtk";
+    std::ofstream ofs(fileName.c_str());			    std::ofstream ofs(fileName.c_str());
+//     ofs.open(fileName.c_str(), std::ios::out);		//     ofs.open(fileName.c_str(), std::ios::out);
+    if (!ofs) {							    if (!ofs) {
+      std::cout << "can not open output ("			      std::cout << "can not open output ("
+		<< fileName							<< fileName
+		<< ") file." << std::endl;					<< ") file." << std::endl;
+      exit(0);							      exit(0);
+    }								    }
+    								    
+    /////////////////////////////////////////////////////////	    /////////////////////////////////////////////////////////
+    //								    //
+    //    Node Section						    //    Node Section
+    //								    //
+    ofs << "# vtk DataFile Version 2.0\n"			    ofs << "# vtk DataFile Version 2.0\n"
+	<< "Test example" << std::endl					<< "Test example" << std::endl
+	<< "ASCII" << std::endl						<< "ASCII" << std::endl
+	<< "DATASET POLYDATA" << std::endl				<< "DATASET POLYDATA" << std::endl
+	<< "POINTS  " << _shellNodes.size() << "  double" << 		<< "POINTS  " << _shellNodes.size() << "  double" << 
+    								    
+    //								    //
+    // output nodal postions					    // output nodal postions
+    ConstFeNodeIterator pn = _shellNodes.begin();		    ConstFeNodeIterator pn = _shellNodes.begin();
+    for ( ; pn!= _shellNodes.end(); pn ++) {			    for ( ; pn!= _shellNodes.end(); pn ++) {
+      const Vector3D & nodalPos =  (*pn)->position();		      const Vector3D & nodalPos =  (*pn)->position();
+      ofs << std::setprecision(16) 				      ofs << std::setprecision(16) 
+	  << nodalPos(0) << "  "					  << nodalPos(0) << "  "
+	  << nodalPos(1) << "  "					  << nodalPos(1) << "  "
+	  << nodalPos(2) << std::endl;					  << nodalPos(2) << std::endl;
+    }								    }
+
+    /////////////////////////////////////////////////////////	    /////////////////////////////////////////////////////////
+    //								    //
+    //    Element Section					    //    Element Section
+    //								    //
+    int nActiveShells=0;					    int nActiveShells=0;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(_active[e]) nActiveShells++;				      if(_active[e]) nActiveShells++;
+    }								    }
+    ofs << "POLYGONS  " << nActiveShells << "  "		    ofs << "POLYGONS  " << nActiveShells << "  "
+	<< 4*nActiveShells << std::endl;				<< 4*nActiveShells << std::endl;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(!_active[e])  continue;				      if(!_active[e])  continue;
+      const FeElement_t * pe = _shells[e];			      const FeElement_t * pe = _shells[e];
+      ofs << 3 << "  "						      ofs << 3 << "  "
+	  << std::setw(10) << (pe)->nodes()[0] -> id()			  << std::setw(10) << (pe)->nodes()[0] -> id()
+	  << std::setw(10) << (pe)->nodes()[1] -> id()			  << std::setw(10) << (pe)->nodes()[1] -> id()
+	  << std::setw(10) << (pe)->nodes()[2] -> id()			  << std::setw(10) << (pe)->nodes()[2] -> id()
+	  << std::endl;							  << std::endl;
+    }								    }
+     								     	
+    /////////////////////////////////////////////////////////	    /////////////////////////////////////////////////////////
+    //								    //
+    //  output color for each element ( corresponding to mean	    //  output color for each element ( corresponding to mean
+    //  curvature, energy...)					    //  curvature, energy...)
+    //								    //
+    ofs << "CELL_DATA    " << nActiveShells << std::endl;	    ofs << "CELL_DATA    " << nActiveShells << std::endl;
+    //								    //
+    // output for strain energy					    // output for strain energy
+    ofs << "SCALARS    strainEnergy    double    1" << std::e	    ofs << "SCALARS    strainEnergy    double    1" << std::e
+    ofs << "LOOKUP_TABLE default" << std::endl;			    ofs << "LOOKUP_TABLE default" << std::endl;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(!_active[e])  continue;				      if(!_active[e])  continue;
+      ofs << energy(e) << std::endl;				      ofs << energy(e) << std::endl;
+    }								    }
+    ofs << std::endl;						    ofs << std::endl;
+
+    //								    //
+    // output for strain energy					    // output for strain energy
+    ofs << "SCALARS    bendingEnergy    double    1" << std::	    ofs << "SCALARS    bendingEnergy    double    1" << std::
+    ofs << "LOOKUP_TABLE default" << std::endl;			    ofs << "LOOKUP_TABLE default" << std::endl;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(!_active[e])  continue;				      if(!_active[e])  continue;
+      ofs << bendingEnergy(e) << std::endl;			      ofs << bendingEnergy(e) << std::endl;
+    }								    }
+    ofs << std::endl;						    ofs << std::endl;
+
+    //								    //
+    // output for strain energy					    // output for strain energy
+    ofs << "SCALARS    inplaneEnergy    double    1" << std::	    ofs << "SCALARS    inplaneEnergy    double    1" << std::
+    ofs << "LOOKUP_TABLE default" << std::endl;			    ofs << "LOOKUP_TABLE default" << std::endl;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(!_active[e])  continue;				      if(!_active[e])  continue;
+      ofs << inplaneEnergy(e) << std::endl;			      ofs << inplaneEnergy(e) << std::endl;
+    }								    }
+    ofs << std::endl;						    ofs << std::endl;
+
+    //								    //
+    // output for mean curvature				    // output for mean curvature
+    // since one color is mapping into one element, for		    // since one color is mapping into one element, for
+    // several guass points integration, we compute their ave	    // several guass points integration, we compute their ave
+    ofs << "SCALARS    meanCurvature    double    1" << std::	    ofs << "SCALARS    meanCurvature    double    1" << std::
+    ofs << "LOOKUP_TABLE meanCurvature    " << std::endl;	    ofs << "LOOKUP_TABLE meanCurvature    " << std::endl;
+    for(int e=0; e<_shells.size(); e++) {			    for(int e=0; e<_shells.size(); e++) {
+      if(!_active[e])  continue;				      if(!_active[e])  continue;
+      ofs << curvature(e) << std::endl;				      ofs << curvature(e) << std::endl;
+    }								    }
+    ofs << std::endl;						    ofs << std::endl;
+
+    ofs << endl << "POINT_DATA " << _shellNodes.size() << end	    ofs << endl << "POINT_DATA " << _shellNodes.size() << end
+	<< "VECTORS displacements double" << endl;			<< "VECTORS displacements double" << endl;
+    /*     << "LOOKUP_TABLE displacements" << endl; */	      |	    //      << "LOOKUP_TABLE displacements" << endl; 
+    //								    //
+    // output nodal postions					    // output nodal postions
+    pn = _shellNodes.begin();					    pn = _shellNodes.begin();
+    for ( ; pn!= _shellNodes.end(); pn ++) {			    for ( ; pn!= _shellNodes.end(); pn ++) {
+      Vector3D nodalDisp;					      Vector3D nodalDisp;
+      nodalDisp = (*pn)->point() - (*pn)->position();		      nodalDisp = (*pn)->point() - (*pn)->position();
+      ofs << std::setprecision(16) 				      ofs << std::setprecision(16) 
+	  << nodalDisp(0)						  << nodalDisp(0)
+	  << '\t' <<nodalDisp(1)					  << '\t' <<nodalDisp(1)
+	  << '\t' <<nodalDisp(2) << std::endl;				  << '\t' <<nodalDisp(2) << std::endl;
+    }								    }
+    								    
+    ofs << endl << "VECTORS forces double" << endl;		    ofs << endl << "VECTORS forces double" << endl;
+    /*     << "LOOKUP_TABLE displacements" << endl; */	      |	    //     << "LOOKUP_TABLE displacements" << endl; 
+    //								    //
+    // output nodal postions					    // output nodal postions
+    pn = _shellNodes.begin();					    pn = _shellNodes.begin();
+    for ( ; pn!= _shellNodes.end(); pn ++) {			    for ( ; pn!= _shellNodes.end(); pn ++) {
+      const Vector3D & nodalForce = (*pn)->force();		      const Vector3D & nodalForce = (*pn)->force();
+      ofs << std::setprecision(16) 				      ofs << std::setprecision(16) 
+	  << nodalForce(0)						  << nodalForce(0)
+	  << '\t' <<nodalForce(1)					  << '\t' <<nodalForce(1)
+	  << '\t' <<nodalForce(2) << std::endl;				  << '\t' <<nodalForce(2) << std::endl;
+    }								    }
+
+    ofs << endl << "VECTORS contactForces double" << endl;	    ofs << endl << "VECTORS contactForces double" << endl;
+    /*     << "LOOKUP_TABLE displacements" << endl; */	      |	    //     << "LOOKUP_TABLE displacements" << endl; 
+    								    
+    for (int a=0; a < _shellNodes.size(); a++) {		    for (int a=0; a < _shellNodes.size(); a++) {
+      Vector3D f(0.0);						      Vector3D f(0.0);
+      for(ConstConstraintIterator c=_constraints.begin(); c!=	      for(ConstConstraintIterator c=_constraints.begin(); c!=
+	for(int i=0; i<3; i++)	f(i) += (*c)->getForce(a,i);		for(int i=0; i<3; i++)	f(i) += (*c)->getForce(a,i);
+      }								      }
+
+      ofs << std::setprecision(16) 				      ofs << std::setprecision(16) 
+	  << f(0) << '\t' <<f(1) << '\t' <<f(2) 			  << f(0) << '\t' <<f(1) << '\t' <<f(2) 
+	  << std::endl;							  << std::endl;
+    }								    }
+    ofs.close();						    ofs.close();
+
+    return;							    return;
+  }								  }
+
+  //! create Alias-Wavefront .obj file				  //! create Alias-Wavefront .obj file
+  template < class Material_t >					  template < class Material_t >
+  void LoopShellBody< Material_t >::printObj(const std::strin	  void LoopShellBody< Material_t >::printObj(const std::strin
+  {								  {
+#ifdef WITH_MPI							#ifdef WITH_MPI
+    if(_processorRank!=0) return;				    if(_processorRank!=0) return;
+#endif								#endif
+
+    std::string fileName = name + ".obj";			    std::string fileName = name + ".obj";
+    std::ofstream ofs(fileName.c_str(), std::ios::out);		    std::ofstream ofs(fileName.c_str(), std::ios::out);
+    if (!ofs) {							    if (!ofs) {
+      std::cout << "can not open output ("			      std::cout << "can not open output ("
+		<< fileName							<< fileName
+		<< ") file." << std::endl;					<< ") file." << std::endl;
+      exit(0);							      exit(0);
+    }								    }
+
+    // output nodal postions					    // output nodal postions
+    ConstFeNodeIterator pn = _shellNodes.begin();		    ConstFeNodeIterator pn = _shellNodes.begin();
+    for ( ; pn!= _shellNodes.end(); pn ++) {			    for ( ; pn!= _shellNodes.end(); pn ++) {
+      const Vector3D & nodalPos =  (*pn)->position();		      const Vector3D & nodalPos =  (*pn)->position();
+      ofs << "v " << std::setprecision(16) 			      ofs << "v " << std::setprecision(16) 
+	  << std::setw(24) << nodalPos(0) 				  << std::setw(24) << nodalPos(0) 
+	  << std::setw(24) << nodalPos(1) 				  << std::setw(24) << nodalPos(1) 
+	  << std::setw(24) << nodalPos(2) << std::endl;			  << std::setw(24) << nodalPos(2) << std::endl;
+    }								    }
+    								    
+    // output face connectivities				    // output face connectivities
+    for(ConstFeElementIterator pe=_shells.begin(); pe!=_shell	    for(ConstFeElementIterator pe=_shells.begin(); pe!=_shell
+      const typename FeElement_t::NodeContainer & pnc = (*pe)	      const typename FeElement_t::NodeContainer & pnc = (*pe)
+      ofs << "f "						      ofs << "f "
+	  << std::setw(10) << pnc[0] -> id()				  << std::setw(10) << pnc[0] -> id()
+	  << std::setw(10) << pnc[1] -> id()				  << std::setw(10) << pnc[1] -> id()
+	  << std::setw(10) << pnc[2] -> id()				  << std::setw(10) << pnc[2] -> id()
+	  << std::endl;							  << std::endl;
+    }								    }
+    ofs.close();						    ofs.close();		
+
+    return;							    return;
+  }								  }
+  								  
+} // namespace voom						} // namespace voom

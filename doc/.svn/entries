@@ -1,0 +1,54 @@
+8
+
+dir
+902
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom/trunk/doc
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom
+
+
+
+2005-04-10T20:01:48.000000Z
+92
+klug
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+819a83d6-be06-0410-a091-d2d17e0dff94
+
+Doxyfile
+file
+
+
+
+
+2010-10-22T01:19:31.000000Z
+e65b16c4552b1f94eda2b2eaec81c08c
+2005-04-10T20:01:48.000000Z
+92
+klug
+has-props
+
+voom.dox
+file
+
+
+
+
+2010-10-22T01:19:31.000000Z
+20d3d53e2bba56b9f24971391f7cf35f
+2005-04-10T20:01:48.000000Z
+92
+klug
+has-props
+

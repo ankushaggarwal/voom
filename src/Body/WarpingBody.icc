@@ -1,0 +1,285 @@
+// -*- C++ -*-
+//----------------------------------------------------------------------
+//
+//                    	    Ankush Aggarwal
+//                University of California Los Angeles
+//                   (C) 2012 All Rights Reserved
+//
+//----------------------------------------------------------------------
+
+#include <string>
+#include <fstream>
+#include <blitz/array-impl.h>
+
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
+
+#ifdef WITH_MPI
+#include <mpe.h>
+#endif
+
+namespace voom
+{
+  using std::endl;
+  using std::cout;
+
+  template<class Quadrature_t, class Material_t, class Shape_t>
+  WarpingBody<Quadrature_t,Material_t,Shape_t>::WarpingBody
+  (Material_t material,
+   ConnectivityContainer & connectivities,
+   const NodeContainer & nodes,
+   const unsigned quadOrder) 
+  {
+
+#ifdef WITH_MPI
+  MPI_Comm_size( MPI_COMM_WORLD, &_nProcessors );
+  MPI_Comm_rank( MPI_COMM_WORLD, &_processorRank );
+#endif
+
+    // initialize _nDOF and find shell (position) nodes
+
+    _dof = 0;
+    _nodes = nodes;
+    for(ConstNodeIterator n=_nodes.begin(); n!=_nodes.end(); n++) {
+      _dof+=(*n)->dof();
+      WarpingNode_t * sn = dynamic_cast<WarpingNode_t*>(*n);
+      if( sn ) _membraneNodes.push_back(sn); 
+    }
+        
+    NodeBase::DofIndexMap idx(1);
+    idx[0]=-1;
+
+    std::cout << "WarpingBody::initializeBody(): dof = "<< _dof 
+	      << std::endl;
+
+    // create elements
+    std::cout << "begin to create elements..." << std::endl;
+    Quadrature_t quad(quadOrder);
+    _membranes.reserve( connectivities.size() );
+    std::cout << "made space for " << connectivities.size() << " elements."
+	      << std::endl;
+    int iter=0;
+    for(ConstConnectivityIterator c=connectivities.begin();
+	c!=connectivities.end(); c++) {
+      // build elemental node container
+      typename WarpingElement_t::NodeContainer nds;
+      for(ElementConnectivity::const_iterator n=c->begin(); n!=c->end(); n++) {
+	nds.push_back( _membraneNodes[*n] );
+      }
+      // create element
+      _membranes.push_back( new WarpingElement<Quadrature_t, Material_t, Shape_t>(quad, material, nds) );
+    }
+
+    _elements.reserve(_membranes.size());
+    for(ConstWarpingElementIterator e=_membranes.begin(); e!=_membranes.end(); e++) {
+      _elements.push_back(*e);
+
+      _active.push_back(true);
+    }
+    std::cout << "finished creating " << _elements.size() << " elements." << std::endl;
+    
+    // compute mechanics/geometry
+    compute(false, false, false);
+  }
+  
+  //! compute
+  template< class Quadrature_t, class Material_t, class Shape_t >
+  void WarpingBody<Quadrature_t,Material_t,Shape_t>::compute( bool f0, bool f1, bool f2 )
+  {
+
+    int eBegin=0, eEnd=_elements.size();
+    int sBegin=0, sEnd=_membranes.size();
+#ifdef WITH_MPI
+    MPE_Decomp1d( _elements.size(), _nProcessors, _processorRank, 
+		  &eBegin, &eEnd );
+    eBegin--;
+    MPE_Decomp1d( _membranes.size(), _nProcessors, _processorRank, 
+		  &sBegin, &sEnd );
+    sBegin--;
+#endif
+
+    // Initialize energy and forces
+    if(f0) _energy = 0.0;
+
+     for(int si=sBegin; si<sEnd; si++) {
+       if( !_active[si] ) continue;
+       WarpingElement_t* s=_membranes[si];
+       s->compute( false,false,false );
+     }
+
+
+    // Model now initializes forces and stiffness
+//     if(f1) {
+//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); n++) 
+// 	for(int i=0; i<(*n)->dof(); i++)
+// 	  (*n)->setForce(i,0.0);
+//     }
+    // Need to zero out stiffness too!!!!!!!!!!
+
+    
+    // compute energy, forces and stiffness matrix in each element
+    // loop through all elements
+#ifdef _OPENMP	
+#pragma omp parallel for 		\
+  schedule(static) default(shared) 
+#endif	
+    for(int ei=eBegin; ei<eEnd; ei++) {
+      if( !_active[ei] ) continue;
+      _elements[ei]->compute( f0, f1, f2 );
+    }
+
+    if(f0) { 
+// #ifdef _OPENMP	
+// #pragma omp parallel for
+// #endif	
+      for(int ei=eBegin; ei<eEnd; ei++) {
+	if( !_active[ei] ) continue;
+	Element* e=_elements[ei];
+	_energy += e->energy();
+      }
+// #ifdef WITH_MPI
+//       double myEnergy=_energy;
+//       MPI_Allreduce(&myEnergy, &_energy, 1, MPI_DOUBLE, 
+// 		    MPI_SUM, MPI_COMM_WORLD);
+// #endif 
+    }
+
+// #ifdef WITH_MPI
+//     if(f1) {
+//       for(NodeIterator n=_nodes.begin(); n!=_nodes.end(); n++) 
+// 	for(int i=0; i<(*n)->dof(); i++) {
+// 	  double force = 0.0;
+// 	  double myForce = (*n)->getForce(i); 
+// 	  MPI_Allreduce(&myForce, &force, 1, MPI_DOUBLE, 
+// 			MPI_SUM, MPI_COMM_WORLD);
+// 	  (*n)->setForce(i,force);
+// 	}
+//     }
+// #endif
+
+    return;
+  }
+	
+  template< class Quadrature_t, class Material_t, class Shape_t >
+  void WarpingBody<Quadrature_t,Material_t,Shape_t>::printParaview( const std::string name ) const
+  {
+    int numShells = _membranes.size();
+    
+    blitz::Array<double,1> energy(blitz::shape(numShells));
+
+    energy = 0.0;
+
+    ConstWarpingElementIterator pe = _membranes.begin();
+    for ( int e = 0; pe != _membranes.end(); pe++, e++) {
+      int npts=0;
+      typename WarpingElement_t::ConstQuadPointIterator 
+	p = (*pe)->quadraturePoints().begin();
+      for( ; p != (*pe)->quadraturePoints().end(); p++){
+	energy(e) += p->material.energyDensity();
+	npts++;
+      }
+      energy(e) /= (double)( npts );
+    }
+
+    std::string fileName = name + ".vtk";
+    std::ofstream ofs(fileName.c_str());
+    if (!ofs) {
+      std::cout << "can not open output ("
+		<< fileName
+		<< ") file." << std::endl;
+      exit(0);
+    }
+    
+    ////////////////////////////////////////////////////////////////////
+    //
+    //    Node Section
+    //
+    ofs << "# vtk DataFile Version 2.0\n"
+	<< "Test example" << std::endl
+	<< "ASCII" << std::endl
+	<< "DATASET POLYDATA" << std::endl
+	<< "POINTS  " << _membraneNodes.size() << "  double" << std::endl;
+    
+    //
+    // output nodal postions
+    ConstWarpingNodeIterator pn = _membraneNodes.begin();
+    for ( ; pn!= _membraneNodes.end(); pn ++) {
+      const Vector3D & nodalPos =  (*pn)->position();
+      ofs << std::setprecision(16) 
+	  << nodalPos(0) << "  "
+	  << nodalPos(1) << "  "
+	  << nodalPos(2) << std::endl;
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    //
+    //    Element Section
+    //
+    int nActiveMembranes=0;
+    for(int e=0; e<_membranes.size(); e++) {
+      if(_active[e]) nActiveMembranes++;
+    }
+    ofs << "POLYGONS  " << nActiveMembranes << "  "
+	<< 4*nActiveMembranes << std::endl;
+    for(int e=0; e<_membranes.size(); e++) {
+      if(!_active[e])  continue;
+      const WarpingElement_t * pe = _membranes[e];
+      const typename WarpingElement_t::NodeContainer & pnc = (pe)->nodes();
+      ofs << 3 << "  "
+	  << std::setw(10) << pnc[0] -> id()
+	  << std::setw(10) << pnc[1] -> id()
+	  << std::setw(10) << pnc[2] -> id()
+	  << std::endl;
+    }
+
+
+     	
+    //////////////////////////////////////////////////////////////////////////
+    //
+    //  output color for each element ( corresponding to energy)
+    //
+    ofs << "CELL_DATA    " << nActiveMembranes << std::endl;
+    //
+    // output for strain energy
+    ofs << "SCALARS    strainEnergy    double    1" << std::endl;
+    ofs << "LOOKUP_TABLE default" << std::endl;
+    for ( int e = 0; e<numShells; e++) {
+      if(!_active[e])  continue;
+      ofs << energy(e) << std::endl;
+    }
+    ofs << std::endl;
+
+    ofs << endl << "POINT_DATA " << _membraneNodes.size() << endl
+	<< "VECTORS displacements double" << endl;
+    /*     << "LOOKUP_TABLE displacements" << endl; */
+    //
+    // output nodal postions
+    pn = _membraneNodes.begin();
+    for ( ; pn!= _membraneNodes.end(); pn ++) {
+      Vector3D nodalDisp;
+      nodalDisp = (*pn)->point() - (*pn)->position();
+      ofs << std::setprecision(16) 
+	  << nodalDisp(0)
+	  << '\t' <<nodalDisp(1)
+	  << '\t' <<nodalDisp(2) << std::endl;
+    }
+    
+    ofs << endl << "VECTORS forces double" << endl;
+    /*     << "LOOKUP_TABLE displacements" << endl; */
+    //
+    // output nodal postions
+    pn = _membraneNodes.begin();
+    for ( ; pn!= _membraneNodes.end(); pn ++) {
+      const Vector3D & nodalForce = (*pn)->force();
+      ofs << std::setprecision(16) 
+	  << nodalForce(0)
+	  << '\t' <<nodalForce(1)
+	  << '\t' <<nodalForce(2) << std::endl;
+    }
+    ofs.close();
+
+    return;
+    
+  }
+} // namespace voom

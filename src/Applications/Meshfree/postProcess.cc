@@ -1,0 +1,194 @@
+// -*- C++ -*-
+//----------------------------------------------------------------------
+//
+//                Melissa M. Gibbons & William S. Klug
+//                University of California Los Angeles
+//                   (C) 2007 All Rights Reserved
+//
+//----------------------------------------------------------------------
+
+// Program that will take in a .dat file and .vtk file with: nodes,
+// weights and displacements, and will calculate stresses, strains,
+// and internal forces.
+
+using namespace std;
+#include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <getopt.h>
+#include "MFShape.h"
+//#include "MFShape.cc"
+#include "NodeBase.h"
+#include "Node.h"
+#include "MFBody.h"
+#include "CompNeoHookean.h"
+#include <tvmet/Vector.h>
+#include<tvmet/Matrix.h>
+
+using namespace tvmet;
+using namespace voom;
+
+int main(int argc, char* argv[])
+{
+
+  bool verbose=true;
+
+  if( argc < 2 ) {
+      cout << "Usage: postProcess DatFileName DispFileName [-s support_size - k kernel_option]." << endl;
+      return(0);
+  }
+
+  for(int i=0; i<argc; i++) {
+    std::cout << std::setw(8) << i << "\t"
+	      << argv[i] << std::endl;
+  }
+
+  string DatFileName = argv[1]; 
+  string DispFileName = argv[2];
+
+  bool badCommandLine=false;
+  double support_size;
+  bool cubic_kernel=false, modified_kernel=false, singular_kernel=false;
+
+  for(char option; (option=getopt(argc,argv,"s:k:")) != EOF; ) 
+    switch (option) {
+    default :
+      badCommandLine=true;
+      break;
+    case 's' :
+      support_size = std::atof(optarg);
+      std::cout << "Global support size: " << support_size << std::endl;
+      break;
+    case 'k' :
+      int kern=std::atoi(optarg);
+      if( kern==1){
+        cubic_kernel=true;
+        std::cout<<"Main:: Cubic kernel will be used"<<std::endl;
+      }
+      else if(kern==2){
+        modified_kernel=true;
+        std::cout<<"Main:: Modified kernel will be used"<<std::endl;
+      }
+      else if(kern==3){
+        singular_kernel=true;
+        std::cout<<"Main:: Singular kernel will be used"<<std::endl;
+      }
+      else{
+        std::cout<<"Only three kernel options"<<std::endl;
+        exit(0);
+      }
+      break;
+    }
+
+  if( badCommandLine || argc < 2 ) {
+      cout << "Usage: postProcess DatFileName DispFileName [-s SupportSize -k kernel_option]." << endl;
+      return(0);
+  }
+
+  // create input stream
+  ifstream ifs;
+  ifs.open( DatFileName.c_str(), ios::in);
+  if (!ifs) {
+    cout << "Cannot open input file: " << DatFileName << endl;
+    exit(0);
+  }
+
+  //
+  // create vector of nodes
+  int dof=0;
+
+  std::vector< NodeBase* > nodes;
+  std::vector< DeformationNode<3>* > defNodes;
+  std::vector<double> node_volume, supp_size, supp_size_hat;
+  char key;  ifs>>key;
+  double supphatfactor=0.9;
+  if(modified_kernel) std::cout<<"A factor of "<<supphatfactor<<" is used for scaling the support size for primitive kernel"<<std::endl;
+
+  // Input .dat file containing nodes and weights
+  std::string token;
+  ifs >> token; 
+  while( token != "POINTS" ) ifs >> token;
+  int npts=0;
+  ifs >> npts; 
+  defNodes.reserve(npts);
+
+  // read in points
+  for(int i=0; i<npts; i++) {
+    int id=i;
+    int temp;
+    double weight;
+    double supphat;
+    DeformationNode<3>::Point x;
+    ifs >> temp >> x(0) >> x(1) >> x(2) >> weight>>supphat;
+
+    NodeBase::DofIndexMap idx(3);
+    for(int j=0; j<3; j++) idx[j]=dof++;
+    DeformationNode<3>* n = new DeformationNode<3>(id,idx,x);
+    nodes.push_back( n );
+    defNodes.push_back( n );
+    node_volume.push_back(weight);
+    supp_size.push_back(support_size);
+    supp_size_hat.push_back(supphat*supphatfactor);
+  }
+  cout << "Number of nodes: " <<nodes.size() << endl;
+  ifs.close();
+
+  // open .vtk file containing displacements
+
+  ifs.open( DispFileName.c_str(), ios::in);
+  if (!ifs) {
+    cout << "Cannot open input file: " << DispFileName << endl;
+    exit(0);
+  }
+  ifs >> token;
+  
+  while( token != "displacements" ) ifs >> token;
+  ifs >> token;// skip number type
+  for(int i=0; i<defNodes.size(); i++) {
+    DeformationNode<3>::Point x;
+    ifs >> x(0) >> x(1) >> x(2);
+    x += defNodes[i]->position();
+    defNodes[i]->setPoint(x);
+  }
+  ifs.close();
+  
+  // create material
+  double rho = 1.0;
+  double E = 200.0;//1.0e3;
+  double nu = 0.4;
+  double viscosity=1.0e-2;
+
+  ifstream inp("parameters.inp");
+  inp >> E >> nu >> viscosity;
+  if(verbose) 
+    std::cout << "Input rho: " << rho << std::endl
+	      << "Input E: " << E << std::endl
+	      << "Input nu: " << nu << std::endl
+	      << "Input viscosity: " << viscosity << std::endl;
+
+  typedef CompNeoHookean MaterialType;
+  MaterialType protein( rho, E, nu );
+  if(verbose) std::cout << "Material has been created." << std::endl;
+	
+  // create Body
+  
+  typedef MFBody<MaterialType,MFShape> body;
+  body bd;
+
+  if(cubic_kernel)
+  bd.initializeBody(protein,nodes,node_volume,supp_size);
+  if(modified_kernel)
+  bd.initializeBody(protein,nodes,node_volume,supp_size,supp_size_hat);
+  if(singular_kernel)
+  bd.initializeBody(protein,nodes,node_volume,supp_size,1.5);
+//  bd.setOutput(Body::paraview);
+
+  string name = DispFileName + "PostProcess";
+  bd.PostProcess( name );
+
+  std::cout << "Post process data written. All done.  Bye now." << std::endl;
+
+  return 0;
+}
+

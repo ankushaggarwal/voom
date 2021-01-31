@@ -1,0 +1,70 @@
+8
+
+dir
+902
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom/trunk/src/Node
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom
+
+
+
+2009-06-25T06:55:45.562153Z
+727
+klug
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+819a83d6-be06-0410-a091-d2d17e0dff94
+
+Test
+dir
+
+NodeBase.h
+file
+
+
+
+
+2010-10-22T01:19:32.000000Z
+d390508c282c3d45e8d1660bbaa95439
+2009-06-25T06:55:45.562153Z
+727
+klug
+has-props
+
+Makefile.am
+file
+
+
+
+
+2010-10-22T01:19:32.000000Z
+07a499397a20537e533e4ddda36c1afa
+2004-08-20T00:34:14.000000Z
+34
+klug
+has-props
+
+Node.h
+file
+
+
+
+
+2010-10-22T01:19:32.000000Z
+9c1547960a4c4cc4bb97813a7435a37e
+2009-06-25T06:54:17.109047Z
+726
+klug
+has-props
+

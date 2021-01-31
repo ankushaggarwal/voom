@@ -1,0 +1,41 @@
+8
+
+dir
+902
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom/trunk/src/Constraints
+svn+ssh://gondolin.seas.ucla.edu/home/svn/voom
+
+
+
+2008-04-18T16:32:40.230015Z
+439
+klug
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+819a83d6-be06-0410-a091-d2d17e0dff94
+
+MultiplierNodeConstraint.h
+file
+
+
+
+
+2010-10-22T01:19:39.000000Z
+49e597905ae04aac63d739b0c88a4262
+2008-04-18T16:32:40.230015Z
+439
+klug
+has-props
+

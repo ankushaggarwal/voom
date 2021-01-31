@@ -1,0 +1,623 @@
+?                                       configure
+?                                       Makefile.in
+?                                       config.log
+?                                       depcomp
+?                                       config.status
+?                                       .swp
+?                                       svndiff
+?                                       autom4te.cache
+?                                       missing
+?                                       svnstatus
+?                                       aclocal.m4
+?                                       Makefile
+?                                       install-sh
+              902      867 baimo        .
+              902      284 klug         configure.icpc.opt
+              902      323 hvan         Doxyfile
+              902       92 klug         doc
+              902       92 klug         doc/Doxyfile
+              902       92 klug         doc/voom.dox
+              902      862 baimo        acinclude.m4
+              902      863 baimo        configure.in
+              902      284 klug         configure.mpi.opt
+?                                       src/Makefile.in
+?                                       src/PointBin
+?                                       src/stamp-h1
+?                                       src/config.h
+?                                       src/config.h.in
+?                                       src/Makefile
+              902      867 baimo        src
+?                                       src/Materials/Makefile.in
+?                                       src/Materials/libMaterials.a
+?                                       src/Materials/.deps
+?                                       src/Materials/Makefile
+              902      740 klug         src/Materials
+              902      740 klug         src/Materials/Test
+              902      465 sarkar       src/Materials/Test/test
+              902      168 klug         src/Materials/Test/test.cpp
+              902      740 klug         src/Materials/Test/acinclude.m4
+              902      465 sarkar       src/Materials/Test/ContractionTest.cc
+              902      740 klug         src/Materials/Test/Makefile.am
+              902      167 klug         src/Materials/Test/sce-test.cc
+              902      345 ma           src/Materials/TwoPhaseElastic.cc
+              902      735 klug         src/Materials/Material.h
+              902      737 klug         src/Materials/TwoPhaseElastic.h
+              902      450 klug         src/Materials/StVenant.cc
+              902      452 klug         src/Materials/StVenant.h
+              910      910 ankush       src/Materials/CompNeoHookean.cc
+              902      439 klug         src/Materials/LinearizedMaterial.cc
+              910      910 ankush       src/Materials/CompNeoHookean.h
+              902      738 klug         src/Materials/GLElastic.cc
+              902      439 klug         src/Materials/LinearizedMaterial.h
+              902      738 klug         src/Materials/GLElastic.h
+              902      441 klug         src/Materials/SCElastic.cc
+              902      439 klug         src/Materials/Hookean2D.cc
+              902      120 klug         src/Materials/Hookean2D.h
+              902      441 klug         src/Materials/SCElastic.h
+              902       94 klug         src/Materials/LinearizedMaterial.icc
+              911      911 ankush       src/Materials/EvansElastic.cc
+              912      912 ankush       src/Materials/ModEvansElastic.cc
+              911      911 ankush       src/Materials/EvansElastic.h
+              912      912 ankush       src/Materials/ModEvansElastic.h
+              912      912 ankush       src/Materials/EvansElastic_Skewed.cc
+              902      120 klug         src/Materials/Hookean.cc
+              912      912 ankush       src/Materials/Makefile.am
+              912      912 ankush       src/Materials/EvansElastic_Skewed.h
+              902      120 klug         src/Materials/Hookean.h
+              902      495 klug         src/Materials/FVK.cc
+              902      456 sarkar       src/Materials/ContractionWrapper.h
+              902      739 klug         src/Materials/FVK.h
+              902      736 klug         src/Materials/ShellMaterial.h
+              902      727 klug         src/Node
+              902       16 klug         src/Node/Test
+              902        2 feng         src/Node/Test/node.info
+              902       16 klug         src/Node/Test/test.cpp
+              902      727 klug         src/Node/NodeBase.h
+              902       34 klug         src/Node/Makefile.am
+              902      726 klug         src/Node/Node.h
+?                                       src/Applications/TwoPhaseShell
+?                                       src/Applications/Meshfree
+?                                       src/Applications/Indent3D
+              902      867 baimo        src/Applications
+              902      571 melissa      src/Applications/TetCapsid
+              902      404 melissa      src/Applications/TetCapsid/configure.icc.opt
+              902      568 melissa      src/Applications/TetCapsid/configure
+              902      568 melissa      src/Applications/TetCapsid/Makefile.in
+              902      404 melissa      src/Applications/TetCapsid/Rigid.h
+              902      404 melissa      src/Applications/TetCapsid/lbfgsb.inp
+              902      513 melissa      src/Applications/TetCapsid/postProcess
+              902      566 melissa      src/Applications/TetCapsid/config.log
+              902      568 melissa      src/Applications/TetCapsid/depcomp
+              902      567 melissa      src/Applications/TetCapsid/config.status
+              902      569 melissa      src/Applications/TetCapsid/parameters.inp
+              902      571 melissa      src/Applications/TetCapsid/README
+              902      404 melissa      src/Applications/TetCapsid/Makefile.am.MPI
+              902      568 melissa      src/Applications/TetCapsid/tetCapsid_lbfgsb
+              902      516 melissa      src/Applications/TetCapsid/tetCapsid-lbfgsb.cc
+              902      517 melissa      src/Applications/TetCapsid/configure.ac
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache/output.1
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache/traces.0
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache/traces.1
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache/requests
+              902      568 melissa      src/Applications/TetCapsid/autom4te.cache/output.0
+              902      570 melissa      src/Applications/TetCapsid/run
+              902      515 melissa      src/Applications/TetCapsid/acinclude.m4
+              902      512 melissa      src/Applications/TetCapsid/postProcess.cc
+              902      514 melissa      src/Applications/TetCapsid/Makefile.am
+              902      568 melissa      src/Applications/TetCapsid/missing
+              902      568 melissa      src/Applications/TetCapsid/tetCapsid-lbfgsb.o
+              902      565 melissa      src/Applications/TetCapsid/aclocal.m4
+              902      568 melissa      src/Applications/TetCapsid/Makefile
+              902      568 melissa      src/Applications/TetCapsid/install-sh
+              902      466 klug         src/Applications/FiniteContraction
+              902      466 klug         src/Applications/FiniteContraction/configure.ac
+              902      466 klug         src/Applications/FiniteContraction/acinclude.m4
+              902      466 klug         src/Applications/FiniteContraction/FiniteContractionApp.cc
+              902      466 klug         src/Applications/FiniteContraction/Makefile.am
+?                                       src/Applications/Capsid/configure
+?                                       src/Applications/Capsid/Makefile.in
+?                                       src/Applications/Capsid/config.log
+?                                       src/Applications/Capsid/depcomp
+?                                       src/Applications/Capsid/.deps
+?                                       src/Applications/Capsid/Makefile
+?                                       src/Applications/Capsid/config.status
+?                                       src/Applications/Capsid/autom4te.cache
+?                                       src/Applications/Capsid/missing
+?                                       src/Applications/Capsid/aclocal.m4
+?                                       src/Applications/Capsid/install-sh
+              902      845 klug         src/Applications/Capsid
+              902      605 klug         src/Applications/Capsid/disassemble.cc
+              902      283 klug         src/Applications/Capsid/configure.icc.opt
+              902      729 klug         src/Applications/Capsid/inp2vtk.cc
+              902      283 klug         src/Applications/Capsid/Rigid.h
+              902      407 klug         src/Applications/Capsid/Makefile.am.icpc
+              902      455 klug         src/Applications/Capsid/icosThree.vtk
+              902      201 klug         src/Applications/Capsid/parameters.inp
+              902      455 klug         src/Applications/Capsid/icosTwo.vtk
+              902      588 klug         src/Applications/Capsid/refine.cc
+              902      362 klug         src/Applications/Capsid/README
+              902      218 klug         src/Applications/Capsid/Makefile.am.MPI
+              902      588 klug         src/Applications/Capsid/relax.cc
+              902      417 klug         src/Applications/Capsid/icos.vtk
+              902      728 klug         src/Applications/Capsid/C0MembraneGLoutput.cc
+              902      773 klug         src/Applications/Capsid/relax-nox.cc
+              902      759 klug         src/Applications/Capsid/grow.cc
+              902      753 klug         src/Applications/Capsid/configure.ac
+              902      728 klug         src/Applications/Capsid/C0MembraneGLoutput.h
+              902      845 klug         src/Applications/Capsid/indent.cc
+              902      546 klug         src/Applications/Capsid/acinclude.m4
+              902      728 klug         src/Applications/Capsid/growth.tex
+              902      728 klug         src/Applications/Capsid/Makefile.am
+              902      201 klug         src/Applications/Capsid/cg.inp
+              902      645 klug         src/Applications/AxiMembrane
+              902      442 klug         src/Applications/AxiMembrane/configure.ac
+              902      645 klug         src/Applications/AxiMembrane/lbfgsb.inp
+              902      442 klug         src/Applications/AxiMembrane/axi.cc
+              902      442 klug         src/Applications/AxiMembrane/acinclude.m4
+              902      448 klug         src/Applications/AxiMembrane/Makefile.am
+              902      645 klug         src/Applications/AxiMembrane/domain.cc
+              902      867 baimo        src/Applications/Semiflexible
+              902      785 missel       src/Applications/Semiflexible/SFGel-nematictest.in
+              902      756 missel       src/Applications/Semiflexible/lbfgsb.inp
+              902      852 baimo        src/Applications/Semiflexible/gelpropertytester.cc
+              902      855 baimo        src/Applications/Semiflexible/polySFGel.cc
+              902      763 missel       src/Applications/Semiflexible/SFGel-affinetest.in
+              902      606 klug         src/Applications/Semiflexible/plotExcursions.m
+              902      668 missel       src/Applications/Semiflexible/semiflexible-notes.tex
+              902      794 missel       src/Applications/Semiflexible/SFGel-rodliquid.in
+              902      866 baimo        src/Applications/Semiflexible/configure.ac
+              902      837 missel       src/Applications/Semiflexible/nematictest.cc
+              902      757 missel       src/Applications/Semiflexible/SFGel-polydisp.in
+              902      856 baimo        src/Applications/Semiflexible/polySFGel.in
+              902      761 missel       src/Applications/Semiflexible/affinetest.cc
+              902      693 klug         src/Applications/Semiflexible/box.cc
+              902      853 baimo        src/Applications/Semiflexible/GelOutput.h
+              902      606 klug         src/Applications/Semiflexible/brownian-pointsOnly.cc
+              902      809 missel       src/Applications/Semiflexible/rodliquid.cc
+              902      693 klug         src/Applications/Semiflexible/translate.cc
+              902      752 missel       src/Applications/Semiflexible/SFGel-test.in
+              902      770 klug         src/Applications/Semiflexible/Makefile.am.icpc
+              902      761 missel       src/Applications/Semiflexible/shear.cc
+              902      622 baimo        src/Applications/Semiflexible/rotation.m
+              902      691 klug         src/Applications/Semiflexible/periodicbox.cc
+              902      772 klug         src/Applications/Semiflexible/README
+              902      708 klug         src/Applications/Semiflexible/relax.cc
+              902      667 klug         src/Applications/Semiflexible/pinned.cc
+              902      765 missel       src/Applications/Semiflexible/NematicProbTable.h
+              902      680 klug         src/Applications/Semiflexible/brownian.cc
+              902      798 klug         src/Applications/Semiflexible/triangulate.cc
+              902      798 klug         src/Applications/Semiflexible/Makefile.am.gcc
+              902      865 baimo        src/Applications/Semiflexible/acinclude.m4
+              902      693 klug         src/Applications/Semiflexible/boxnl.cc
+              902      606 klug         src/Applications/Semiflexible/plotExcursion.m
+              902      867 baimo        src/Applications/Semiflexible/Makefile.am
+              902      803 baimo        src/Applications/Semiflexible/trianglestrain.cc
+              902      854 baimo        src/Applications/Semiflexible/GelOutput.cc
+              902      533 ma           src/Applications/Dimple
+              902      532 ma           src/Applications/Dimple/oneDimple.cc
+              902      530 ma           src/Applications/Dimple/configure.ac
+              902      533 ma           src/Applications/Dimple/acinclude.m4
+              902      531 ma           src/Applications/Dimple/Makefile.am
+              902      473 ma           src/Applications/Dimple/line.cc
+              902      473 ma           src/Applications/Dimple/twoDimples.cc
+              902      183 klug         src/Applications/ForceEstimation
+              902      183 klug         src/Applications/ForceEstimation/configure.ac
+              902      183 klug         src/Applications/ForceEstimation/forceCalc.cc
+              902      183 klug         src/Applications/ForceEstimation/acinclude.m4
+              902      183 klug         src/Applications/ForceEstimation/parameters.inp
+              902      183 klug         src/Applications/ForceEstimation/Makefile.am
+              902      453 klug         src/Applications/Tether
+              902      217 klug         src/Applications/Tether/solver.inp
+              902      216 klug         src/Applications/Tether/tether.cc
+              902      182 klug         src/Applications/Tether/configure.ac
+              902      216 klug         src/Applications/Tether/Rigid.h
+              902      203 klug         src/Applications/Tether/acinclude.m4
+              902      216 klug         src/Applications/Tether/parameters.inp
+              902      453 klug         src/Applications/Tether/Makefile.am
+              902      218 klug         src/Applications/Tether/Makefile.am.MPI
+              902      848 klug         src/Applications/ActionPotential
+              902      594 klug         src/Applications/ActionPotential/configure.ac
+              902      848 klug         src/Applications/ActionPotential/extractDecimateSurface.cc
+              902      665 sarkar       src/Applications/ActionPotential/app.cc
+              902      594 klug         src/Applications/ActionPotential/acinclude.m4
+              902      665 sarkar       src/Applications/ActionPotential/CP.fibrosis.h
+              902      594 klug         src/Applications/ActionPotential/Makefile.am
+              902      848 klug         src/Applications/ActionPotential/compileDecimator.sh
+              902      666 sarkar       src/Applications/ActionPotential/CP.fibrosis.icc
+              902      396 ma           src/Applications/StructPhaseTrans
+              902      389 ma           src/Applications/StructPhaseTrans/icos-4.fixed.vtk
+              902      390 ma           src/Applications/StructPhaseTrans/constants.inp
+              902      391 ma           src/Applications/StructPhaseTrans/noIndent.cc
+              902      392 ma           src/Applications/StructPhaseTrans/configure.ac
+              902      395 ma           src/Applications/StructPhaseTrans/Rigid.h
+              902      396 ma           src/Applications/StructPhaseTrans/indent.cc
+              902      393 ma           src/Applications/StructPhaseTrans/acinclude.m4
+              902      394 ma           src/Applications/StructPhaseTrans/Makefile.am
+              902      375 ma           src/Applications/MembraneEquilibrium
+              902      375 ma           src/Applications/MembraneEquilibrium/tether.cc
+              902      329 ma           src/Applications/MembraneEquilibrium/constants.inp
+              902      355 ma           src/Applications/MembraneEquilibrium/MonteCarloTwoPhase.cc
+              902      329 ma           src/Applications/MembraneEquilibrium/pack.cc
+              902      194 ma           src/Applications/MembraneEquilibrium/configure.ac
+              902      197 klug         src/Applications/MembraneEquilibrium/acinclude.m4
+              902      353 ma           src/Applications/MembraneEquilibrium/Makefile.am
+              902      329 ma           src/Applications/MembraneEquilibrium/CalObalate.cc
+              902      195 ma           src/Applications/MembraneEquilibrium/rbc.dat
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/configure.icc.opt
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/configure
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Makefile.in
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Rigid.h
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/lbfgsb.inp
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/config.log
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/config.status
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/depcomp
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/parameters.inp
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/tetCapsid-lbfgsb-quad.cc
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/README
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Makefile.am.MPI
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Indentations
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/2
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/tetCapsid-lbfgsb-quad.o
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/configure.ac
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/autom4te.cache
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/acinclude.m4
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Makefile.am
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/missing
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/tetCapsid_lbfgsb_quad
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/aclocal.m4
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/Makefile
+              902      573 melissa      src/Applications/TetrahedralQuadCapsid/install-sh
+?                                       src/Macromolecule/Makefile.in
+?                                       src/Macromolecule/.deps
+?                                       src/Macromolecule/Makefile
+?                                       src/Macromolecule/libMacromolecule.a
+              902      583 klug         src/Macromolecule
+              902      503 melissa      src/Macromolecule/Macromolecule.cpp
+              902      545 klug         src/Macromolecule/Makefile.am
+              902      559 melissa      src/Macromolecule/Macromolecule.h
+?                                       src/VoomMath/libVoomMath.a
+?                                       src/VoomMath/Makefile.in
+?                                       src/VoomMath/.deps
+?                                       src/VoomMath/Makefile
+              902      647 klug         src/VoomMath
+              902        2 feng         src/VoomMath/Test
+              902        2 feng         src/VoomMath/Test/test.cpp
+              902        2 feng         src/VoomMath/Test/acinclude.m4
+              902        2 feng         src/VoomMath/Test/Makefile.am
+              902      647 klug         src/VoomMath/VoomMath.h
+              902      439 klug         src/VoomMath/Makefile.am
+              902      647 klug         src/VoomMath/VoomMath.cc
+?                                       src/Geometry/libGeometry.a
+?                                       src/Geometry/Makefile.in
+?                                       src/Geometry/.deps
+?                                       src/Geometry/Makefile
+              902      439 klug         src/Geometry
+              902      439 klug         src/Geometry/ShellGeometry.cc
+              902      439 klug         src/Geometry/Makefile.am
+              902      439 klug         src/Geometry/ShellGeometry.h
+?                                       src/Mesh/Makefile.in
+?                                       src/Mesh/libMesh.a
+?                                       src/Mesh/.deps
+?                                       src/Mesh/Makefile
+              902      586 klug         src/Mesh
+              902      365 klug         src/Mesh/Test
+              902      365 klug         src/Mesh/Test/configure.ac
+              902      365 klug         src/Mesh/Test/test.cc
+              902      365 klug         src/Mesh/Test/acinclude.m4
+              902      365 klug         src/Mesh/Test/Makefile.am
+              902      586 klug         src/Mesh/HalfEdgeMesh.cc
+              902      586 klug         src/Mesh/HalfEdgeMesh.h
+              902      439 klug         src/Mesh/Makefile.am
+?                                       src/Body/SkewHexonBody.h
+?                                       src/Body/Makefile.in
+?                                       src/Body/MFBodyDoubleWell.h
+?                                       src/Body/.deps
+?                                       src/Body/Makefile
+?                                       src/Body/MFBodyDoubleWell2.icc
+?                                       src/Body/SkewHexonBody.h.backup
+?                                       src/Body/SkewHexonBody.icc
+?                                       src/Body/SkewHexonBody.icc.backup
+?                                       src/Body/MFBodyDoubleWell.icc
+?                                       src/Body/MFBodyDoubleWell.icc.backup
+?                                       src/Body/libBody.a
+?                                       src/Body/MFBodyDoubleWell2.h
+              902      864 baimo        src/Body
+              902      453 klug         src/Body/Test
+              902      181 klug         src/Body/Test/test.cpp
+              902      439 klug         src/Body/Test/configure.ac
+              902      403 melissa      src/Body/Test/testCapsid.cpp
+              902      453 klug         src/Body/Test/acinclude.m4
+              902      439 klug         src/Body/Test/Makefile.am
+              902       69 feng         src/Body/Test/autogen.sh
+              902        7 feng         src/Body/Test/infos
+              902      857 baimo        src/Body/AffinityMeasure.cc
+              902      372 ma           src/Body/LoopShellBody-HDS.cc
+              902      731 klug         src/Body/GenericBody.h
+              902      858 baimo        src/Body/AffinityMeasure.h
+              902      508 melissa      src/Body/CapsidAtomisticBody.h
+M             902      576 klug         src/Body/C0MembraneBody.icc
+              902      731 klug         src/Body/FiniteContractionBody.h
+              902      860 baimo        src/Body/SemiflexibleGel.h
+              902      706 missel       src/Body/nlSemiflexibleGel.icc
+              902      351 ma           src/Body/TwoPhaseBody.h
+M             902      574 melissa      src/Body/Capsid3DBody.h
+              902      646 klug         src/Body/C1AxiShellBody.h
+              913      913 ankush       src/Body/LoopShellBody.cc
+              915      915 ankush       src/Body/NodeBin.h
+              913      913 ankush       src/Body/LoopShellBody.h
+              915      915 ankush       src/Body/MFBody.h
+              902      549 ma           src/Body/GLBody.h
+              902      335 ma           src/Body/TwoPhaseBody-HDS.cc
+M             902      576 klug         src/Body/C0MembraneBody.h
+              902      731 klug         src/Body/GenericBody.cc
+              902      704 missel       src/Body/nlSemiflexibleGel.h
+M             902      731 klug         src/Body/Body.cc
+M             902      731 klug         src/Body/Body.h
+              902      509 melissa      src/Body/CapsidAtomisticBody.icc
+              902      408 klug         src/Body/TwoPhaseBody.cc
+              902      861 baimo        src/Body/SemiflexibleGel.icc
+              902      731 klug         src/Body/FiniteContractionBody.icc
+              902      549 ma           src/Body/GLBody.cc
+              902      731 klug         src/Body/Capsid3DBody.icc
+              902      539 ma           src/Body/C1AxiShellBody.icc
+              902      864 baimo        src/Body/Makefile.am
+              915      915 ankush       src/Body/MFBody.icc
+?                                       src/Solvers/Makefile.in
+?                                       src/Solvers/libSolvers.a
+?                                       src/Solvers/.deps
+?                                       src/Solvers/Makefile
+              902      835 missel       src/Solvers
+              902      416 klug         src/Solvers/Test
+              902       56 klug         src/Solvers/Test/test.cpp
+              902      416 klug         src/Solvers/Test/configure.ac
+              902      416 klug         src/Solvers/Test/acinclude.m4
+              902       56 klug         src/Solvers/Test/Rosenbrock.cpp
+              902      416 klug         src/Solvers/Test/Makefile.am
+              902       50 klug         src/Solvers/Test/Rosenbrock.h
+              902      416 klug         src/Solvers/cg_descent.c
+              902      648 klug         src/Solvers/Lbfgsb.cc
+              902      416 klug         src/Solvers/CgDescent.cc
+              902      835 missel       src/Solvers/lbfgsb-routines-parallel.f
+              902      133 klug         src/Solvers/DirectLinearSolver.cc
+              902      416 klug         src/Solvers/cg_descent.h
+              902      597 klug         src/Solvers/Lbfgsb.h
+              902      580 klug         src/Solvers/CgDescent.h
+              902      580 klug         src/Solvers/DirectLinearSolver.h
+              902      143 klug         src/Solvers/SimulatedAnnealing.cc
+!             902      774 klug         src/Solvers/lbfgsb-routines.cc
+              902      305 klug         src/Solvers/lbfgsb-routines.f
+              902      580 klug         src/Solvers/SimulatedAnnealing.h
+              902      579 klug         src/Solvers/CGfast.cc
+              902      796 missel       src/Solvers/BrownianDynamics.cc
+              902      597 klug         src/Solvers/CGfast.h
+              902      612 klug         src/Solvers/BrownianDynamics.h
+              902      580 klug         src/Solvers/Solver.h
+              902      360 klug         src/Solvers/ConjugateGradientWSK.cc
+              902      416 klug         src/Solvers/CgDescent-globals.h
+              902      204 klug         src/Solvers/ViscousRelaxation.cc
+              902      580 klug         src/Solvers/ConjugateGradientWSK.h
+              902      580 klug         src/Solvers/ViscousRelaxation.h
+              902      580 klug         src/Solvers/Makefile.am
+              902       30 klug         src/Solvers/FESolver.h
+              902      696 missel       src/Solvers/BrownianMotorDynamics.cc
+              902      697 missel       src/Solvers/BrownianMotorDynamics.h
+              902      314 klug         src/Makefile.am.cardiac
+              902      220 klug         src/DataLibrary
+              902      220 klug         src/DataLibrary/sphere3.obj
+              902      219 klug         src/DataLibrary/sphere4.obj
+              902      185 klug         src/DataLibrary/ico_npv-lin1.wrl
+              902       84 feng         src/DataLibrary/icosahedron-0.dat
+              902      185 klug         src/DataLibrary/ico_npv-lin2.wrl
+              902       84 feng         src/DataLibrary/icosahedron-1.dat
+              902      185 klug         src/DataLibrary/ico_npv-lin3.wrl
+              902       86 feng         src/DataLibrary/icosahedron-2.dat
+              902      185 klug         src/DataLibrary/ico_npv-lin4.wrl
+              902       84 feng         src/DataLibrary/icosahedron-3.dat
+              902      185 klug         src/DataLibrary/ico_npv-lin5.wrl
+              902      185 klug         src/DataLibrary/fyg6.30.obj
+              902      185 klug         src/DataLibrary/fyg6.12.obj
+              902       84 feng         src/DataLibrary/icosahedron-4.dat
+              902      185 klug         src/DataLibrary/fyg6.24.obj
+              902      185 klug         src/DataLibrary/ico_npv-lin3.obj
+?                                       src/Shape/Makefile.in
+?                                       src/Shape/.deps
+?                                       src/Shape/Makefile
+?                                       src/Shape/MFShape.cc.backup2
+?                                       src/Shape/MFShape.cc.backup3
+?                                       src/Shape/MFShape.cc.backup4
+?                                       src/Shape/MFShape.cc.backup5
+?                                       src/Shape/MFShape.cc.backup6
+?                                       src/Shape/MFShape.cc.backup7
+?                                       src/Shape/MFShape.cc.backup8
+?                                       src/Shape/MFShape.cc.backup9
+?                                       src/Shape/libShape.a
+?                                       src/Shape/MFShape.cc.backup
+              902      725 klug         src/Shape
+              902      434 klug         src/Shape/Test
+              902      398 melissa      src/Shape/Test/test.cpp
+              902      433 klug         src/Shape/Test/testHermite.cc
+              902      434 klug         src/Shape/Test/configure.ac
+              902      433 klug         src/Shape/Test/acinclude.m4
+              902      434 klug         src/Shape/Test/Makefile.am
+              902      430 klug         src/Shape/Hermite.cc
+              902      483 melissa      src/Shape/ShapeHex8.cc
+              902      439 klug         src/Shape/Hermite.h
+              902      482 melissa      src/Shape/ShapeHex8.h
+              902      439 klug         src/Shape/ShapeTet4.cc
+              902      224 klug         src/Shape/ShapeTri3.cc
+              902      439 klug         src/Shape/Shape.h
+              902      563 melissa      src/Shape/ShapeTet4.h
+              902      224 klug         src/Shape/ShapeTri3.h
+              902      725 klug         src/Shape/ShapeTri6.cc
+              902      226 hvan         src/Shape/ShapeQ4.cc
+              902      725 klug         src/Shape/ShapeTri6.h
+              902      307 hvan         src/Shape/ShapeQ4.h
+              902      439 klug         src/Shape/Shape.icc
+              902      399 melissa      src/Shape/ShapeTet10.cc
+              902      562 melissa      src/Shape/ShapeTet10.h
+              902      215 klug         src/Shape/LoopShellShape.cc
+              915      915 ankush       src/Shape/MFShape.cc
+              902      398 melissa      src/Shape/ShapeTet4CP.cc
+              902      439 klug         src/Shape/LoopShellShape.h
+              915      915 ankush       src/Shape/Makefile.am
+              915      915 ankush       src/Shape/MFShape.h
+              902      561 melissa      src/Shape/ShapeTet4CP.h
+?                                       src/Model/Makefile.in
+?                                       src/Model/libModel.a
+?                                       src/Model/.deps
+?                                       src/Model/Makefile
+              902      595 klug         src/Model
+              902      414 klug         src/Model/Test
+              902      144 klug         src/Model/Test/configure.ac
+              902      414 klug         src/Model/Test/acinclude.m4
+              902      122 klug         src/Model/Test/linearized-test.cc
+              902      414 klug         src/Model/Test/shell-test.cc
+              902      414 klug         src/Model/Test/Makefile.am
+              902       44 feng         src/Model/Test/autogen.sh
+M             902      581 klug         src/Model/Model.cc
+M             902      595 klug         src/Model/Model.h
+              902      439 klug         src/Model/Makefile.am
+              902      595 klug         src/Model/Model.icc
+?                                       src/Atom/Makefile.in
+?                                       src/Atom/libAtom.a
+?                                       src/Atom/.deps
+?                                       src/Atom/Makefile
+              902      584 klug         src/Atom
+              902      504 melissa      src/Atom/Atom.cpp
+              902      558 melissa      src/Atom/Atom.h
+              902      544 klug         src/Atom/Makefile.am
+              902      441 klug         src/voom.h
+              902      439 klug         src/Constraints
+              902      439 klug         src/Constraints/MultiplierNodeConstraint.h
+              902      741 klug         src/Makefile.am
+?                                       src/Elements/Makefile.in
+?                                       src/Elements/.deps
+?                                       src/Elements/Makefile
+?                                       src/Elements/libElements.a
+?                                       src/Elements/ContactSNNI.h
+              902      859 baimo        src/Elements
+              909      909 ankush       src/Elements/NonlinearElastic.h
+              902      733 klug         src/Elements/C0MembraneGL.h
+              902      441 klug         src/Elements/C1AxiShell.h
+              902      439 klug         src/Elements/NobleElem.cc
+M             902      849 klug         src/Elements/RigidPlateAL.h
+              907      907 ankush       src/Elements/LoopShell.h
+              902      439 klug         src/Elements/TwoPhaseElement.h
+              902      294 hvan         src/Elements/CardiacPotential.cc
+              902      672 klug         src/Elements/Dirichlet.cc
+              902      766 klug         src/Elements/EntropicSpring.h
+              902      451 klug         src/Elements/ViscousRegularizer.h
+              902      672 klug         src/Elements/Dirichlet.h
+              902      294 hvan         src/Elements/CardiacPotential.h.BR
+              902      599 ma           src/Elements/C1SplineAxiShell.h
+              902      859 baimo        src/Elements/AngleSpring.h
+              902      547 ma           src/Elements/GLElement.h
+              902      746 klug         src/Elements/S2.cc
+              902      791 missel       src/Elements/BrownianRod.h
+              902      826 missel       src/Elements/Grid.h
+              902      521 ma           src/Elements/InteractionElement.cc
+              902      732 klug         src/Elements/MembraneGLImplicitMass.h
+              902      468 klug         src/Elements/ConcentratedForce.h
+              902      850 klug         src/Elements/SpringShell.cc
+              902      733 klug         src/Elements/C0MembraneGL.cc
+              902      717 missel       src/Elements/Motor.h
+              909      909 ankush       src/Elements/NonlinearElastic.icc
+              902      439 klug         src/Elements/NobleElem.h
+              902      780 missel       src/Elements/Spring.h
+              902      439 klug         src/Elements/TwoPhaseElement.cc
+              902      592 klug         src/Elements/CardiacPotential.h
+              902      294 hvan         src/Elements/CardiacPotential.cc.BR
+              902      547 ma           src/Elements/GLElement.cc
+              902      600 ma           src/Elements/C1SplineAxiShell.icc
+              908      908 ankush       src/Elements/C0Membrane.icc
+              902      468 klug         src/Elements/FiniteContraction.h
+M             902      846 klug         src/Elements/RigidHemisphereAL.h
+              902      439 klug         src/Elements/LinearizedElement2D.h
+              902      732 klug         src/Elements/MembraneGLImplicitMass.cc
+              902      439 klug         src/Elements/CardiacPotential2.h
+              902      439 klug         src/Elements/Element.h
+              902      851 klug         src/Elements/Test
+              902      112 klug         src/Elements/Test/node.info
+              902      844 klug         src/Elements/Test/c0membranegl.cc
+              902      453 klug         src/Elements/Test/test.cpp
+              902      468 klug         src/Elements/Test/contract.cc
+              902      287 hvan         src/Elements/Test/test2.cpp
+              902      439 klug         src/Elements/Test/configure.ac
+              902      585 klug         src/Elements/Test/acinclude.m4
+              902      400 melissa      src/Elements/Test/nonlinElas.cc
+              902      851 klug         src/Elements/Test/Makefile.am
+              902      659 missel       src/Elements/Test/entropicSpring.cc
+              902      117 klug         src/Elements/Test/tri3tri6.cc
+              902        2 feng         src/Elements/Test/autogen.sh
+              902      400 melissa      src/Elements/Test/nonlinElasQuadTet.cc
+              902      851 klug         src/Elements/Test/springshell.cc
+              902      850 klug         src/Elements/SpringShell.h
+              902      846 klug         src/Elements/RigidPlateAL.cc
+              907      907 ankush       src/Elements/LoopShell.cc
+              902      519 ma           src/Elements/LineElement.h
+              902      287 hvan         src/Elements/CardiacPotential.cc.Noble
+              902      762 missel       src/Elements/LeesEdwards.h
+              902      806 missel       src/Elements/TwoBodyPotential.h
+              902      506 melissa      src/Elements/AtomisticCoupled.h
+              908      908 ankush       src/Elements/C0Membrane.h
+              902      585 klug         src/Elements/StandardElement.h
+              914      914 ankush       src/Elements/RadialForce.h
+              902      592 klug         src/Elements/CardiacPotential.icc
+              902      827 missel       src/Elements/AffinityElement.cc
+              902      602 ma           src/Elements/ContactSPT.h
+              902      827 missel       src/Elements/AffinityElement.h
+              902      551 ma           src/Elements/VectorSpring.h
+              902      468 klug         src/Elements/FiniteContraction.icc
+              902      521 ma           src/Elements/InteractionElement.h
+              902      843 ankush       src/Elements/Contact.h
+              902      118 klug         src/Elements/LinearizedElement2D.icc
+              902      781 missel       src/Elements/IntersectionFinder.h
+              902      439 klug         src/Elements/CardiacPotential2.icc
+              902      819 missel       src/Elements/PeriodicTie.h
+              902      441 klug         src/Elements/C1AxiShell.icc
+              902      287 hvan         src/Elements/CardiacPotential.h.Noble
+              902      778 missel       src/Elements/PeriodicBox.h
+              902      782 missel       src/Elements/Crosslink.h
+              902      314 klug         src/Elements/Makefile.am.cardiac
+              902      243 hvan         src/Elements/NobleModel.cc
+              902      507 melissa      src/Elements/AtomisticCoupled.icc
+              902      842 missel       src/Elements/PinchForce.h
+              902      585 klug         src/Elements/LoopGhostBC.cc
+              902      846 klug         src/Elements/RigidHemisphereAL.cc
+              902      847 klug         src/Elements/Makefile.am
+              902      585 klug         src/Elements/LoopGhostBC.h
+              902      601 ma           src/Elements/Constraint.h
+              902      746 klug         src/Elements/S2.h
+              902      585 klug         src/Elements/Element.cc
+?                                       src/Quadrature/Makefile.in
+?                                       src/Quadrature/libQuadrature.a
+?                                       src/Quadrature/.deps
+?                                       src/Quadrature/Makefile
+              902      564 melissa      src/Quadrature
+              902      453 klug         src/Quadrature/Test
+              902      453 klug         src/Quadrature/Test/test.cpp
+              902      439 klug         src/Quadrature/Test/testQ.cpp
+              902      453 klug         src/Quadrature/Test/acinclude.m4
+              902      439 klug         src/Quadrature/Test/configure.in
+              902      439 klug         src/Quadrature/Test/Makefile.am
+              902      564 melissa      src/Quadrature/TetQuadrature.h
+              902      439 klug         src/Quadrature/Quadrature.h
+              902      485 melissa      src/Quadrature/HexQuadrature.cc
+              902      484 melissa      src/Quadrature/TriangleQuadrature.cc
+              902      331 hvan         src/Quadrature/HexQuadrature.h
+              902      445 klug         src/Quadrature/LineQuadrature.cc
+              902      439 klug         src/Quadrature/Makefile.am
+              902       99 klug         src/Quadrature/TriangleQuadrature.h
+              902      445 klug         src/Quadrature/LineQuadrature.h
+              902      231 klug         src/Quadrature/QuadQuadrature.cc
+              902      227 hvan         src/Quadrature/QuadQuadrature.h
+              902      486 melissa      src/Quadrature/TetQuadrature.cc
+              902      418 klug         configure.gcc.dbg
+              902        2 feng         Makefile.am
+              902      284 klug         configure.icpc.dbg
+              902        2 feng         autogen.sh
+              902      314 klug         configure.in.cardiac
+              902      315 klug         export-voom-cardiac.sh
+              902      418 klug         configure.gcc.opt

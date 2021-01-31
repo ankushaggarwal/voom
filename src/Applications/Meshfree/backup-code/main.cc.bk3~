@@ -1,0 +1,293 @@
+//#include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <getopt.h>
+#include "Contact.h"
+#include "ViscousRegularizer.h"
+
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
+
+
+// using namespace tvmet;
+ using namespace std;
+#include "MFShape.h"
+#include "MFShape.cc"
+#include "NodeBase.h"
+#include "Node.h"
+#include "MFBody.h"
+#include "Model.h"
+#include "CompNeoHookean.h"
+#include<tvmet/Vector.h>
+#include<tvmet/Matrix.h>
+#include "Solver.h"
+#include "Lbfgsb.h"
+ using namespace voom;
+
+ int main(int argc, char* argv[])
+ {
+typedef tvmet::Vector<double,3> CoordinateArray;
+bool verbose = true;
+
+//geometry
+float Lx = 17.0, Ly = 17.0, Lz = 17.0;
+
+//mesh free points
+int nx = 20, ny=20, nz = 20;
+int npts = nx*ny*nz;
+
+//distance between mesh points
+//float dx = Lx/(nx-1.0), dy = Ly/(ny-1.0), dz = Lz/(nz-1.0);
+float dx = Lx/(nx), dy = Ly/(ny), dz = Lz/(nz);
+
+// mesh free parameters
+double support_size = 3*dx;
+
+//array of mesh points
+CoordinateArray x[npts];
+
+for(int k=0;k<nz;k++){
+  for(int i=0;i<nx;i++){
+    for(int j=0;j<ny;j++){
+      int temp = k*nx*ny+i+j*nx;
+      x[temp] = i*dx, j*dy, k*dz;
+    }
+  }
+}
+//weights/voumes associated with nodes
+vector<double> node_volume;
+for(int i=0;i<npts;i++)  node_volume.push_back(dx*dy*dz);
+
+// create vector of nodes
+int dof=0;
+std::vector< NodeBase* > nodes;
+std::vector< DeformationNode<3>* > defNodes;
+defNodes.reserve(npts);
+for(int i=0; i<npts; i++) {
+  int id=i;
+  DeformationNode<3>::Point temp;
+  temp(0) = x[i](0);
+  temp(1) = x[i](1);
+  temp(2) = x[i](2);
+  
+  NodeBase::DofIndexMap idx(3);
+  for(int j=0; j<3; j++) idx[j]=dof++;
+  DeformationNode<3>* n = new DeformationNode<3>(id,idx,temp);
+  nodes.push_back( n );
+  defNodes.push_back( n );
+}
+ cout << "Number of nodes: " <<nodes.size() << endl;
+
+// deform the initial shape
+/*    for(int i=0; i<defNodes.size(); i++) {
+      DeformationNode<3>::Point x;
+      //res >> x(0) >> x(1) >> x(2);
+      x(0)=0.0;
+      x(1)=0.0;
+      x(2)=1.05*defNodes[i]->getPosition(2);
+      x += defNodes[i]->position();
+      //x = 1.05*defNodes[i]->position();
+      defNodes[i]->setPoint(x);
+    }*/
+    
+  //create material
+  double rho = 1.0;
+  double E = 200.0;
+  double nu = 0.4;
+  double viscosity=1.0e-2;
+  
+  typedef CompNeoHookean MaterialType;
+  MaterialType protein( rho, E, nu );
+  if(verbose) std::cout << "Material has been created." << std::endl;
+  
+  //create body
+  typedef MFBody<MaterialType,MFShape> body;
+  body bd(protein,nodes,node_volume,support_size);
+  bd.setOutput(paraview);
+  bd.compute(true,true,false);
+  
+  std::cout<<"Volume of the body is "<<bd.volume()<<std::endl;
+  std::cout<<"Strain energy of the body is "<<bd.totalStrainEnergy()<<std::endl;
+  
+  // create Model
+  Model::BodyContainer bdc;
+  bdc.push_back(&bd);
+  Model model(bdc, nodes);
+
+  //model.checkConsistency(true,false);
+  //model.checkRank(model.dof()-6,true);
+  //return 0;  
+  model.print("initial");
+  int m=5;
+  double factr=1.0e+7;
+  double pgtol=1.0e-5;
+  int iprint = 0;
+  ifstream lbfgsbinp("lbfgsb.inp");
+  lbfgsbinp >> iprint >> factr >> pgtol >> m ;
+  if(verbose) 
+    std::cout << "Input iprint: " << iprint << std::endl
+	      << "Input factr: " << factr << std::endl
+	      << "Input pgtol: " << pgtol << std::endl
+	      << "Input m: " << m << std::endl;
+  Lbfgsb solver(model.dof(), m, factr, pgtol, iprint );//(true);
+  std::cout << "Compressing capsid." << std::endl;
+  
+  // find top and bottom of capsid
+  double Zmin=std::numeric_limits<double>::max();
+  double Zmax=-std::numeric_limits<double>::max();
+  double Zavg = 0.0;
+  for (int a=0; a<defNodes.size(); a++){
+    double Z = defNodes[a]->getPoint(2);
+    Zmin = std::min(Zmin, Z);
+    Zmax = std::max(Zmax, Z);
+    Zavg += Z;
+  }
+  Zavg /= defNodes.size();
+
+  std::cout << "Zmin = " << Zmin << std::endl
+	    << "Zmax = " << Zmax << std::endl
+	    << "Zavg = " << Zavg << std::endl;
+    
+
+  // create indentor and plate
+  double k1 = 1.0e4;
+  double afmR = 20.0;
+  double afmX = Lx/2;
+  double afmY = Ly/2;
+  bool frictionalContact = true;
+  
+    if(verbose) 
+    std::cout << "Input k1: " << k1 << std::endl
+	      << "Input afmR: " << afmR << std::endl
+	      << "Center position of afm tip (x): " << afmX << std::endl
+	      << "Center position of afm tip (y): " << afmY << std::endl
+	      << "Frictional Contact: " << frictionalContact << std::endl;
+
+  double friction=20.0;
+  RigidPlateContact * afm
+    = new RigidPlateContact( defNodes, Zmax, false, friction, pgtol);
+
+  bd.pushBackContact( afm );
+
+  bool up=true;
+  RigidPlateContact * glass
+    = new RigidPlateContact( defNodes, Zmin, up, friction, pgtol );
+  bd.pushBackContact( glass );
+
+  //add some viscosity for regularization
+  ViscousRegularizer vr(bd.nodes(), viscosity);
+  bd.pushBack( &vr ); 
+
+  int steps = 100;
+  double vrTol = pgtol;
+
+  if(verbose) 
+    std::cout << "Input steps: "<<steps<<std::endl
+	      << "Input vrTol: "<<vrTol<<std::endl;
+
+  double Hfinal = 15;
+  const double originalHeight=Zmax-Zmin;
+  double Zbegin=Zmin;
+  double Zend=Zmax-Hfinal;
+  double dZ = (Zend-Zbegin)/steps;
+  double vrEnergy = vr.energy();
+  double bdEnergy = bd.energy();
+  
+  ofstream FvsZ;
+  if(verbose) FvsZ.open("FvsZ.dat");
+  int Iter = 0;
+    // %%%%%%%%%%%%%%%%%%%%%%
+  // Begin indentation loop
+  // %%%%%%%%%%%%%%%%%%%%%%
+
+  for(double Z = Zbegin; Z<Zend+0.5*dZ; Z+=dZ) {
+    
+    // move glass up by dZ
+    glass->setZ(Z);
+        std::cout << std::endl
+	      << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	      << std::endl
+	      << " Z = " << Z 
+	      << " zeta = " << Z-Zbegin 
+	      << std::endl;
+
+    int viterMax = 10;
+    for(int viter=0; viter<viterMax; viter++) {
+
+      if(verbose) std::cout << std::endl 
+			    << "VISCOUS ITERATION: " << viter 
+			    << "\t viscosity = " << vr.viscosity()
+			    << std::endl
+			    << std::endl;
+//       vr.step();
+      solver.solve( &model );
+      vrEnergy = vr.energy();
+      bdEnergy = bd.energy();
+
+      if(verbose) {
+	std::cout << "ENERGY:" << std::endl
+		  << "viscous energy = " << vrEnergy << std::endl
+		  << "   body energy = " << bdEnergy << std::endl
+		  << "  total energy = " << solver.function() << std::endl
+		  << std::endl;
+      }
+
+      // update contact
+      if(verbose) {
+	std::cout << "CONTACT:" << std::endl;
+	std::cout << "    top active = " << afm->active() << std::endl
+		  << " bottom active = " << glass->active() << std::endl
+		  << "     top force = " << afm->FZ() << std::endl 
+		  << "  bottom force = " << glass->FZ() << std::endl;
+      }
+	
+      // step forward in "time", relaxing viscous energy & forces 
+      vr.step();
+
+      if(vrEnergy < vrTol*bdEnergy && solver.projectedGradientNorm()<=pgtol ) { 
+	// viscous energy is small enough; exit
+	break;
+      }
+    }
+
+    double height = Zmax-Z;
+    // add up forces on top and bottom
+    double Ztop = Zmax;
+    double Zbot = Zmax - height;       
+
+    if(verbose) {
+      std::cout << "Contact and Viscous energy converged." << std::endl
+		<< "        height = " << height << std::endl
+		<< "   indentation = " << originalHeight-height << std::endl
+		<< std::endl;
+      }
+          // This is where Paraview file (if desired) is saved
+    char name[20]; 
+    if(Iter%4==0){
+      sprintf(name,"disp%d",Iter/4);
+      model.print(name);
+    }
+Iter++;
+
+    // Output the resulting energy and forces
+    if(verbose) {
+      FvsZ << std::setw( 24 ) << std::setprecision(16) 
+           << originalHeight-height
+           << std::setw( 24 ) << std::setprecision(16)
+	   << glass->FZ()
+	   << std::setw( 24 ) << std::setprecision(16)
+           << afm->FZ()
+	   << std::setw( 24 ) << std::setprecision(16)
+           << solver.function()
+	   << std::endl;
+	}
+
+  }
+  FvsZ.close();
+
+  std::cout << "Indentation Complete." << std::endl;
+
+  return 0;
+}

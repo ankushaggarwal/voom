@@ -1,0 +1,687 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <getopt.h>
+#include <ctime>
+#include "Node.h"
+//#include "SemiflexibleGel.h"
+#include "Model.h"
+#include "Lbfgsb.h"
+#include "BrownianRod.h"
+#include <random/uniform.h>
+#include <random/normal.h>
+//#include "Dirichlet.h"
+#include "PeriodicBox.h"
+#include "LeesEdwards.h"
+#include "GelOutput.h"
+//#include <process.h>
+
+#define USEOPENMP 0
+#if defined(_OPENMP)
+#include <omp.h>
+#define USEOPENMP 1
+#endif
+
+using namespace tvmet;
+using namespace std;
+using namespace voom;
+
+typedef SemiflexibleGel<2> Gel;
+typedef std::map< std::string, std::string > ParamMap;
+typedef ParamMap::iterator PMIter;
+
+struct NodePair {
+  Gel::DefNode* node1;
+  Gel::DefNode* node2;
+
+  double initAngle;
+};
+
+struct DataPoint {
+  double rL;
+
+  int nDatPts;
+  double mean;
+  double stddev;
+};
+
+typedef std::vector< DataPoint > DataSet;
+typedef std::vector< NodePair > NodePairList;
+typedef std::vector< NodePairList > NodePairData;
+typedef std::map< Gel::DefNode*, tvmet::Vector<double,2> > InitPositionMap;
+
+double getLlc(double filDens, double L) {
+  double nu = 2*filDens*L*L/M_PI;
+  double num = nu - 1.0 + exp(-nu);
+  double denom = 1.0 + exp(-nu) - (2.0/nu)*(1.0 - exp(-nu));
+  return num/denom;
+}
+
+int getFilSegs(double avgCL, double nodesPerCL) {
+  return (int)((avgCL+1)*nodesPerCL);
+}
+
+int getCurGelNum(std::string firstGelName) {  
+  std::ifstream testStream;
+  bool fileFound = true;
+  int startPos = firstGelName.find("gelnum");
+  int endPos = firstGelName.find(".gelsave");
+  int i = atoi((firstGelName.substr(startPos+7,endPos-7-startPos)).data());
+  
+  // find first available gel name //
+  while(fileFound) {
+    testStream.open(firstGelName.c_str());
+    if(testStream.fail()) {
+      fileFound = false;
+    }
+    else{
+      i++;
+      startPos = firstGelName.find("gelnum");
+      endPos = firstGelName.find(".gelsave");
+      ostringstream tmpi;
+      tmpi << i;
+      firstGelName.replace(startPos+7,endPos-7-startPos,tmpi.str());
+    }  
+    testStream.close();
+  }
+  
+  return i;
+}
+
+std::string getGelFileName(std::string gelLibDir, ParamMap & pmap, int gelNum=-1) {
+  // get necessary parameters from map, construct file name //
+  char * gelStoreFN = new char[256];
+  double L = atof(pmap["L"].data());
+  double l_c = L/(atof(pmap["L/l_c"].data()));
+  double kcl = atof(pmap["crosslink stiffness"].data());
+  double Wx = atof(pmap["Wx"].data());
+  double Wy = atof(pmap["Wy"].data());
+  double dL = atof(pmap["dL"].data());
+  //double Snem = atof(pmap["nematic order parameter"].data());
+  std::string gelStoreName;
+  
+  if(gelNum == -1){
+    sprintf(gelStoreFN,"gel-L=%f-l_C=%f-dL=%f-Wx=%f-Wy=%f-kcl=%f-gelnum=1.gelsave",L,l_c,dL,Wx,Wy,kcl);
+    gelStoreName.assign(gelStoreFN);
+    gelStoreName.insert(0,gelLibDir);
+    gelNum = getCurGelNum(gelStoreName);
+    gelStoreName.clear();
+    delete gelStoreFN;
+    gelStoreFN = new char[128];
+  }
+  
+  sprintf(gelStoreFN,"gel-L=%f-l_C=%f-dL=%f-Wx=%f-Wy=%f-kcl=%f-gelnum=%d.gelsave",L,l_c,dL,Wx,Wy,kcl,gelNum);
+  gelStoreName.assign(gelStoreFN);
+  gelStoreName.insert(0,gelLibDir);
+  return gelStoreName;
+}
+
+void guessAffineShear(Gel * gel, double shear) {
+  Vector2D cent;
+  cent = gel->box()->size();
+  cent /= 2.0;
+  int nFils = gel->filaments().size();
+  for(int i=0; i<nFils; i++) {
+    Gel::Filament * fil = gel->filament(i);
+    int nNodesHere = fil->nodes.size();
+    for(int j=0; j<nNodesHere; j++) {
+      Vector2D diff;
+      diff = fil->nodes[j]->position() - cent;
+      Vector2D affdef;
+      affdef[1] = 0.0;
+      affdef[0] = shear*diff[1];
+      affdef += fil->nodes[j]->position();
+      fil->nodes[j]->setPoint(affdef);
+    }
+  }
+
+}
+
+int main(int argc, char* argv[]) {
+
+  int verbose = 1;
+
+  char* paramFileName = argv[1];
+
+  std::ifstream inFile(paramFileName);
+  if(!(inFile.good())) {
+    std::cerr << "Error: input file name does not exist!" << std::endl;
+    exit(1);
+  }
+
+  std::string pfn(paramFileName);//get run number from parameter input file
+  int runnumStart = pfn.find_first_of("0123456789");
+  int runnumEnd = pfn.find_first_not_of("0123456789",runnumStart);
+  int runNum = atoi(pfn.substr(runnumStart,runnumEnd-runnumStart).data());
+
+  char newDirName[128];
+  sprintf(newDirName,"mkdir -p Run%d",runNum);
+  system(newDirName); //run command in newDirName
+
+  if(USEOPENMP) std::cout << "Open MP being used." << std::endl;
+  else std::cout << "Open MP not being used." << std::endl;
+
+  ////////////////////////////////////////////////////////////////////
+  // Parameters
+  ////////////////////////////////////////////////////////////////////
+  
+  double kT = -1.0; // temperature in pN-microns //
+  double kC = -1.0; // bending modulus of actin in pN-microns^2 //
+  double L_p = -1.0; // persistence length of actin in microns //
+  double visc = -1.0; // viscosity //
+  //  double r = -1.0; // radius of actin filaments in microns //
+  double l_B = -1.0; // ratio of bending/stretching modulii //
+  tvmet::Vector<double,2> syssize; // system size in microns //
+  double kBond = -1.0; // spring constant for rods in pN/micron //
+  double kAngle = -1.0; // spring constant for rod joints (angles) in pN-microns //
+  double kcl = -1.0; // crosslink spring constant (negative for pinned node crosslinks) in pN/micron //
+  double dt = -1.0; // time step in seconds //
+  double L = -1.0; // length of filaments in microns //
+  double dL = -1.0; // length of rods (filament sections) in microns //
+  double tmpratio = -1.0; // nominal value of L/l_c //
+  double actuall_c = -1.0; // actual value of l_c //
+  double lambda = -1.0; // l_c*(l_c/l_B)^z //
+  double F_max = -1.0; // maximum force allowed in nonlinear rods (entropic elasticity) //
+  int fitOrder = -1; // order of fitting function to use for entropic springs //
+  double filDens = -1.0; // filament density in microns^-2 //
+  int nNodesPerFilament = -1; // # of nodes per filament //
+  double nodesPerCL = 2.5; // avg # of nodes between crosslinks //
+  double nematicOP = 0.0;
+  double actualnemOP = -1.0;
+  std::string nemPDFparam;
+  bool prestress = false;
+  std::string nemPDFtype = "Gaussian";
+
+  int nGels2avg = 1;
+  int curGelNum = -1;
+
+  std::string gelDirectory = "./";
+  std::string gelFileName;
+  std::string bondType = "Spring";
+
+  bool cutOffEnds = false;
+
+  bool relaxPrestress = false;
+
+  bool retrieveGel = false;
+
+  bool shearXtest = false;
+  bool shearYtest = false;
+  bool expXYtest = false;
+  bool expXtest = false;
+  bool expYtest = false;
+
+  bool writeStates = false;
+  bool zeroReturn = false;
+
+  bool adaptiveMeshing = false;
+  double minLength = -1.0;
+
+  std::string polydisp = "None";
+  double actualL;
+
+  bool shearTest = false;
+  double shrStart = -1.0;
+  // parameters for nematic test //
+  double shrEnd = -1.0;
+  int nShrSteps = -1;
+  double shrStep = -1.0;
+  double stretchEnd = -1.0;
+  int nStretchSteps = -1;
+  double stretchStep = -1.0;
+  double expandEnd = -1.0;
+  int nExpandSteps = -1;
+  double expandStep = -1.0;
+
+  double nFils = -1.0;
+  
+  ParamMap pm;
+  std::string curString;
+  std::string parName;
+  std::string parValStr;
+  double parVal;
+  std::string::iterator curStrIt;
+  
+  while(!inFile.eof()) {
+    char curLine[256];
+    inFile.getline(curLine,256);
+    curString.assign(curLine);
+    curStrIt = curString.begin();
+    if(*curStrIt != '#' && curString.length() > 2) {
+      int pNameEnd = curString.find_first_of('\t');
+      parName.assign(curString,0,pNameEnd);
+      pNameEnd = curString.find_first_not_of('\t',pNameEnd);
+      pNameEnd = curString.find_first_of('\t',pNameEnd);
+      int pNameBegin = curString.find_first_not_of('\t',pNameEnd);
+      pNameEnd = curString.find_first_of('\t',pNameBegin);
+      parValStr.assign(curString,pNameBegin,pNameEnd-pNameBegin);
+      if(parName.find("GelFile") != string::npos) gelFileName.assign(parValStr);
+      else if(parName.find("Shear_test") != string::npos) {
+	if(atof(parValStr.data()) >= 0.5) shearTest = true;
+      }
+      else if(parName.find("GelDirectory") != string::npos) gelDirectory.assign(parValStr);
+      else if(parName.find("kT")!=string::npos) {
+	kT = atof(parValStr.data());
+	pm.insert(pair< std::string, std::string>("kT",parValStr));
+      }
+      else if(parName.find("L_p")!=string::npos) L_p = atof(parValStr.data());
+      else if(parName.find("kC")!=string::npos) kC = atof(parValStr.data());
+      else if(parName.find("visc")!=string::npos) {
+	visc = atof(parValStr.data()); 
+	pm.insert(pair< std::string, std::string >("viscosity",parValStr));
+      }
+      // else if(parName.find("r")!=string::npos) r = parVal;
+      else if(parName.find("F_max")!=string::npos) {
+	F_max = atof(parValStr.data());
+	pm.insert(pair< std::string, std::string >("F_max",parValStr));
+	bondType = "EntropicSpring";
+      }
+      else if(parName.find("NodesPerCL")!=string::npos) {
+	nodesPerCL = atof(parValStr.data());
+      }
+      else if(parName.find("dt")!=string::npos) {
+	dt = atof(parValStr.data()); 
+	pm.insert(pair< std::string, std::string >("time step",parValStr));
+      }
+      else if(parName.find("L/l_C")!=string::npos) tmpratio = atof(parValStr.data());
+      else if(parName.find("Wx/L")!=string::npos) syssize[0] = atof(parValStr.data());
+      else if(parName.find("Wy/L")!=string::npos) syssize[1] = atof(parValStr.data());
+      else if(parName.find("kcl")!=string::npos) {
+	kcl = atof(parValStr.data());
+	pm.insert(pair< std::string, std::string >("crosslink stiffness",parValStr));	
+      }
+      else if(parName.find("l_B")!=string::npos) {
+	l_B = atof(parValStr.data());
+	pm.insert(pair< std::string, std::string >("l_B",parValStr));
+      }
+      else if(parName.find("fit")!=string::npos) {
+	fitOrder = atoi(parValStr.data());
+	pm.insert(pair< std::string, std::string >("fit order",parValStr));	
+      }
+      else if(parName.find("Shear_start")!=string::npos) shrStart = atof(parValStr.data());
+      else if(parName.find("Shear_final")!=string::npos) shrEnd = atof(parValStr.data());
+      else if(parName.find("Shear_steps")!=string::npos) nShrSteps = atoi(parValStr.data());
+     
+      else if(parName.find("FilDens")!=string::npos) filDens = atof(parValStr.data());
+      else if(parName.find("MaxPrestress")!=string::npos) {
+	if(atof(parValStr.data()) > 1.0e-6) {
+	  pm.insert(pair< std::string, std::string >("maximum prestress",parValStr));
+        }
+      }
+      else if(parName.find("RelaxPrestress")!=string::npos) {
+	if(atof(parValStr.data()) >= .5) relaxPrestress = true;
+      }
+      else if(parName.find("Prestress")!=string::npos) {
+	if(atof(parValStr.data()) < 0.5) pm.insert(pair< std::string, std::string >("prestress","false"));
+	else pm.insert(pair< std::string, std::string >("prestress","true"));
+      }
+      else if(parName.find("Retrieve")!=string::npos) {
+	if(atof(parValStr.data()) < 0.5) retrieveGel = false;
+	else retrieveGel = true;
+      }
+      else if(parName.find("AdaptiveMesh")!=string::npos) {
+	if(atof(parValStr.data()) >= .5) adaptiveMeshing = true;
+      }
+      else if(parName.find("ShortSegRelief")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("nearby pair removal method",parValStr.data()));
+      }
+      else if(parName.find("TargetSegLength")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("target segment length", parValStr.data()));
+      }
+      else if(parName.find("MinSegLength")!=string::npos) {
+        minLength = atof(parValStr.data());//Min seg length for adaptive mesh
+      }
+      else if(parName.find("L_fil")!=string::npos) {
+	L = atof(parValStr.data());
+	pm.insert(pair< std::string, std::string >("L",parValStr));
+      }
+      else if(parName.find("CutOffEnds")!=string::npos) {
+	if(atof(parValStr.data()) >= 0.5) cutOffEnds = true; 
+      }
+      else if(parName.find("Zero_Return")!=string::npos) {
+	if(atof(parValStr.data()) >= .5) zeroReturn = true;
+      }
+      
+      // add polydispersity stuff //
+      else if(parName.find("Polydispersity")!=string::npos) {
+	polydisp = parValStr;
+	pm.insert(pair< std::string, std::string >("polydispersity",polydisp));
+      }
+      else if(parName.find("Long/short")!=string::npos && polydisp.find("LongShort")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("longshortratio",parValStr));
+      }
+      else if(parName.find("Long fraction")!=string::npos && polydisp.find("LongShort")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("longfraction",parValStr)); 
+      }
+      else if(parName.find("StreStiffRatio")!=string::npos && polydisp.find("LongShort")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("stretchstiffratio",parValStr)); 
+      }
+      else if(parName.find("BendStiffRatio")!=string::npos && polydisp.find("LongShort")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("bendstiffratio",parValStr)); 
+      }
+      else if(parName.find("RemoveLngCross")!=string::npos && polydisp.find("LongShort")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("removelongcrosslink",parValStr)); 
+      }
+      else if(parName.find("Min. length")!=string::npos && polydisp.find("Exponential")!=string::npos) {
+	pm.insert(pair< std::string, std::string >("minlength",parValStr));
+      }
+      else if(parName.find("nFils")!=string::npos) {//this parameter will re-calculate FilDens
+	nFils = atof(parValStr.data());
+      }
+
+    }
+    //std::cout<<parName<<std::endl;
+    curString.clear();
+    parName.clear();
+    parValStr.clear();
+  }
+  inFile.close();
+
+  SemiflexibleGel<2> * gel;
+  SemiflexibleGel<2>::DefNodeContainer nodes;
+  PeriodicBox * box;
+  GelOutput<2> output;
+  
+  if(kC < 0.0) {
+    kC = kT*L_p;
+  }
+
+  if(retrieveGel) {
+    if(kC > 0.0 && l_B > 0.0) {
+      std::ostringstream tmpStr;
+      tmpStr << setprecision(16) << kC;
+      if(!adaptiveMeshing) pm.insert(pair< std::string, std::string>("bending modulus",tmpStr.str()));
+      else pm.insert(pair< std::string, std::string>("angle stiffness",tmpStr.str()));
+      // get nominal l_c and L from gel file name //
+      int Lpos = gelFileName.find("L=") + 2;
+      int l_Cpos = gelFileName.find("l_C");
+      int dLpos = gelFileName.find("dL");
+      int Wxpos = gelFileName.find("Wx");
+      int kclpos = gelFileName.find("kcl");
+      int gelNumpos = gelFileName.find("gelnum");
+      //int shearpos = gelFileName.find("shear");
+      int endPos = gelFileName.find(".gelsave");
+      std::string Lstr;
+      Lstr.assign(gelFileName,Lpos,l_Cpos-1-Lpos);
+      pm["L"] = Lstr;
+      L = atof(Lstr.data());
+      std::string l_Cstr;
+      l_Cstr.assign(gelFileName,l_Cpos+4,dLpos-5-l_Cpos);
+      tmpratio = L/atof(l_Cstr.data());
+      std::ostringstream tm;
+      tm << setprecision(16) << tmpratio;
+      pm["L/l_c"] = tm.str();
+      std::string dLstr;
+      dLstr.assign(gelFileName,dLpos+3,Wxpos-4-dLpos);
+      if(!adaptiveMeshing) {
+        pm["dL"] = dLstr;
+        dL = atof(dLstr.data());
+      }
+      else dL = -1.0;
+      std::string kclStr;
+      kclStr.assign(gelFileName,kclpos+4,gelNumpos-5-kclpos);
+      kcl = atof(kclStr.data());
+      pm["crosslink stiffness"] = kclStr;
+      std::string GNstr;
+      GNstr.assign(gelFileName,gelNumpos+7,endPos-7-gelNumpos);
+      curGelNum = atoi(GNstr.data());
+      gelFileName.insert(0,gelDirectory);
+      lambda = (tmpratio/L)*pow(tmpratio/(L*l_B),1.0/3.0);
+      std::ostringstream lambstr;
+      lambstr << setprecision(16) << lambda;
+      pm["lambda"] = lambstr.str();
+      if(adaptiveMeshing) {
+        double mu = kC/sqr(l_B);
+        std::ostringstream mustream;
+        mustream << setprecision(16) << mu;
+	pm["bond stiffness"] = mustream.str();
+      }
+      
+      if(!adaptiveMeshing) {
+        gel = new SemiflexibleGel<2>(gelFileName,nodes,bondType,cutOffEnds,pm,0.0);
+      }
+      else {
+        gel = new SemiflexibleGel<2>(gelFileName,nodes,bondType,cutOffEnds,minLength,pm);
+      }
+
+      box = gel->box();
+      syssize = box->size();
+      std::cout << "Retrieved and set up a gel with the following properties:" << std::endl;
+      std::cout << "System size: " << syssize[0] << ", " << syssize[1] << std::endl;
+      std::cout << "Bond type: " << bondType << std::endl;
+      for(PMIter pmi=pm.begin(); pmi!=pm.end(); pmi++) {
+	std::cout << pmi->first << ": " << pmi->second << std::endl;
+      }
+      std::ostringstream ss0;
+      ss0 << setprecision(16) << syssize[0];
+      std::ostringstream ss1;
+      ss1 << setprecision(16) << syssize[1];
+      pm["Wx"] = ss0.str();
+      pm["Wy"] = ss1.str();
+      
+      if(relaxPrestress) {
+	gel->removePrestress();
+	std::cout << "Reset spring rest lengths/stiffnesses to relax prestress." << std::endl;
+      }
+    }
+    else {
+      std::cerr << "Error: input file must have either persistence length L_p or bending modulus kC." << std::endl;
+      exit(1);
+    }
+  }//end if(retrieveGel)
+
+  else { // create new Gel
+    for(int dn=0;dn<2;dn++) {
+      syssize[dn] *= L;
+    }
+    
+    if(nFils > 0.0) { //if nFils > 0, recalculate filDens and tmpratio
+      filDens = nFils/syssize[0]/syssize[1];
+      tmpratio = getLlc(filDens, L);
+    }
+    
+    // get number of rods per filament from requirement of nodes between crosslinks, then set all other parameters //
+    if(!adaptiveMeshing) {
+      nNodesPerFilament = 1 + getFilSegs(tmpratio-1,nodesPerCL);
+      dL = L/(nNodesPerFilament - 1);
+      // Estimate kAngle = E*I/L = kT\xi_p/dL; kT=4.1pN-nm, \xi_p=10^4nm, dL~100nm
+      //make kAngle 100 times larger to simulate the rotation diffusion
+    
+      if(kC > 0.0) {
+        kAngle = kC/dL;
+        std::ostringstream tmpStr;
+        tmpStr << setprecision(16) << kAngle;
+        pm.insert(pair< std::string, std::string>("angle stiffness",tmpStr.str()));
+      }
+      else {
+        std::cerr << "Error: input file must have either persistence length L_p or bending modulus kC." << std::endl;
+        exit(1);
+      }
+      if(l_B > 0.0) {
+        kBond = kAngle/sqr(l_B);
+        std::ostringstream tmpStr;
+        tmpStr << setprecision(16) << kBond;
+        pm.insert(pair< std::string, std::string>("bond stiffness",tmpStr.str()));
+      }
+      else {
+        std::cerr << "Error: input file must have a value for the bending/stretching length l_B." << std::endl;
+      }
+    }
+    else {//adaptive meshing
+      dL = -1.0;
+      std::ostringstream tmpStr;
+      tmpStr << setprecision(16) << kC;
+      pm.insert(pair< std::string, std::string>("angle stiffness",tmpStr.str()));
+      double mu = kC/sqr(l_B);
+      std::ostringstream tmpStr2;
+      tmpStr2 << setprecision(16) << mu;
+      pm.insert(pair< std::string, std::string>("bond stiffness",tmpStr2.str()));
+    }
+
+    lambda = (tmpratio/L)*pow(tmpratio/(L*l_B),1.0/3.0);
+    std::ostringstream lambstr;
+    lambstr << setprecision(16) << lambda;
+    pm["lambda"] = lambstr.str();
+    
+    std::ostringstream tmpSx;
+    tmpSx << setprecision(16) << syssize[0];
+    pm.insert(pair< std::string, std::string >("Wx",tmpSx.str()));
+    std::ostringstream tmpSy;
+    tmpSy << setprecision(16) << syssize[1];
+    pm.insert(pair< std::string, std::string >("Wy",tmpSy.str()));
+    std::ostringstream tmpLl_c;
+    tmpLl_c << setprecision(16) << tmpratio;
+    pm.insert(pair< std::string, std::string >("L/l_c",tmpLl_c.str()));
+    std::ostringstream tmpdL;
+    tmpdL << setprecision(16) << dL;
+    pm.insert(pair< std::string, std::string >("dL",tmpdL.str()));
+
+    std::cout << "Constructing a gel with the following properties:" << std::endl;
+    std::cout << "System size: " << syssize[0] << ", " << syssize[1] << std::endl;
+    std::cout << "# nodes/filament: " << nNodesPerFilament << std::endl;
+    std::cout << "Bond type: " << bondType << std::endl;
+    for(PMIter pmi=pm.begin(); pmi!=pm.end(); pmi++) {
+      std::cout << pmi->first << ": " << pmi->second << std::endl;
+    }
+
+    std::string fName = getGelFileName(gelDirectory,pm);
+    curGelNum = getCurGelNum(fName);
+
+    if(adaptiveMeshing) pm.insert(pair<std::string, std::string>("storage file name",fName));
+
+    // make periodic box //
+    box = new LeesEdwards(syssize[0],syssize[1],0.0);
+    
+    // create body //
+    if(!adaptiveMeshing) {
+      gel = new SemiflexibleGel<2>(nodes,box,filDens,nNodesPerFilament,dL,bondType,cutOffEnds,pm);
+    }
+    else {
+      gel = new SemiflexibleGel<2>(nodes,box,filDens,L,bondType,cutOffEnds,minLength,pm);
+    }
+    //gel->addPinch(6.0,false,nodes,kBond,kAngle,visc,kT,dt,kcl);
+    
+    // write gel data to file //
+    if(!adaptiveMeshing) {
+      gel->storeGel(fName);
+    }
+
+    fName.clear();
+
+    if(relaxPrestress) {
+      gel->removePrestress();
+      std::cout << "Reset spring rest lengths/stiffnesses to relax prestress." << std::endl;
+    }
+
+    char clinkdistfile[128];
+    sprintf(clinkdistfile,"Run%d/CrosslinkSepDistro-L=%f-l_C=%f-dL=%f-S=%f-gelnum=%d.dat",runNum,L,L/tmpratio,dL,nematicOP,curGelNum);
+    fName.assign(clinkdistfile);
+    output.printCrosslinkData(gel,fName);
+
+    fName.clear();
+    char fillendistfile[128];
+    sprintf(fillendistfile,"Run%d/FilLengthDistro-L=%f-l_C=%f-dL=%f-S=%f-gelnum=%d.dat",runNum,L,L/tmpratio,dL,nematicOP,curGelNum);
+    fName.assign(fillendistfile);
+    output.printFilLengthData(gel,fName);
+
+    fName.clear();
+    char filstrestiffdistfile[128];
+    sprintf(filstrestiffdistfile,"Run%d/FilStreStiffDistro-L=%f-l_C=%f-dL=%f-S=%f-gelnum=%d.dat",runNum,L,L/tmpratio,dL,nematicOP,curGelNum);
+    fName.assign(filstrestiffdistfile);
+    output.printFilStreStiffData(gel,fName);
+
+    fName.clear();
+    char filbendstiffdistfile[128];
+    sprintf(filbendstiffdistfile,"Run%d/FilBendStiffDistro-L=%f-l_C=%f-dL=%f-S=%f-gelnum=%d.dat",runNum,L,L/tmpratio,dL,nematicOP,curGelNum);
+    fName.assign(filbendstiffdistfile);
+    output.printFilBendStiffData(gel,fName);
+
+    fName.clear();
+  }// end of generating gel
+
+  if(shearTest) {
+    actuall_c = gel->getMeanCLsep();
+    actualL = gel->getMeanFilLen();
+    
+    if(shrStart >= 0.0 && shrEnd >= shrStart && nShrSteps > 0) {
+      shrStep = (shrEnd-shrStart)/nShrSteps;
+      std::cout << "About to begin system shear from " << shrStart << " to " << shrEnd << " in steps of size " << shrStep << std::endl;
+    }
+    else {
+      std::cerr << "Error: input file must list starting and ending shear and # of shear steps to take." << std::endl;
+    }
+    
+    char shrfilename[128];
+    sprintf(shrfilename,"Run%d/energyvsshear-L=%f-l_C=%f-l_B=%f-gelnum=%d.dat",runNum,L,L/tmpratio,l_B,curGelNum);
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //
+    // Create a model and a minimization solver and point them to the
+    // SemiflexibleGel body.
+    //
+    /////////////////////////////////////////////////////////////////////////////
+    
+    Model::NodeContainer modelnodes;
+    modelnodes.reserve( nodes.size() );
+    for(SemiflexibleGel<2>::DefNodeIterator n=nodes.begin(); n!=nodes.end(); n++) {
+      modelnodes.push_back( *n );
+    }
+    Model model(modelnodes);
+    model.pushBackBody( gel );
+    
+    int m=7;
+    double factr=1.0e+7;
+    double pgtol=1.0e-4;
+    int iprint = 10;
+    ifstream lbfgsbinp("lbfgsb.inp");
+    lbfgsbinp >> iprint >> factr >> pgtol >> m ;
+    if(verbose) 
+      std::cout << "Input iprint: " << iprint << std::endl
+		<< "Input factr: " << factr << std::endl
+		<< "Input pgtol: " << pgtol << std::endl
+		<< "Input m: " << m << std::endl;
+    int maxiter = 1500000;
+    Lbfgsb solver(model.dof(), m, factr, pgtol, iprint, maxiter );
+    
+    std::string shearFileName(shrfilename);
+    std::ostringstream paramstring;
+    paramstring << "Parameters: "
+	      << "L/l_C = " << actualL/actuall_c
+	      << ", L = " << actualL
+	      << ", l_B = " << l_B
+	      << ", Wx = " << syssize[0]
+	      << ", Wy = " << syssize[1];
+    output.printParamHeader(shearFileName,paramstring.str());
+
+    std::ostringstream energyFLstring;
+    
+    energyFLstring << "Shear\t" << "E_tot\t" << "E_cl\t" << "E_bend\t" << "E_strc";
+    output.printFieldLabels(shearFileName,energyFLstring.str());
+    
+    for(int step=0; step<=nShrSteps; step++) {
+      double shear=shrStart+step*shrStep;
+      cout << "Step " << step << " shear = " << shear << endl;
+      box->setShear(shear);
+      guessAffineShear(gel, shear);//guess the affine shear and preshear the network to avoid energy jump at shear=0.0
+      solver.solve( &model );
+      char fname[100];
+      sprintf(fname,"Run%d/shear-%d",runNum,step);
+      //output(gel, fname); //print out vtp files
+      gel->printParaview(fname); //print out vtk files
+      output.printEnergies(gel,shearFileName,shear);
+      //if (shear == 0.0 || shear == 0.006) {
+	char * gelStoreShr;
+	gelStoreShr = new char[128];
+	std::string fNameShr;
+	sprintf(gelStoreShr,"Run%d/gel-L=%f-l_C=%f-dL=%f-Wx=%f-Wy=%f-kcl=%f-gelnum=%d-shear=%f.gelsave",runNum,L,L/tmpratio,dL,syssize[0],syssize[1],kcl,curGelNum,shear);
+	fNameShr.assign(gelStoreShr);
+	gel->storeGel(fNameShr);
+	delete gelStoreShr;
+      //}
+    }
+  }
+
+  std::cout << "Completed shear test." << std::endl;
+  return 0; 
+}

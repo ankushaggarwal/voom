@@ -1,0 +1,149 @@
+//#include <string>
+#include <iostream>
+/*#include <vector>
+#include <fstream>
+#include <getopt.h>
+#include "Node.h"
+#include "CompNeoHookean.h"
+#include <tvmet/Vector.h>
+#include "Capsid3DBody.h"
+#include "TetQuadrature.h"
+#include "ShapeTet4CP.h"
+#include "Model.h"
+#include "Solver.h"
+#include "Lbfgsb.h"
+#include "SimulatedAnnealing.h"
+#include "Rigid.h"
+#include "ViscousRegularizer.h"
+
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
+*/
+
+// using namespace tvmet;
+ using namespace std;
+#include "MFShape.h"
+#include "MFShape.cc"
+#include "NodeBase.h"
+#include "Node.h"
+#include "MFBody.h"
+#include "CompNeoHookean.h"
+#include<tvmet/Vector.h>
+#include<tvmet/Matrix.h>
+ using namespace voom;
+
+ int main(int argc, char* argv[])
+ {
+typedef tvmet::Vector<double,3> CoordinateArray;
+voom::MFShape ss;
+//voom::MFShape::NodeContainer neigh;
+srand(12345);
+int npts = 10000;
+CoordinateArray s(rand()%1000,rand()%1000,rand()%1000);
+CoordinateArray x[npts];
+vector<double> node_volume;
+for(int i=0;i<npts;i++){
+  x[i]=rand()%1000,rand()%1000,rand()%1000;
+  node_volume.push_back( (rand()%1000)/100.0);
+}
+
+  // create vector of nodes
+  int dof=0;
+  std::vector< NodeBase* > nodes;
+  std::vector< DeformationNode<3>* > defNodes;
+//  char key;  ifs>>key;
+  // Input .vtk file containing nodes and connectivities
+ // std::string token;
+ // ifs >> token;
+ // while( token != "POINTS" ) ifs >> token;
+ // int npts=0;
+ // ifs >> npts;
+  defNodes.reserve(npts);
+// ifs >> token;// skip number type
+ // read in points
+  for(int i=0; i<npts; i++) {
+  int id=i;
+  DeformationNode<3>::Point temp;
+  temp(0) = x[i](0);
+  temp(1) = x[i](1);
+  temp(2) = x[i](2);
+  //x /= 10.0;
+  NodeBase::DofIndexMap idx(3);
+  for(int j=0; j<3; j++) idx[j]=dof++;
+  DeformationNode<3>* n = new DeformationNode<3>(id,idx,temp);
+  nodes.push_back( n );
+  defNodes.push_back( n );
+}
+ cout << "Number of nodes: " <<nodes.size() << endl;
+
+  // create material
+  double rho = 1.0;
+  double E = 200.0;
+  double nu = 0.4;
+  double viscosity=1.0e-2;
+  // mesh free parameters
+  double support_size = 150.0;
+  
+  typedef CompNeoHookean MaterialType;
+  MaterialType protein( rho, E, nu );
+  typedef MFBody<MaterialType,MFShape> body;
+  body bd(protein,nodes,node_volume,support_size);
+  bd.compute(1,1,0);
+  
+  std::cout<<"Volume of the body is "<<bd.volume()<<std::endl;
+  std::cout<<"Strain energy of the body is "<<bd.totalStrainEnergy()<<std::endl;
+  
+  
+  
+  
+  
+  
+  
+  DeformationNode<3>::PositionVector ll=defNodes[10]->position();
+  std::cout<<ll(0)<<"\t"<<ll(1)<<"\t"<<ll(2)<<std::endl;
+  std::cout<<"---------------------------------------------------------------"<<std::endl;
+  std::cout<<x[10]<<std::endl;
+  std::cout<<"---------------------------------------------------------------"<<std::endl;
+//std::cout<<x<<std::endl;
+MFShape::CoordinateArray p(defNodes[5000]->getPosition(0),defNodes[5000]->getPosition(1),defNodes[5000]->getPosition(2));
+ss.compute(p,defNodes,80.0,10.0);
+//ss.compute(x[5000],x,80,10000,10);
+
+CoordinateArray let(0), letx(0), lety(0), letz(0);
+voom::MFShape::FunctionContainer value=ss.functions(), xd=ss.xderivative(), yd=ss.yderivative(), zd=ss.zderivative();
+voom::MFShape::NodeNContainer node=ss.neighb();
+std::cout<<"the size of neighbour nodes is "<<value.size()<<std::endl;
+double total=0,totalx=0,totaly=0,totalz=0;
+for(int i=0;i<value.size();i++){
+std::cout<<node[i]<<"\t"<<value[i]<<"\t"<<xd[i]<<"\t"<<yd[i]<<"\t"<<zd[i]<<"\n";
+//x[node[i]]
+total = total + value[i];
+let += x[node[i]]*value[i];
+totalx += xd[i];
+letx += x[node[i]]*xd[i];
+totaly += yd[i];
+lety += x[node[i]]*yd[i];
+totalz += zd[i];
+letz += x[node[i]]*zd[i];
+}
+std::cout<<std::endl;
+std::cout<<total<<"\t"<<totalx<<"\t"<<totaly<<"\t"<<totalz<<"\t"<<std::endl;
+std::cout<<let<<"\t"<<x[5000]<<endl<<"\t"<<letx<<"\t"<<lety<<"\t"<<letz<<endl;
+//std::cout<<ss.functions<<std::endl;
+//std::cout<<ss.nodes<<std::endl;
+/*tvmet::Matrix<double,4,4> M(0), invM(0), I(0);
+M = 1,6,8,1,
+5,2,6,4,
+8,3,1,2,
+7,9,2,5; 
+ss.inverse(M,invM);
+I = invM*M;
+std::cout<<I<<std::endl;
+
+tvmet::Matrix<double,3,1> a;
+a=1,2,3;
+tvmet::Matrix<double,3,3> b(0);
+b=a*tvmet::trans(a);
+std::cout<<b<<std::endl;*/
+}

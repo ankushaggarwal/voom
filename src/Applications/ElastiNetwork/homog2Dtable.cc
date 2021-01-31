@@ -1,0 +1,308 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <getopt.h>
+#include <unistd.h>
+#include <tvmet/Vector.h>
+#include "Node.h"
+#include "SCElastic.h"
+#include "EvansElastic.h"
+#include "LoopShellBody.h"
+#include "C0MembraneBody.h"
+#include "ShapeTri3.h"
+#include "Model.h"
+
+using namespace std;
+using namespace voom;
+
+//! This function creates a shell model with LoopShellBody  for bending and  C0MembraneBodies for stretching. Then it reads the configurations and calculates invariants and curvatures
+
+void readconfig_dat(char* filename, float* x, float* y, float* z, int npts);
+void readconfig_dat(char* filename, std::vector< std::vector<int> > & tableid,std::vector< std::vector<double> > & tableweight, float* x, float* y, float* z, int npts);
+//const double EDGELEN=2.0;
+int main(int argc, char* argv[])
+{
+  if(argc < 2){
+    std::cout<<"Usage homog2Dtable modelName tablefile [-n start_config -N end_config]." << std::endl;
+    return(0);
+  }
+  
+  bool verbose=true;
+  for(int i=0; i<argc; i++) {
+    std::cout << std::setw(8) << i << "\t"
+	      << argv[i] << std::endl;
+  }
+  // create input stream
+  std::ifstream ifs;
+  std::string inputFileName = argv[1];
+  std::string tableprefix=argv[2];
+  ifs.open( inputFileName.c_str(), std::ios::in);
+  if (!ifs) {
+    cout << "Cannot open input file: " << inputFileName << endl;
+    exit(0);
+  }
+
+  bool badCommandLine=false;
+  int StartConfig=0, EndConfig=0;
+  
+  for(char option; (option=getopt(argc,argv,"n:N:")) != EOF; ) 
+    switch (option) {
+    default :
+      badCommandLine=true;
+      break;
+    case 'n' :
+      StartConfig = std::atoi(optarg);
+      std::cout << "Starting No. of configurations: " << StartConfig << std::endl;
+      break;
+    case 'N' :
+      EndConfig = std::atoi(optarg);
+      std::cout << "Ending No. of configurations: " << EndConfig << std::endl;
+      break;
+    }
+
+  if( badCommandLine || argc < 2 ) {
+    std::cout<<"Usage homog2Dtable modelName tableFile [-n start_config -N end_config]." << std::endl;
+    return(0);
+  }
+  
+  // create vector of nodes
+  int dof=0;
+  std::vector< NodeBase* > nodes;
+  std::vector< DeformationNode<3>* > defNodes;
+  double Ravg = 0;
+  char key;  ifs>>key;
+  
+  // Input .vtk file containing nodes and connectivities
+  std::string token;
+  ifs >> token; 
+  while( token != "POINTS" ) ifs >> token;
+  int npts=0;
+  ifs >> npts; 
+  defNodes.reserve(npts);
+  ifs >> token;// skip number type
+  std::cout<<"npts = "<<npts<<std::endl;
+  // read in points
+  for(int i=0; i<npts; i++) {
+    int id=i;
+    DeformationNode<3>::Point x;
+    ifs >> x(0) >> x(1) >> x(2);
+    Ravg += tvmet::norm2(x);
+    NodeBase::DofIndexMap idx(3);
+    for(int j=0; j<3; j++) idx[j]=dof++;
+    DeformationNode<3>* n = new DeformationNode<3>(id,idx,x);
+    nodes.push_back( n );
+    defNodes.push_back( n );
+  }
+  assert(nodes.size()!=0);
+  Ravg /= nodes.size();
+  std::cout << "Number of nodes: " <<nodes.size() << std::endl
+            << "Ravg = " << Ravg << std::endl;
+  
+  // read in triangle connectivities
+  while( token != "POLYGONS" ) ifs >> token;
+  std::vector< tvmet::Vector<int,3> > connectivities;
+  tvmet::Vector<int,3> c;
+  int ntri=0; ifs >> ntri;
+  connectivities.reserve(ntri);
+  cout << "Number of triangles: " << ntri << endl;
+  int tmp; ifs>>tmp; std::cout<<" tmp = "<<tmp<<std::endl;
+  for (int i = 0; i<ntri; i++){
+    int tmp=0;
+    ifs >> tmp;
+    if(tmp!=3) std::cout<<"Some mistake reading the elements connectivity from file. Check again."<<std::endl;
+    for(int a=0; a<3; a++) ifs >> c[a];
+    connectivities.push_back(c);
+  }
+
+  // material constants
+  // bending
+  double Y=1.;
+  double KC=1.;
+  double KG=1.;
+  double nu=1./3.;
+  double C0=0.;
+  // stretching
+  double mu=1.;
+  double kS=1.;
+
+  // create bending body
+  int quadOrder=1;
+  
+  typedef SCElastic BendingMaterial;
+  BendingMaterial bending(KC,KG,C0);
+
+  typedef LoopShellBody<BendingMaterial> LSB;
+  LSB * bending_body = new LSB(bending, connectivities, nodes, quadOrder);
+  bending_body->setOutput(paraview);
+
+  // create stretching body which doesn't have any bending energy
+  std::vector< std::vector<int> > s_connectivities;
+  for(int i=0; i<connectivities.size(); i++) {
+    std::vector<int> c(3);
+    for(int j=0; j<3; j++) c[j]=connectivities[i](j);
+    s_connectivities.push_back(c);
+  }
+  typedef EvansElastic StretchingMaterial;
+  StretchingMaterial stretch(0.,0.,0.,mu,kS);
+
+  typedef C0MembraneBody<TriangleQuadrature,StretchingMaterial,ShapeTri3> membrane;
+  membrane * stretch_body = new membrane(stretch,s_connectivities,nodes,quadOrder);
+  stretch_body->setOutput(paraview);
+
+  std::cout << std::endl;
+  bending_body->compute(true,false,false);
+  std::vector<double> curv0(ntri,0.);
+  bending_body->cal_curv(curv0);
+  std::cout << "Bending body energy = " << bending_body->energy() << std::endl;
+  std::cout << "Stretching body energy = " << stretch_body->energy() << std::endl;
+  std::cout << std::endl;
+
+  //write the areas of elements needed in modulus calculation
+  std::ofstream outfile;
+  outfile.open("area.dat");
+  typedef membrane::MembraneElementContainer elements;
+  const elements temp_elements=stretch_body->elements();
+  for(int i=0;i<temp_elements.size();i++){
+    double area=temp_elements[i]->area();
+    outfile << area << std::endl;
+  }
+  outfile.close();
+
+  //read the trajectory and output curvatures and invariants
+  std::ofstream file1, file2, file3;
+  file1.open("inv1.dat",std::ios::binary);
+  file2.open("inv2.dat",std::ios::binary);
+  file3.open("curv.dat",std::ios::binary);
+
+//  char tab='\t', newline='\n';
+  int col=ntri+1, row=60*(EndConfig-StartConfig+1);
+
+  file1.write((char*)&row,sizeof(int)); file1.write((char*)&col,sizeof(int));
+  file2.write((char*)&row,sizeof(int)); file2.write((char*)&col,sizeof(int));
+  file3.write((char*)&row,sizeof(int)); file3.write((char*)&col,sizeof(int));
+
+  for(int table=0;table<1;table++){
+    //read the table file
+    std::ifstream ftable;
+    char tableFileName[60];
+    sprintf(tableFileName,"%s",tableprefix.c_str());
+    ftable.open(tableFileName, std::ios::in);
+  cout << "Cannot open input file: "  << endl;
+    if (!ftable) {
+      cout << "Cannot open input file: " << tableFileName << endl;
+      exit(0);
+    }
+    std::cout<<"Opened file: "<<tableFileName << std::endl;
+    std::vector< std::vector<int> > tableid;
+    std::vector< std::vector<double> > tableweight;
+    int N;
+    ftable >> N;
+    do{
+      std::vector<int> id;
+      std::vector<double> weight;
+      for(int i=0;i<N;i++){
+	int l;
+	double w;
+	ftable >> l >> w;
+	id.push_back(l);
+	weight.push_back(w);
+      }
+      tableid.push_back(id);
+      tableweight.push_back(weight);
+      ftable >> N;
+    }while(!ftable.eof());
+    
+    if(tableid.size()!=npts) std::cout<<"Error"<<std::endl;
+    if(tableweight.size()!=npts) std::cout<<"Error"<<std::endl;
+    ftable.close();
+    std::cout<<"here"<<std::endl; 
+    //read in the configuration files in a loop
+    for(int i=StartConfig;i<=EndConfig;i++){
+      char inpfile[20];
+      std::cout<<"Reading "<<i<<"th configuration."<<std::endl;
+      float x[npts], y[npts], z[npts];
+      //sprintf(inpfile,"../surf-traj/%d.dat",i);
+      sprintf(inpfile,"../../%d.dat",i);
+      readconfig_dat(inpfile,tableid,tableweight,x,y,z,npts);
+      for(int inode=0;inode<npts;inode++){
+	DeformationNode<3>::Point newx;
+	newx(0)=x[inode]; newx(1)=y[inode]; newx(2)=z[inode];
+	defNodes[inode]->setPoint(newx);
+      }
+      bending_body->printParaview("deformed-bending.vtk");
+      stretch_body->printParaview("deformed-stretching.vtk");
+      std::vector<double> I1(ntri,0.), I2(ntri,0.), curv(ntri,0.);
+      std::cout<<"Calculating the invariants"<<std::endl;
+      bending_body->compute(true,false,false);
+      bending_body->cal_curv(curv);
+      //std::cout << curv[0] << std::endl;
+      //std::cout << bending_body->energy() << std::endl;
+      stretch_body->cal_inv(I1,I2);
+      //bd.cal_stretch_ratios(I1,I2,I3);
+      double di=double(i);
+      //std::cout<<"double of i is "<<di<<std::endl;
+      file1.write((char*)&di,sizeof(double));
+      file2.write((char*)&di,sizeof(double));
+      file3.write((char*)&di,sizeof(double));
+      
+      for(int iele=0;iele<ntri;iele++){
+        double deltacurv=curv[iele]-curv0[iele];
+	file1.write((char*)&I1[iele],sizeof(double)); 
+	file2.write((char*)&I2[iele],sizeof(double));
+	file3.write((char*)&deltacurv,sizeof(double));
+      }
+    }
+  }
+  std::cout<<"Everything done!"<<std::endl;
+  return 0;
+}
+
+void readconfig_dat(char* filename, float* x, float* y, float* z, int npts){
+  ifstream inpfile;
+  inpfile.open(filename);
+  if (!inpfile) {
+    cout << "Cannot open input file: " << filename << endl;
+    exit(0);
+  }
+  int id;
+  
+  for(int i=0; i<npts; i++){
+    inpfile >>  x[i] >> y[i] >> z[i];
+  }
+  inpfile.close();
+}
+
+void readconfig_dat(char* filename, std::vector< std::vector<int> > & tableid,std::vector< std::vector<double> > & tableweight, float* x, float* y, float* z, int npts){
+  ifstream inpfile;
+  inpfile.open(filename);
+  if (!inpfile) {
+    cout << "Cannot open input file: " << filename << endl;
+    exit(0);
+  }
+  int id;
+  double xt,yt,zt,energy;
+  inpfile >>  xt >> yt >> zt >> energy;
+  //std::cout << id << "\t" << xt << std::endl;
+  std::vector<double> xtemp,ytemp,ztemp;
+  
+  do{
+    xtemp.push_back(xt);
+    ytemp.push_back(yt);
+    ztemp.push_back(zt);
+    inpfile >>  xt >> yt >> zt >> energy;
+  }while(!inpfile.eof());
+
+  for(int i=0; i<npts; i++){
+    double xt=0.,yt=0.,zt=0.,weightsum=0.;
+    for(int j=0;j<tableid[i].size();j++){
+      xt += xtemp[tableid[i][j]]*tableweight[i][j];
+      yt += ytemp[tableid[i][j]]*tableweight[i][j];
+      zt += ztemp[tableid[i][j]]*tableweight[i][j];
+      weightsum += tableweight[i][j];
+    }
+    x[i]=xt/weightsum; y[i]=yt/weightsum; z[i]=zt/weightsum;
+
+  }
+  inpfile.close();
+}

@@ -1,0 +1,1 @@
+g++ test.cpp -o test -I ..  -I ../.. -I ../../VoomMath/ -I ../../.. -L ../../VoomMath/ -L ../ -L ../../.. -L /u/local/apps/tvmet/current/lib -L /u/local/apps/blitz/current/lib -I /u/local/apps/tvmet/current/lib/include -I /u/local/apps/blitz/current/include
